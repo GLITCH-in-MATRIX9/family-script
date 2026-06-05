@@ -4,54 +4,914 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
+
+// =====================================================
+// ENUMS — AUTH / USER
+// =====================================================
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum VerificationType {
+  EMAIL_VERIFICATION
+  EMAIL_CHANGE
+}
+
+// =====================================================
+// USER
+// =====================================================
 
 model User {
-  id            String    @id
-  name          String
-  email         String    @unique
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
+  // Primary Key
+  id String @id @default(cuid())
+
+  // Identity
+  name     String
+  username String? @unique
+  email    String  @unique
+
+  // Authentication
+  passwordHash    String?
+  emailVerifiedAt DateTime?
+
+  // Profile
+  image String?
+
+  // Account Status
+  status UserStatus @default(ACTIVE)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ===== AUTH RELATIONS =====
+  accounts       Account[]
+  sessions       Session[]
+  verifications  Verification[]
+  passwordResets PasswordReset[]
+
+  // ===== TREE DOMAIN =====
+  ownedTrees  Tree[]       @relation("TreeOwner")
+  treeMembers TreeMember[]
+  linkedNodes TreeNode[]
+
+  // ===== STORY DOMAIN =====
+  stories Story[]
+
+  // ===== COMMUNICATION DOMAIN =====
+  messages Message[]
+
+  // ===== MEETINGS =====
+  createdMeetings Meeting[] @relation("MeetingCreator")
+
+  // ===== INVITATIONS =====
+  invitationsSent     Invitation[] @relation("InvitationSender")
+  invitationsReceived Invitation[] @relation("InvitationReceiver")
+
+  // ===== SYSTEM =====
+  notifications Notification[]
+  // auditLogs     AuditLog[]
+
+  @@index([status])
 }
 
-model Session {
-  id        String   @id
-  expiresAt DateTime
-  token     String   @unique
-  createdAt DateTime
-  updatedAt DateTime
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
+// =====================================================
+// ACCOUNT
+// =====================================================
 
 model Account {
-  id                    String    @id
-  accountId             String
-  providerId            String
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime
-  updatedAt             DateTime
+  id String @id @default(cuid())
+
+  userId String
+
+  provider          String
+  providerAccountId String
+
+  accessToken  String?
+  refreshToken String?
+
+  expiresAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
+// =====================================================
+// SESSION
+// =====================================================
+
+model Session {
+  id String @id @default(cuid())
+
+  userId String
+
+  token String @unique
+
+  expiresAt DateTime
+
+  ipAddress String?
+  userAgent String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// =====================================================
+// VERIFICATION
+// =====================================================
+
 model Verification {
-  id         String    @id
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime?
-  updatedAt  DateTime?
+  id String @id @default(cuid())
+
+  userId String
+
+  token String @unique
+
+  type VerificationType @default(EMAIL_VERIFICATION)
+
+  expiresAt DateTime
+
+  usedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// =====================================================
+// PASSWORD RESET
+// =====================================================
+
+model PasswordReset {
+  id String @id @default(cuid())
+
+  userId String
+
+  token String @unique
+
+  expiresAt DateTime
+
+  usedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// =====================================================
+// FAMILY SCRIPT DOMAIN
+// =====================================================
+
+// =====================================================
+// ENUMS — TREE
+// =====================================================
+
+enum TreeType {
+  FAMILY
+  ORGANIZATION
+  TRIBE
+}
+
+enum TreeRole {
+  OWNER
+  MEMBER
+  VIEWER
+}
+
+// =====================================================
+// ENUMS — RELATIONSHIP
+//
+// Only fundamental relationships are stored.
+// Complex relationships (Uncle, Aunt, Cousin, etc.)
+// are derived from graph traversal.
+// =====================================================
+
+enum RelationshipType {
+  // Family Relationships
+  PARENT
+  SPOUSE
+  SIBLING
+
+  // Organization Relationships
+  MANAGER
+  REPORTS_TO
+
+  // Tribe Relationships
+  FRIEND
+}
+
+// =====================================================
+// TREE
+// Root entity for Family, Organization and Tribe trees
+// =====================================================
+
+model Tree {
+  id String @id @default(cuid())
+
+  // Basic Information
+  name        String
+  description String?
+
+  // Tree Category
+  type TreeType
+
+  // Ownership
+  ownerId String
+
+  // Visuals
+  coverImage String?
+
+  // Visibility
+  isPublic Boolean @default(false)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // =====================================================
+  // RELATIONS
+  // =====================================================
+
+  owner User @relation("TreeOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  members       TreeMember[]
+  nodes         TreeNode[] // FIX: was commented out, causing missing relation error
+  stories       Story[]
+  conversations Conversation[]
+  meetings      Meeting[]
+  invitations   Invitation[]
+
+  // =====================================================
+  // INDEXES
+  // =====================================================
+
+  @@index([ownerId])
+  @@index([type])
+  @@index([isPublic])
+}
+
+// =====================================================
+// TREE MEMBER
+// Defines who has access to a tree
+// =====================================================
+
+model TreeMember {
+  id String @id @default(cuid())
+
+  treeId String
+  userId String
+
+  role TreeRole @default(MEMBER)
+
+  joinedAt DateTime @default(now())
+
+  tree Tree @relation(fields: [treeId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([treeId, userId])
+  @@index([treeId])
+  @@index([userId])
+}
+
+// =====================================================
+// TREE NODE
+//
+// Represents a person/entity inside a tree.
+// May or may not be linked to a registered User.
+// =====================================================
+
+model TreeNode {
+  id String @id @default(cuid())
+
+  // Ownership
+  treeId String
+
+  // Optional link to a registered user
+  linkedUserId String?
+
+  // Basic Information
+  name  String
+  photo String?
+
+  // Location Information
+  currentLocation String?
+  nativePlace     String?
+
+  // Life Events
+  dateOfBirth    DateTime?
+  dateOfMarriage DateTime?
+  dateOfDemise   DateTime?
+
+  // Personal Information
+  occupation          String?
+  bloodGroup          String?
+  hereditaryDisorders String?
+
+  // Additional Notes
+  notes String?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // =====================================================
+  // RELATIONS
+  // =====================================================
+
+  tree Tree @relation(fields: [treeId], references: [id], onDelete: Cascade)
+
+  linkedUser User? @relation(fields: [linkedUserId], references: [id], onDelete: SetNull)
+
+  outgoingRelationships Relationship[] @relation("SourceRelationship")
+  incomingRelationships Relationship[] @relation("TargetRelationship")
+
+  // =====================================================
+  // INDEXES
+  // =====================================================
+
+  @@index([treeId])
+  @@index([linkedUserId])
+  @@index([name])
+}
+
+// =====================================================
+// RELATIONSHIP
+//
+// Graph edges connecting TreeNodes.
+//
+// Examples:
+//   Father  -> PARENT  -> Child
+//   Husband -> SPOUSE  -> Wife
+//   Brother -> SIBLING -> Sister
+//
+// Derived relationships (Uncle, Aunt, Cousin, etc.)
+// are computed via graph traversal at query time.
+// =====================================================
+
+model Relationship {
+  id String @id @default(cuid())
+
+  sourceNodeId String
+  targetNodeId String
+
+  type RelationshipType
+
+  createdAt DateTime @default(now())
+
+  sourceNode TreeNode @relation("SourceRelationship", fields: [sourceNodeId], references: [id], onDelete: Cascade)
+  targetNode TreeNode @relation("TargetRelationship", fields: [targetNodeId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceNodeId, targetNodeId, type])
+  @@index([sourceNodeId])
+  @@index([targetNodeId])
+}
+
+// =====================================================
+// ENUMS — STORY
+// =====================================================
+
+enum StoryStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum StoryMediaType {
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+}
+
+// =====================================================
+// STORY
+// =====================================================
+
+model Story {
+  id String @id @default(cuid())
+
+  treeId   String
+  authorId String
+
+  title   String
+  content String
+
+  status StoryStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tree   Tree @relation(fields: [treeId], references: [id], onDelete: Cascade)
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  media StoryMedia[]
+
+  // Future Relations
+  // comments Comment[]
+  // tags     StoryTag[]
+  // versions StoryVersion[]
+
+  @@index([treeId])
+  @@index([authorId])
+  @@index([status])
+}
+
+// =====================================================
+// STORY MEDIA
+// =====================================================
+
+model StoryMedia {
+  id String @id @default(cuid())
+
+  storyId String
+
+  type     StoryMediaType
+  url      String
+  fileName String?
+
+  uploadedAt DateTime @default(now())
+
+  story Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@index([storyId])
+  @@index([type])
+}
+
+// =====================================================
+// ENUMS — CONVERSATION
+// =====================================================
+
+enum ConversationType {
+  GENERAL
+  STORY_DISCUSSION
+  ANNOUNCEMENT
+}
+
+// =====================================================
+// CONVERSATION
+// =====================================================
+
+model Conversation {
+  id String @id @default(cuid())
+
+  treeId String
+
+  title String
+  type  ConversationType @default(GENERAL)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tree     Tree      @relation(fields: [treeId], references: [id], onDelete: Cascade)
+  messages Message[]
+
+  @@index([treeId])
+  @@index([type])
+}
+
+// =====================================================
+// ENUMS — MESSAGE
+// =====================================================
+
+enum MessageType {
+  TEXT
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+}
+
+// =====================================================
+// MESSAGE
+// =====================================================
+
+model Message {
+  id String @id @default(cuid())
+
+  conversationId String
+  senderId       String
+
+  type    MessageType @default(TEXT)
+  content String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  conversation Conversation        @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User                @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  attachments  MessageAttachment[]
+
+  @@index([conversationId])
+  @@index([senderId])
+  @@index([type])
+}
+
+// =====================================================
+// ENUMS — MESSAGE ATTACHMENT
+// =====================================================
+
+enum MessageAttachmentType {
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+}
+
+// =====================================================
+// MESSAGE ATTACHMENT
+// =====================================================
+
+model MessageAttachment {
+  id String @id @default(cuid())
+
+  messageId String
+
+  type     MessageAttachmentType
+  url      String
+  fileName String?
+
+  uploadedAt DateTime @default(now())
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([messageId])
+  @@index([type])
+}
+
+// =====================================================
+// ENUMS — INVITATION
+// =====================================================
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+// =====================================================
+// INVITATION
+//
+// Invite existing users (by username) or
+// new users (by email) into a Tree.
+// =====================================================
+
+model Invitation {
+  id String @id @default(cuid())
+
+  treeId String
+
+  invitedById String
+
+  // At least one of these must be set (enforced at app layer)
+  email         String?
+  invitedUserId String?
+
+  role   TreeRole         @default(MEMBER)
+  status InvitationStatus @default(PENDING)
+
+  token     String   @unique
+  expiresAt DateTime
+
+  acceptedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  tree Tree @relation(fields: [treeId], references: [id], onDelete: Cascade)
+
+  invitedBy   User  @relation("InvitationSender", fields: [invitedById], references: [id], onDelete: Cascade)
+  invitedUser User? @relation("InvitationReceiver", fields: [invitedUserId], references: [id], onDelete: SetNull)
+
+  @@index([treeId])
+  @@index([invitedById])
+  @@index([invitedUserId])
+  @@index([status])
+}
+
+// =====================================================
+// ENUMS — MEETING
+// =====================================================
+
+enum MeetingStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+// =====================================================
+// MEETING
+//
+// External meeting links (Google Meet, Zoom, Teams)
+// =====================================================
+
+model Meeting {
+  id String @id @default(cuid())
+
+  treeId      String
+  createdById String
+
+  title       String
+  description String?
+
+  meetingUrl String
+
+  scheduledAt DateTime
+  status      MeetingStatus @default(SCHEDULED)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tree      Tree @relation(fields: [treeId], references: [id], onDelete: Cascade)
+  createdBy User @relation("MeetingCreator", fields: [createdById], references: [id], onDelete: Cascade)
+
+  @@index([treeId])
+  @@index([createdById])
+  @@index([scheduledAt])
+  @@index([status])
+}
+
+
+
+
+
+
+
+
+
+
+
+// =====================================================
+// NOTIFICATION TYPES
+// =====================================================
+
+enum NotificationType {
+  INVITATION
+  MESSAGE
+  STORY
+  MEETING
+  SYSTEM
+}
+
+
+
+// =====================================================
+// NOTIFICATIONS
+//
+// User notifications generated by system events.
+//
+// Examples:
+//
+// New Invitation
+// New Message
+// Meeting Reminder
+// Story Published
+//
+// =====================================================
+
+model Notification {
+  id String @id @default(cuid())
+
+  // =====================================================
+  // RECIPIENT
+  // =====================================================
+
+  userId String
+
+  // =====================================================
+  // CONTENT
+  // =====================================================
+
+  type NotificationType
+
+  title String
+
+  message String
+
+  // Optional deep-link target
+  entityId String?
+
+  // =====================================================
+  // READ STATUS
+  // =====================================================
+
+  isRead Boolean @default(false)
+
+  readAt DateTime?
+
+  // =====================================================
+  // METADATA
+  // =====================================================
+
+  createdAt DateTime @default(now())
+
+  // =====================================================
+  // RELATIONS
+  // =====================================================
+
+  user User @relation(
+    fields: [userId],
+    references: [id],
+    onDelete: Cascade
+  )
+
+  // =====================================================
+  // INDEXES
+  // =====================================================
+
+  @@index([userId])
+
+  @@index([type])
+
+  @@index([isRead])
+}
+
+
+
+// =====================================================
+// AUDIT LOGS
+//
+// Tracks important user actions.
+//
+// Examples:
+//
+// CREATE_TREE
+// DELETE_NODE
+// ACCEPT_INVITATION
+// PUBLISH_STORY
+//
+// =====================================================
+
+model AuditLog {
+  id String @id @default(cuid())
+
+  // =====================================================
+  // ACTOR
+  // =====================================================
+
+  userId String?
+
+  // =====================================================
+  // ACTION
+  // =====================================================
+
+  action String
+
+  // =====================================================
+  // TARGET
+  // =====================================================
+
+  entityType String
+
+  entityId String?
+
+  // =====================================================
+  // ADDITIONAL DATA
+  // =====================================================
+
+  metadata Json?
+
+  // =====================================================
+  // TIMESTAMPS
+  // =====================================================
+
+  createdAt DateTime @default(now())
+
+  // =====================================================
+  // RELATIONS
+  // =====================================================
+
+  user User? @relation(
+    fields: [userId],
+    references: [id],
+    onDelete: SetNull
+  )
+
+  // =====================================================
+  // INDEXES
+  // =====================================================
+
+  @@index([userId])
+
+  @@index([action])
+
+  @@index([entityType])
+}
+
+
+
+
+
+
+
+// =====================================================
+// ERROR SEVERITY
+// =====================================================
+
+enum ErrorSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+
+// =====================================================
+// ERROR LOGS
+//
+// Tracks application failures and exceptions.
+//
+// Examples:
+//
+// Database Errors
+// API Errors
+// Image Upload Failures
+// Authentication Failures
+// Third Party Service Errors
+//
+// =====================================================
+
+model ErrorLog {
+  id String @id @default(cuid())
+
+  // =====================================================
+  // USER CONTEXT
+  // =====================================================
+
+  userId String?
+
+  // =====================================================
+  // ERROR DETAILS
+  // =====================================================
+
+  severity ErrorSeverity @default(MEDIUM)
+
+  errorType String
+
+  message String
+
+  stackTrace String?
+
+  // =====================================================
+  // REQUEST CONTEXT
+  // =====================================================
+
+  route String?
+
+  method String?
+
+  ipAddress String?
+
+  // =====================================================
+  // ADDITIONAL DATA
+  // =====================================================
+
+  metadata Json?
+
+  // =====================================================
+  // TIMESTAMPS
+  // =====================================================
+
+  createdAt DateTime @default(now())
+
+  // =====================================================
+  // RELATIONS
+  // =====================================================
+
+  user User? @relation(
+    fields: [userId],
+    references: [id],
+    onDelete: SetNull
+  )
+
+  // =====================================================
+  // INDEXES
+  // =====================================================
+
+  @@index([userId])
+
+  @@index([severity])
+
+  @@index([errorType])
+
+  @@index([createdAt])
 }
