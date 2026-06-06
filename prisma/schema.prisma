@@ -75,8 +75,8 @@ model User {
 
   // ===== SYSTEM =====
   notifications Notification[]
-  // auditLogs     AuditLog[]
-
+  auditLogs     AuditLog[]
+  errorLogs     ErrorLog[]
   @@index([status])
 }
 
@@ -728,11 +728,7 @@ model Notification {
   // RELATIONS
   // =====================================================
 
-  user User @relation(
-    fields: [userId],
-    references: [id],
-    onDelete: Cascade
-  )
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // =====================================================
   // INDEXES
@@ -800,11 +796,7 @@ model AuditLog {
   // RELATIONS
   // =====================================================
 
-  user User? @relation(
-    fields: [userId],
-    references: [id],
-    onDelete: SetNull
-  )
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   // =====================================================
   // INDEXES
@@ -897,11 +889,7 @@ model ErrorLog {
   // RELATIONS
   // =====================================================
 
-  user User? @relation(
-    fields: [userId],
-    references: [id],
-    onDelete: SetNull
-  )
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   // =====================================================
   // INDEXES
