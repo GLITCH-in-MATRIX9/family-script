@@ -8,21 +8,6 @@ datasource db {
 }
 
 // =====================================================
-// ENUMS — AUTH / USER
-// =====================================================
-
-enum UserStatus {
-  ACTIVE
-  SUSPENDED
-  DELETED
-}
-
-enum VerificationType {
-  EMAIL_VERIFICATION
-  EMAIL_CHANGE
-}
-
-// =====================================================
 // USER
 // =====================================================
 
@@ -31,29 +16,25 @@ model User {
   id String @id @default(cuid())
 
   // Identity
-  name     String
-  username String? @unique
-  email    String  @unique
-
-  // Authentication
-  passwordHash    String?
-  emailVerifiedAt DateTime?
+  email         String  @unique
+  emailVerified Boolean @default(false)
+  name          String
 
   // Profile
-  image String?
-
-  // Account Status
-  status UserStatus @default(ACTIVE)
+  avatarUrl String?
+  bio       String?
+  locale    String?
+  timezone  String?
 
   // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   // ===== AUTH RELATIONS =====
-  accounts       Account[]
-  sessions       Session[]
-  verifications  Verification[]
-  passwordResets PasswordReset[]
+  accounts            Account[]
+  sessions            Session[]
+  passwordResetTokens PasswordResetToken[]
 
   // ===== TREE DOMAIN =====
   ownedTrees  Tree[]       @relation("TreeOwner")
@@ -77,7 +58,8 @@ model User {
   notifications Notification[]
   auditLogs     AuditLog[]
   errorLogs     ErrorLog[]
-  @@index([status])
+
+  @@index([deletedAt])
 }
 
 // =====================================================
@@ -132,35 +114,27 @@ model Session {
 }
 
 // =====================================================
-// VERIFICATION
+// VERIFICATION TOKEN
 // =====================================================
 
-model Verification {
+model VerificationToken {
   id String @id @default(cuid())
 
-  userId String
-
+  email String
   token String @unique
 
-  type VerificationType @default(EMAIL_VERIFICATION)
-
   expiresAt DateTime
-
-  usedAt DateTime?
-
   createdAt DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
+  @@index([email])
   @@index([expiresAt])
 }
 
 // =====================================================
-// PASSWORD RESET
+// PASSWORD RESET TOKEN
 // =====================================================
 
-model PasswordReset {
+model PasswordResetToken {
   id String @id @default(cuid())
 
   userId String
@@ -168,8 +142,7 @@ model PasswordReset {
   token String @unique
 
   expiresAt DateTime
-
-  usedAt DateTime?
+  used      Boolean  @default(false)
 
   createdAt DateTime @default(now())
 
