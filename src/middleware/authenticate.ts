@@ -1,7 +1,7 @@
 import { getSessionCookie } from "better-auth/cookies";
 import { NextRequest, NextResponse } from "next/server";
 
-import { auth } from "@/lib/auth/auth";
+import { auth } from "@/config/auth";
 
 type AuthSession = NonNullable<
   Awaited<ReturnType<typeof auth.api.getSession>>
@@ -23,25 +23,13 @@ const unauthorizedResponse = () =>
     { status: 401 },
   );
 
-const getBearerToken = (request: NextRequest): string | null => {
-  const authorizationHeader = request.headers.get("authorization");
-
-  if (!authorizationHeader?.startsWith("Bearer ")) {
-    return null;
-  }
-
-  const token = authorizationHeader.slice("Bearer ".length).trim();
-
-  return token.length > 0 ? token : null;
-};
-
 export async function authenticate(
   request: NextRequest,
 ): Promise<NextResponse | null> {
   const sessionCookie = getSessionCookie(request.headers);
-  const bearerToken = sessionCookie ? null : getBearerToken(request);
+  const authorizationHeader = request.headers.get("authorization");
 
-  if (!sessionCookie && !bearerToken) {
+  if (!sessionCookie && !authorizationHeader) {
     return unauthorizedResponse();
   }
 

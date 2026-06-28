@@ -2,7 +2,7 @@ import net from "node:net";
 import tls from "node:tls";
 import { EventEmitter } from "node:events";
 
-import { env } from "@/config/env";
+import { env } from "./env";
 
 type RedisValue = string | number;
 type RedisResponse = string | number | null | RedisResponse[];
