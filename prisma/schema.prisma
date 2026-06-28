@@ -8,88 +8,157 @@ datasource db {
 }
 
 // =====================================================
+// ENUMS — AUTH / USER
+// =====================================================
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+// =====================================================
 // USER
+//
+// Better Auth requires:
+//   id, name, email, emailVerified, image, createdAt, updatedAt
+//
+// Table name MUST be "user" (lowercase) for Better Auth.
 // =====================================================
 
 model User {
-  // Primary Key
-  id String @id @default(cuid())
+  // =====================================================
+  // PRIMARY KEY
+  // =====================================================
 
-  // Identity
+  id String @id
+
+  // =====================================================
+  // IDENTITY — BETTER AUTH REQUIRED
+  // =====================================================
+
+  name          String
   email         String  @unique
   emailVerified Boolean @default(false)
-  name          String
+  image         String?
 
-  // Profile
-  avatarUrl String?
-  bio       String?
-  locale    String?
-  timezone  String?
+  // =====================================================
+  // APPLICATION FIELDS
+  // =====================================================
 
-  // Timestamps
+  username String?    @unique
+  status   UserStatus @default(ACTIVE)
+
+  // =====================================================
+  // TIMESTAMPS — BETTER AUTH REQUIRED
+  // =====================================================
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
 
-  // ===== AUTH RELATIONS =====
-  accounts            Account[]
-  sessions            Session[]
-  passwordResetTokens PasswordResetToken[]
+  // =====================================================
+  // AUTH RELATIONS
+  // =====================================================
 
-  // ===== TREE DOMAIN =====
+  accounts      Account[]
+  sessions      Session[]
+  verifications Verification[]
+
+  // =====================================================
+  // TREE DOMAIN
+  // =====================================================
+
   ownedTrees  Tree[]       @relation("TreeOwner")
   treeMembers TreeMember[]
   linkedNodes TreeNode[]
 
-  // ===== STORY DOMAIN =====
+  // =====================================================
+  // STORY DOMAIN
+  // =====================================================
+
   stories Story[]
 
-  // ===== COMMUNICATION DOMAIN =====
+  // =====================================================
+  // COMMUNICATION DOMAIN
+  // =====================================================
+
   messages Message[]
 
-  // ===== MEETINGS =====
+  // =====================================================
+  // MEETINGS
+  // =====================================================
+
   createdMeetings Meeting[] @relation("MeetingCreator")
 
-  // ===== INVITATIONS =====
+  // =====================================================
+  // INVITATIONS
+  // =====================================================
+
   invitationsSent     Invitation[] @relation("InvitationSender")
   invitationsReceived Invitation[] @relation("InvitationReceiver")
 
-  // ===== SYSTEM =====
+  // =====================================================
+  // SYSTEM
+  // =====================================================
+
   notifications Notification[]
   auditLogs     AuditLog[]
   errorLogs     ErrorLog[]
-
-  @@index([deletedAt])
+  @@index([status])
+  @@map("user")
 }
 
 // =====================================================
 // ACCOUNT
+//
+// Better Auth requires:
+//   id, userId, accountId, providerId,
+//   accessToken, refreshToken, accessTokenExpiresAt,
+//   refreshTokenExpiresAt, scope, idToken, password,
+//   createdAt, updatedAt
+//
+// Table name MUST be "account" (lowercase).
 // =====================================================
 
 model Account {
-  id String @id @default(cuid())
+  id String @id
+
+  accountId  String
+  providerId String
 
   userId String
-
-  provider          String
-  providerAccountId String
 
   accessToken  String?
   refreshToken String?
 
-  expiresAt DateTime?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+
+  scope   String?
+  idToken String?
+
+  password String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+  @@unique([providerId, accountId])
   @@index([userId])
+  @@index([providerId])
+  @@map("account")
 }
 
 // =====================================================
 // SESSION
+//
+// Better Auth requires:
+//   id, userId, token, expiresAt,
+//   ipAddress, userAgent, createdAt, updatedAt
+//
+// Table name MUST be "session" (lowercase).
 // =====================================================
 
 model Session {
@@ -97,8 +166,7 @@ model Session {
 
   userId String
 
-  token String @unique
-
+  token     String   @unique
   expiresAt DateTime
 
   ipAddress String?
@@ -111,45 +179,40 @@ model Session {
 
   @@index([userId])
   @@index([expiresAt])
+  @@map("session")
 }
 
 // =====================================================
-// VERIFICATION TOKEN
+// VERIFICATION
+//
+// Better Auth requires:
+//   id, identifier, value, expiresAt, createdAt, updatedAt
+//
+// NOTE: Better Auth does NOT use a userId FK here.
+//   The identifier is typically an email address or
+//   other unique string (e.g. "email:user@example.com").
+//   Password resets, email changes, etc. all go through
+//   this table — DO NOT create a separate PasswordReset model.
+//
+// Table name MUST be "verification" (lowercase).
 // =====================================================
 
 model VerificationToken {
   id String @id @default(cuid())
 
-  email String
-  token String @unique
+  identifier String
+  value      String
 
   expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  @@index([email])
-  @@index([expiresAt])
-}
-
-// =====================================================
-// PASSWORD RESET TOKEN
-// =====================================================
-
-model PasswordResetToken {
-  id String @id @default(cuid())
-
-  userId String
-
-  token String @unique
-
-  expiresAt DateTime
-  used      Boolean  @default(false)
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
+  @@index([identifier])
   @@index([expiresAt])
+  @@map("verification")
 }
 
 // =====================================================
@@ -202,23 +265,17 @@ enum RelationshipType {
 model Tree {
   id String @id @default(cuid())
 
-  // Basic Information
   name        String
   description String?
 
-  // Tree Category
   type TreeType
 
-  // Ownership
   ownerId String
 
-  // Visuals
   coverImage String?
 
-  // Visibility
   isPublic Boolean @default(false)
 
-  // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -229,7 +286,7 @@ model Tree {
   owner User @relation("TreeOwner", fields: [ownerId], references: [id], onDelete: Cascade)
 
   members       TreeMember[]
-  nodes         TreeNode[] // FIX: was commented out, causing missing relation error
+  nodes         TreeNode[]
   stories       Story[]
   conversations Conversation[]
   meetings      Meeting[]
@@ -246,7 +303,6 @@ model Tree {
 
 // =====================================================
 // TREE MEMBER
-// Defines who has access to a tree
 // =====================================================
 
 model TreeMember {
@@ -277,34 +333,26 @@ model TreeMember {
 model TreeNode {
   id String @id @default(cuid())
 
-  // Ownership
   treeId String
 
-  // Optional link to a registered user
   linkedUserId String?
 
-  // Basic Information
   name  String
   photo String?
 
-  // Location Information
   currentLocation String?
   nativePlace     String?
 
-  // Life Events
   dateOfBirth    DateTime?
   dateOfMarriage DateTime?
   dateOfDemise   DateTime?
 
-  // Personal Information
   occupation          String?
   bloodGroup          String?
   hereditaryDisorders String?
 
-  // Additional Notes
   notes String?
 
-  // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -623,16 +671,6 @@ model Meeting {
   @@index([status])
 }
 
-
-
-
-
-
-
-
-
-
-
 // =====================================================
 // NOTIFICATION TYPES
 // =====================================================
@@ -645,148 +683,74 @@ enum NotificationType {
   SYSTEM
 }
 
-
-
 // =====================================================
-// NOTIFICATIONS
+// NOTIFICATION
 //
 // User notifications generated by system events.
 //
 // Examples:
-//
-// New Invitation
-// New Message
-// Meeting Reminder
-// Story Published
-//
+//   New Invitation
+//   New Message
+//   Meeting Reminder
+//   Story Published
 // =====================================================
 
 model Notification {
   id String @id @default(cuid())
 
-  // =====================================================
-  // RECIPIENT
-  // =====================================================
-
   userId String
 
-  // =====================================================
-  // CONTENT
-  // =====================================================
-
-  type NotificationType
-
-  title String
-
+  type    NotificationType
+  title   String
   message String
 
   // Optional deep-link target
   entityId String?
 
-  // =====================================================
-  // READ STATUS
-  // =====================================================
-
-  isRead Boolean @default(false)
-
+  isRead Boolean   @default(false)
   readAt DateTime?
-
-  // =====================================================
-  // METADATA
-  // =====================================================
 
   createdAt DateTime @default(now())
 
-  // =====================================================
-  // RELATIONS
-  // =====================================================
-
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // =====================================================
-  // INDEXES
-  // =====================================================
-
   @@index([userId])
-
   @@index([type])
-
   @@index([isRead])
 }
 
-
-
 // =====================================================
-// AUDIT LOGS
+// AUDIT LOG
 //
 // Tracks important user actions.
 //
 // Examples:
-//
-// CREATE_TREE
-// DELETE_NODE
-// ACCEPT_INVITATION
-// PUBLISH_STORY
-//
+//   CREATE_TREE
+//   DELETE_NODE
+//   ACCEPT_INVITATION
+//   PUBLISH_STORY
 // =====================================================
 
 model AuditLog {
   id String @id @default(cuid())
 
-  // =====================================================
-  // ACTOR
-  // =====================================================
-
   userId String?
-
-  // =====================================================
-  // ACTION
-  // =====================================================
 
   action String
 
-  // =====================================================
-  // TARGET
-  // =====================================================
-
   entityType String
-
-  entityId String?
-
-  // =====================================================
-  // ADDITIONAL DATA
-  // =====================================================
+  entityId   String?
 
   metadata Json?
 
-  // =====================================================
-  // TIMESTAMPS
-  // =====================================================
-
   createdAt DateTime @default(now())
-
-  // =====================================================
-  // RELATIONS
-  // =====================================================
 
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  // =====================================================
-  // INDEXES
-  // =====================================================
-
   @@index([userId])
-
   @@index([action])
-
   @@index([entityType])
 }
-
-
-
-
-
-
 
 // =====================================================
 // ERROR SEVERITY
@@ -799,80 +763,42 @@ enum ErrorSeverity {
   CRITICAL
 }
 
-
 // =====================================================
-// ERROR LOGS
+// ERROR LOG
 //
 // Tracks application failures and exceptions.
 //
 // Examples:
-//
-// Database Errors
-// API Errors
-// Image Upload Failures
-// Authentication Failures
-// Third Party Service Errors
-//
+//   Database Errors
+//   API Errors
+//   Image Upload Failures
+//   Authentication Failures
+//   Third Party Service Errors
 // =====================================================
 
 model ErrorLog {
   id String @id @default(cuid())
 
-  // =====================================================
-  // USER CONTEXT
-  // =====================================================
-
   userId String?
 
-  // =====================================================
-  // ERROR DETAILS
-  // =====================================================
-
-  severity ErrorSeverity @default(MEDIUM)
-
+  severity  ErrorSeverity @default(MEDIUM)
   errorType String
-
-  message String
+  message   String
 
   stackTrace String?
 
-  // =====================================================
-  // REQUEST CONTEXT
-  // =====================================================
-
-  route String?
-
-  method String?
-
+  route     String?
+  method    String?
   ipAddress String?
-
-  // =====================================================
-  // ADDITIONAL DATA
-  // =====================================================
 
   metadata Json?
 
-  // =====================================================
-  // TIMESTAMPS
-  // =====================================================
-
   createdAt DateTime @default(now())
-
-  // =====================================================
-  // RELATIONS
-  // =====================================================
 
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  // =====================================================
-  // INDEXES
-  // =====================================================
-
   @@index([userId])
-
   @@index([severity])
-
   @@index([errorType])
-
   @@index([createdAt])
 }
