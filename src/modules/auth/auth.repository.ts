@@ -1,53 +1,57 @@
 import { Prisma } from "@prisma/client";
-import { prisma } from "../../config/database";
+import { prisma } from "@/config/database";
 
 export const authRepository = {
   findByEmail(email: string) {
-    return prisma.user.findUnique({
-      where: { email },
-    });
+    return prisma.user.findUnique({ where: { email } });
   },
 
   findById(id: string) {
-    return prisma.user.findUnique({
-      where: { id },
-    });
+    return prisma.user.findUnique({ where: { id } });
   },
 
   createUser(data: Prisma.UserCreateInput) {
-    return prisma.user.create({
-      data,
-    });
+    return prisma.user.create({ data });
   },
 
-  createVerificationToken(data: Prisma.VerificationCreateInput) {
-    return prisma.verification.create({
-      data,
-    });
+  createVerificationToken(data: Prisma.VerificationTokenCreateInput) {
+    return prisma.verificationToken.create({ data });
   },
 
   findVerificationToken(token: string) {
-    return prisma.verification.findUnique({
-      where: { token },
+    return prisma.verificationToken.findUnique({ where: { token } });
+  },
+
+  deleteVerificationToken(token: string) {
+    return prisma.verificationToken.delete({ where: { token } });
+  },
+
+  markEmailVerified(userId: string) {
+    return prisma.user.update({
+      where: { id: userId },
+      data: { emailVerified: true },
     });
   },
 
-  createPasswordResetToken(data: Prisma.PasswordResetCreateInput) {
-    return prisma.passwordReset.create({
-      data,
+  updateUserPassword(userId: string, password: string) {
+    return prisma.user.update({
+      where: { id: userId },
+      data: { password },
     });
+  },
+
+  createPasswordResetToken(data: Prisma.PasswordResetTokenCreateInput) {
+    return prisma.passwordResetToken.create({ data });
   },
 
   findResetToken(token: string) {
-    return prisma.passwordReset.findUnique({
-      where: { token },
-    });
+    return prisma.passwordResetToken.findUnique({ where: { token } });
   },
 
   markResetTokenUsed(token: string) {
-    return prisma.passwordReset.update({
+    return prisma.passwordResetToken.update({
       where: { token },
-      data: { usedAt: new Date() },
+      data: { used: true },
     });
   },
 };
