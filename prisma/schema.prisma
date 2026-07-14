@@ -17,6 +17,12 @@ enum UserStatus {
   DELETED
 }
 
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
 // =====================================================
 // USER
 //
@@ -47,6 +53,7 @@ model User {
   // =====================================================
 
   username String?    @unique
+  role     UserRole   @default(USER)
   status   UserStatus @default(ACTIVE)
 
   // =====================================================
@@ -104,7 +111,16 @@ model User {
   notifications Notification[]
   auditLogs     AuditLog[]
   errorLogs     ErrorLog[]
+
+
+  // =====================================================
+  // REPORTS
+  // =====================================================
+
+  reportsSubmitted Report[] @relation("ReportSubmitter")
+  
   @@index([status])
+  @@index([role])
   @@map("user")
 }
 
@@ -800,4 +816,74 @@ model ErrorLog {
   @@index([severity])
   @@index([errorType])
   @@index([createdAt])
+}
+
+// =====================================================
+// PLATFORM SETTINGS
+//
+// Singleton table — always exactly one row.
+// We always query/update the row with id = "platform_settings".
+// =====================================================
+
+model PlatformSettings {
+  id String @id @default("platform_settings")
+
+  registrationsEnabled      Boolean @default(true)
+  familyTreeCreationEnabled Boolean @default(true)
+  ecommerceEnabled          Boolean @default(false)
+
+  updatedAt   DateTime @updatedAt
+  updatedById String?
+
+  @@map("platform_settings")
+}
+
+// =====================================================
+// ENUMS — REPORT
+// =====================================================
+
+enum ReportEntityType {
+  TREE
+  TREE_NODE
+  RELATIONSHIP
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  DISMISSED
+  ACTION_TAKEN
+}
+
+// =====================================================
+// REPORT
+//
+// User-submitted moderation reports against
+// trees, tree nodes, or relationships.
+// =====================================================
+
+model Report {
+  id String @id @default(cuid())
+
+  reportedById String
+
+  entityType ReportEntityType
+  entityId   String
+
+  reason String
+
+  status ReportStatus @default(PENDING)
+
+  reviewedById String?
+  reviewedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reportedBy User @relation("ReportSubmitter", fields: [reportedById], references: [id], onDelete: Cascade)
+
+  @@index([reportedById])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([status])
 }
