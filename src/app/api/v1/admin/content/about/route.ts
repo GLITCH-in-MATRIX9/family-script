@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getSessionFromRequest } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getSessionFromRequest(req);
+    const session = await requireAdmin(req);
     if (!session && process.env.NODE_ENV === "production") {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
@@ -42,7 +41,7 @@ export async function GET(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const session = await getSessionFromRequest(req);
+    const session = await requireAdmin(req);
     if (!session && process.env.NODE_ENV === "production") {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },

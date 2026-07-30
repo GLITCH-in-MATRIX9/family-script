@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getSessionFromRequest } from "@/lib/auth";
-
 export async function GET(
   req: NextRequest,
   { params }: { params: { userId: string } }
 ) {
   try {
-    const session = await getSessionFromRequest(req);
+    const session = await requireAdmin(req);
     if (!session && process.env.NODE_ENV === "production") {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
