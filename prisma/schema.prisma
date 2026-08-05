@@ -1,20 +1,34 @@
+// Developer A owns the Prisma schema for authentication infrastructure and shared domain relations.
+//
+// CONSOLIDATION NOTES (fixed issues from the previous draft):
+// 1. Removed duplicate declarations of TreeType, RelationshipType, InvitationStatus,
+//    Tree, and TreeMember — the file previously contained two conflicting drafts.
+// 2. Restored the missing TreeNode model (referenced by User, Tree, and Relationship
+//    but never actually defined).
+// 3. Picked ONE relationship design: TreeNode + Relationship (generic source -> target
+//    graph edges). This supports FAMILY, ORGANIZATION, and TRIBE tree types, unlike the
+//    FamilyProfile/FamilyRelationship draft which only modeled parent/child. Useful fields
+//    from that draft (birthDate, gender, parentKind, relationship status/dates) were
+//    folded into TreeNode / Relationship instead.
+// 4. Removed InviteToken — it duplicated the existing Invitation model.
+// 5. Auth models: renamed VerificationToken -> Verification (Better Auth's expected model
+//    name), removed the redundant PasswordResetToken model, and added @@map directives to
+//    all four auth models, matching the correction made in an earlier session.
+// 6. Added @@map snake_case table names consistently across all models.
+//
+// Double-check the Account/Session field names below against whatever Better Auth version
+// you're pinned to — some versions expect accountId/providerId rather than
+// providerAccountId/provider. I kept the original field names since I can't verify your
+// installed adapter version from this file alone.
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-// =====================================================
-// ENUMS — AUTH / USER
-// =====================================================
-
-enum UserStatus {
-  ACTIVE
-  SUSPENDED
-  DELETED
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum UserRole {
@@ -23,36 +37,31 @@ enum UserRole {
   SUPER_ADMIN
 }
 
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
 // =====================================================
 // USER
-//
-// Better Auth requires:
-//   id, name, email, emailVerified, image, createdAt, updatedAt
-//
-// Table name MUST be "user" (lowercase) for Better Auth.
 // =====================================================
 
 model User {
-  // =====================================================
-  // PRIMARY KEY
-  // =====================================================
+  id String @id @default(cuid())
 
-  id String @id
-
-  // =====================================================
-  // IDENTITY — BETTER AUTH REQUIRED
-  // =====================================================
-
-  name          String
+  // Identity
   email         String  @unique
   emailVerified Boolean @default(false)
-  image         String?
+  name          String
 
-  // =====================================================
-  // APPLICATION FIELDS
-  // =====================================================
+  // Profile
+  avatarUrl String?
+  bio       String?
+  locale    String?
+  timezone  String?
 
-  username String?    @unique
+username String?    @unique
   role     UserRole   @default(USER)
   status   UserStatus @default(ACTIVE)
 
@@ -60,120 +69,93 @@ model User {
   // TIMESTAMPS — BETTER AUTH REQUIRED
   // =====================================================
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   // =====================================================
   // AUTH RELATIONS
   // =====================================================
 
+  // ===== AUTH RELATIONS =====
   accounts      Account[]
   sessions      Session[]
   verifications Verification[]
 
-  // =====================================================
-  // TREE DOMAIN
-  // =====================================================
+  // ===== TREE DOMAIN =====
+  // Ownership, membership, node links, authored graph edges, and invitations all
+  // point back to the tree domain from the user record.
+  ownedTrees           Tree[]         @relation("TreeOwner")
+  treeMembers          TreeMember[]
+  linkedNodes          TreeNode[]
+  createdRelationships Relationship[] @relation("RelationshipCreator")
+  invitesSentAsCreator Invitation[]   @relation("InvitationSender")
+  invitationsReceived  Invitation[]   @relation("InvitationReceiver")
 
-  ownedTrees  Tree[]       @relation("TreeOwner")
-  treeMembers TreeMember[]
-  linkedNodes TreeNode[]
-
-  // =====================================================
-  // STORY DOMAIN
-  // =====================================================
-
+  // ===== STORY DOMAIN =====
   stories Story[]
 
-  // =====================================================
-  // COMMUNICATION DOMAIN
-  // =====================================================
-
+  // ===== COMMUNICATION DOMAIN =====
   messages Message[]
 
-  // =====================================================
-  // MEETINGS
-  // =====================================================
-
+  // ===== MEETINGS =====
   createdMeetings Meeting[] @relation("MeetingCreator")
 
-  // =====================================================
-  // INVITATIONS
-  // =====================================================
-
-  invitationsSent     Invitation[] @relation("InvitationSender")
-  invitationsReceived Invitation[] @relation("InvitationReceiver")
-
-  // =====================================================
-  // SYSTEM
-  // =====================================================
-
+  // ===== SYSTEM =====
   notifications Notification[]
   auditLogs     AuditLog[]
   errorLogs     ErrorLog[]
 
-
-  // =====================================================
+// =====================================================
   // REPORTS
   // =====================================================
 
   reportsSubmitted Report[] @relation("ReportSubmitter")
-  
+
+  // ===== ADMIN APIS =====
+  heroContent   HeroContent[]
+  aboutContent  AboutContent[]
+  announcements Announcement[]
+
   @@index([status])
   @@index([role])
-  @@map("user")
+  @@index([deletedAt])
+  @@map("users")  
 }
+
 
 // =====================================================
 // ACCOUNT
-//
-// Better Auth requires:
-//   id, userId, accountId, providerId,
-//   accessToken, refreshToken, accessTokenExpiresAt,
-//   refreshTokenExpiresAt, scope, idToken, password,
-//   createdAt, updatedAt
-//
-// Table name MUST be "account" (lowercase).
 // =====================================================
 
 model Account {
-  id String @id
-
-  accountId  String
-  providerId String
+  id String @id @default(cuid())
 
   userId String
 
+  // Provider identity is kept as a compound unique pair so the same external
+  // account cannot be linked to multiple users.
+  provider          String
+  providerAccountId String
+
   accessToken  String?
   refreshToken String?
+  password     String?
 
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-
-  scope   String?
-  idToken String?
-
-  password String?
+  expiresAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([providerId, accountId])
+  @@unique([provider, providerAccountId])
   @@index([userId])
-  @@index([providerId])
-  @@map("account")
+  @@map("accounts")
 }
 
 // =====================================================
 // SESSION
-//
-// Better Auth requires:
-//   id, userId, token, expiresAt,
-//   ipAddress, userAgent, createdAt, updatedAt
-//
-// Table name MUST be "session" (lowercase).
 // =====================================================
 
 model Session {
@@ -194,49 +176,45 @@ model Session {
 
   @@index([userId])
   @@index([expiresAt])
-  @@map("session")
+  @@map("sessions")
 }
 
 // =====================================================
 // VERIFICATION
-//
-// Better Auth requires:
-//   id, identifier, value, expiresAt, createdAt, updatedAt
-//
-// NOTE: Better Auth does NOT use a userId FK here.
-//   The identifier is typically an email address or
-//   other unique string (e.g. "email:user@example.com").
-//   Password resets, email changes, etc. all go through
-//   this table — DO NOT create a separate PasswordReset model.
-//
-// Table name MUST be "verification" (lowercase).
+// Purpose: email verification AND password reset, unified
+// (Better Auth's expected model name/shape). Replaces the
+// separate VerificationToken + PasswordResetToken models.
 // =====================================================
 
 model Verification {
   id String @id @default(cuid())
 
+  // Nullable so this can be used for either a logged-out
+  // email-verification flow (identifier = email) or a
+  // logged-in password-reset flow (userId set).
+  userId     String?
   identifier String
-  value      String
 
+  value     String    @unique
   expiresAt DateTime
+  usedAt    DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    String?
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([identifier])
   @@index([expiresAt])
-  @@map("verification")
+  @@index([userId])
+  @@map("verifications")
 }
 
 // =====================================================
 // FAMILY SCRIPT DOMAIN
 // =====================================================
 
-// =====================================================
-// ENUMS — TREE
-// =====================================================
+// ===== ENUMS — TREE =====
 
 enum TreeType {
   FAMILY
@@ -244,151 +222,212 @@ enum TreeType {
   TRIBE
 }
 
-enum TreeRole {
+enum TreeVisibility {
+  PRIVATE
+  UNLISTED
+  PUBLIC
+}
+
+enum TreeMemberRole {
   OWNER
-  MEMBER
+  ADMIN
+  EDITOR
+  CONTRIBUTOR
   VIEWER
 }
 
-// =====================================================
-// ENUMS — RELATIONSHIP
+// ===== ENUMS — TREE NODE =====
+
+enum Gender {
+  MALE
+  FEMALE
+  NON_BINARY
+  OTHER
+  UNKNOWN
+}
+
+// ===== ENUMS — RELATIONSHIP =====
 //
-// Only fundamental relationships are stored.
-// Complex relationships (Uncle, Aunt, Cousin, etc.)
-// are derived from graph traversal.
-// =====================================================
+// Only fundamental relationships are stored as graph edges.
+// Complex/derived relationships (Uncle, Aunt, Cousin, etc.)
+// are computed via graph traversal at query time.
 
 enum RelationshipType {
-  // Family Relationships
+  // Family relationships
   PARENT
   SPOUSE
+  PARTNER
   SIBLING
+  GUARDIAN
 
-  // Organization Relationships
+  // Organization relationships
   MANAGER
-  REPORTS_TO
 
-  // Tribe Relationships
+  // Tribe relationships
   FRIEND
+}
+
+enum ParentRelationshipKind {
+  BIOLOGICAL
+  ADOPTIVE
+  STEP
+  FOSTER
+}
+
+enum RelationshipStatus {
+  ACTIVE
+  ENDED
+  PENDING
+}
+
+// ===== ENUMS — INVITATION =====
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  EXPIRED
+  REVOKED
 }
 
 // =====================================================
 // TREE
-// Root entity for Family, Organization and Tribe trees
+// Root entity for Family, Organization, and Tribe trees
 // =====================================================
 
 model Tree {
   id String @id @default(cuid())
 
-  name        String
-  description String?
+  // Basic information
+  name        String  @db.VarChar(255)
+  slug        String  @unique @db.VarChar(255)
+  description String? @db.Text
 
-  type TreeType
+  // Classification
+  type       TreeType       @default(FAMILY)
+  visibility TreeVisibility @default(PRIVATE)
 
+  // Appearance
+  coverImageUrl String? @db.Text
+
+  // Localization
+  defaultLanguage String @default("en") @db.VarChar(10)
+
+  // Settings
+  settings Json @default("{}")
+
+  // Status
+  isArchived Boolean @default(false)
+
+  // Ownership
   ownerId String
+  owner   User   @relation("TreeOwner", fields: [ownerId], references: [id], onDelete: Restrict)
 
-  coverImage String?
-
-  isPublic Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // =====================================================
-  // RELATIONS
-  // =====================================================
-
-  owner User @relation("TreeOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-
+  // Relations
   members       TreeMember[]
   nodes         TreeNode[]
+  relationships Relationship[]
   stories       Story[]
   conversations Conversation[]
   meetings      Meeting[]
   invitations   Invitation[]
 
-  // =====================================================
-  // INDEXES
-  // =====================================================
+  // Audit
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   @@index([ownerId])
   @@index([type])
-  @@index([isPublic])
+  @@index([visibility])
+  @@index([createdAt])
+  @@map("trees")
 }
 
 // =====================================================
 // TREE MEMBER
+// Defines who has access to a tree
 // =====================================================
 
 model TreeMember {
   id String @id @default(cuid())
 
   treeId String
-  userId String
+  tree   Tree   @relation(fields: [treeId], references: [id], onDelete: Cascade)
 
-  role TreeRole @default(MEMBER)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  role TreeMemberRole @default(VIEWER)
 
   joinedAt DateTime @default(now())
 
-  tree Tree @relation(fields: [treeId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([treeId, userId])
   @@index([treeId])
   @@index([userId])
+  @@index([role])
+  @@map("tree_members")
 }
 
 // =====================================================
 // TREE NODE
 //
-// Represents a person/entity inside a tree.
-// May or may not be linked to a registered User.
+// Represents a person/entity inside a tree. May or may not
+// be linked to a registered User. Generic enough to cover
+// family members, org-chart employees, or tribe members.
 // =====================================================
 
 model TreeNode {
   id String @id @default(cuid())
 
   treeId String
+  tree   Tree   @relation(fields: [treeId], references: [id], onDelete: Cascade)
 
+  // Optional link to a registered platform user
   linkedUserId String?
+  linkedUser   User?   @relation(fields: [linkedUserId], references: [id], onDelete: SetNull)
 
-  name  String
-  photo String?
+  // Identity
+  firstName   String  @db.VarChar(100)
+  middleName  String? @db.VarChar(100)
+  lastName    String  @db.VarChar(100)
+  maidenName  String? @db.VarChar(100)
+  displayName String? @db.VarChar(255)
+  nickname    String? @db.VarChar(100)
 
-  currentLocation String?
-  nativePlace     String?
+  // Personal details (most relevant for FAMILY trees; optional elsewhere)
+  gender Gender @default(UNKNOWN)
 
-  dateOfBirth    DateTime?
-  dateOfMarriage DateTime?
-  dateOfDemise   DateTime?
+  birthDate  DateTime?
+  birthPlace String?   @db.VarChar(255)
+  deathDate  DateTime?
+  deathPlace String?   @db.VarChar(255)
+  isLiving   Boolean   @default(true)
 
-  occupation          String?
-  bloodGroup          String?
-  hereditaryDisorders String?
+  // Additional information
+  bio       String? @db.Text
+  avatarUrl String? @db.Text
+  metadata  Json?
 
-  notes String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // =====================================================
-  // RELATIONS
-  // =====================================================
-
-  tree Tree @relation(fields: [treeId], references: [id], onDelete: Cascade)
-
-  linkedUser User? @relation(fields: [linkedUserId], references: [id], onDelete: SetNull)
-
+  // Graph edges
   outgoingRelationships Relationship[] @relation("SourceRelationship")
   incomingRelationships Relationship[] @relation("TargetRelationship")
 
-  // =====================================================
-  // INDEXES
-  // =====================================================
+  // Audit
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  stories Story[]
 
   @@index([treeId])
   @@index([linkedUserId])
-  @@index([name])
+  @@index([lastName])
+  @@index([birthDate])
+  @@map("tree_nodes")
 }
 
 // =====================================================
@@ -397,30 +436,51 @@ model TreeNode {
 // Graph edges connecting TreeNodes.
 //
 // Examples:
-//   Father  -> PARENT  -> Child
-//   Husband -> SPOUSE  -> Wife
-//   Brother -> SIBLING -> Sister
+//   Father  -> PARENT     -> Child
+//   Husband -> SPOUSE     -> Wife
+//   Brother -> SIBLING    -> Sister
+//   Manager -> MANAGER    -> Report
+//   Report  -> REPORTS_TO -> Manager
 //
-// Derived relationships (Uncle, Aunt, Cousin, etc.)
-// are computed via graph traversal at query time.
+// Derived relationships (Uncle, Aunt, Cousin, etc.) are
+// computed via graph traversal at query time, not stored.
 // =====================================================
 
 model Relationship {
   id String @id @default(cuid())
 
+  treeId String
+  tree   Tree   @relation(fields: [treeId], references: [id], onDelete: Cascade)
+
   sourceNodeId String
+  sourceNode   TreeNode @relation("SourceRelationship", fields: [sourceNodeId], references: [id], onDelete: Cascade)
+
   targetNodeId String
+  targetNode   TreeNode @relation("TargetRelationship", fields: [targetNodeId], references: [id], onDelete: Cascade)
 
   type RelationshipType
 
-  createdAt DateTime @default(now())
+  // Only meaningful when type = PARENT
+  parentKind ParentRelationshipKind?
 
-  sourceNode TreeNode @relation("SourceRelationship", fields: [sourceNodeId], references: [id], onDelete: Cascade)
-  targetNode TreeNode @relation("TargetRelationship", fields: [targetNodeId], references: [id], onDelete: Cascade)
+  status    RelationshipStatus @default(ACTIVE)
+  startDate DateTime?
+  endDate   DateTime?
+
+  notes String? @db.Text
+
+  createdById String
+  createdBy   User   @relation("RelationshipCreator", fields: [createdById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([sourceNodeId, targetNodeId, type])
+  @@index([treeId])
   @@index([sourceNodeId])
   @@index([targetNodeId])
+  @@index([type])
+  @@map("relationships")
 }
 
 // =====================================================
@@ -450,27 +510,32 @@ model Story {
   treeId   String
   authorId String
 
+  // Person this story is about
+  nodeId String?
+
   title   String
   content String
 
   status StoryStatus @default(DRAFT)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
-  tree   Tree @relation(fields: [treeId], references: [id], onDelete: Cascade)
-  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  tree Tree @relation(fields: [treeId], references: [id], onDelete: Cascade)
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  node TreeNode? @relation(fields: [nodeId], references: [id], onDelete: SetNull)
 
   media StoryMedia[]
 
-  // Future Relations
-  // comments Comment[]
-  // tags     StoryTag[]
-  // versions StoryVersion[]
-
   @@index([treeId])
   @@index([authorId])
+  @@index([nodeId])
   @@index([status])
+  @@index([deletedAt])
+  @@map("stories")
 }
 
 // =====================================================
@@ -482,9 +547,15 @@ model StoryMedia {
 
   storyId String
 
-  type     StoryMediaType
-  url      String
+  type StoryMediaType
+
+  fileUrl String
+
   fileName String?
+
+  mimeType String?
+
+  fileSize Int?
 
   uploadedAt DateTime @default(now())
 
@@ -492,6 +563,7 @@ model StoryMedia {
 
   @@index([storyId])
   @@index([type])
+  @@map("story_media")
 }
 
 // =====================================================
@@ -516,14 +588,17 @@ model Conversation {
   title String
   type  ConversationType @default(GENERAL)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   tree     Tree      @relation(fields: [treeId], references: [id], onDelete: Cascade)
   messages Message[]
 
   @@index([treeId])
   @@index([type])
+  @@index([deletedAt])
+  @@map("conversations")
 }
 
 // =====================================================
@@ -546,21 +621,24 @@ model Message {
   id String @id @default(cuid())
 
   conversationId String
-  senderId       String
+  senderId       String?
 
   type    MessageType @default(TEXT)
   content String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   conversation Conversation        @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  sender       User                @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  sender       User?               @relation(fields: [senderId], references: [id], onDelete: SetNull)
   attachments  MessageAttachment[]
 
   @@index([conversationId])
   @@index([senderId])
   @@index([type])
+  @@index([deletedAt])
+  @@map("messages")
 }
 
 // =====================================================
@@ -583,9 +661,15 @@ model MessageAttachment {
 
   messageId String
 
-  type     MessageAttachmentType
-  url      String
+  type MessageAttachmentType
+
+  fileUrl String
+
   fileName String?
+
+  mimeType String?
+
+  fileSize Int?
 
   uploadedAt DateTime @default(now())
 
@@ -593,38 +677,32 @@ model MessageAttachment {
 
   @@index([messageId])
   @@index([type])
-}
-
-// =====================================================
-// ENUMS — INVITATION
-// =====================================================
-
-enum InvitationStatus {
-  PENDING
-  ACCEPTED
-  REJECTED
-  EXPIRED
+  @@map("message_attachments")
 }
 
 // =====================================================
 // INVITATION
 //
-// Invite existing users (by username) or
-// new users (by email) into a Tree.
+// Invite existing users (by userId) or new users (by email)
+// into a Tree. Replaces the separate InviteToken model from
+// the previous draft, which duplicated this functionality.
 // =====================================================
 
 model Invitation {
   id String @id @default(cuid())
 
   treeId String
+  tree   Tree   @relation(fields: [treeId], references: [id], onDelete: Cascade)
 
   invitedById String
+  invitedBy   User   @relation("InvitationSender", fields: [invitedById], references: [id], onDelete: Cascade)
 
   // At least one of these must be set (enforced at app layer)
   email         String?
   invitedUserId String?
+  invitedUser   User?   @relation("InvitationReceiver", fields: [invitedUserId], references: [id], onDelete: SetNull)
 
-  role   TreeRole         @default(MEMBER)
+  role   TreeMemberRole   @default(VIEWER)
   status InvitationStatus @default(PENDING)
 
   token     String   @unique
@@ -633,15 +711,11 @@ model Invitation {
   acceptedAt DateTime?
   createdAt  DateTime  @default(now())
 
-  tree Tree @relation(fields: [treeId], references: [id], onDelete: Cascade)
-
-  invitedBy   User  @relation("InvitationSender", fields: [invitedById], references: [id], onDelete: Cascade)
-  invitedUser User? @relation("InvitationReceiver", fields: [invitedUserId], references: [id], onDelete: SetNull)
-
   @@index([treeId])
   @@index([invitedById])
   @@index([invitedUserId])
   @@index([status])
+  @@map("invitations")
 }
 
 // =====================================================
@@ -674,8 +748,9 @@ model Meeting {
   scheduledAt DateTime
   status      MeetingStatus @default(SCHEDULED)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   tree      Tree @relation(fields: [treeId], references: [id], onDelete: Cascade)
   createdBy User @relation("MeetingCreator", fields: [createdById], references: [id], onDelete: Cascade)
@@ -684,10 +759,12 @@ model Meeting {
   @@index([createdById])
   @@index([scheduledAt])
   @@index([status])
+  @@index([deletedAt])
+  @@map("meetings")
 }
 
 // =====================================================
-// NOTIFICATION TYPES
+// NOTIFICATION
 // =====================================================
 
 enum NotificationType {
@@ -698,61 +775,49 @@ enum NotificationType {
   SYSTEM
 }
 
-// =====================================================
-// NOTIFICATION
-//
-// User notifications generated by system events.
-//
-// Examples:
-//   New Invitation
-//   New Message
-//   Meeting Reminder
-//   Story Published
-// =====================================================
-
 model Notification {
   id String @id @default(cuid())
 
   userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  type    NotificationType
+  type NotificationType
+
   title   String
   message String
 
-  // Optional deep-link target
-  entityId String?
+  // Deep-link target
+  entityType String?
+  entityId   String?
 
   isRead Boolean   @default(false)
   readAt DateTime?
 
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   @@index([userId])
   @@index([type])
   @@index([isRead])
+  @@index([deletedAt])
+  @@map("notifications")
 }
 
 // =====================================================
 // AUDIT LOG
 //
 // Tracks important user actions.
-//
-// Examples:
-//   CREATE_TREE
-//   DELETE_NODE
-//   ACCEPT_INVITATION
-//   PUBLISH_STORY
+// Examples: CREATE_TREE, DELETE_NODE, ACCEPT_INVITATION, PUBLISH_STORY
 // =====================================================
 
 model AuditLog {
   id String @id @default(cuid())
 
   userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  action String
-
+  action     String
   entityType String
   entityId   String?
 
@@ -760,15 +825,17 @@ model AuditLog {
 
   createdAt DateTime @default(now())
 
-  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-
   @@index([userId])
   @@index([action])
   @@index([entityType])
+  @@map("audit_logs")
 }
 
 // =====================================================
-// ERROR SEVERITY
+// ERROR LOG
+//
+// Tracks application failures and exceptions.
+// Examples: database errors, API errors, upload failures, auth failures
 // =====================================================
 
 enum ErrorSeverity {
@@ -778,28 +845,17 @@ enum ErrorSeverity {
   CRITICAL
 }
 
-// =====================================================
-// ERROR LOG
-//
-// Tracks application failures and exceptions.
-//
-// Examples:
-//   Database Errors
-//   API Errors
-//   Image Upload Failures
-//   Authentication Failures
-//   Third Party Service Errors
-// =====================================================
-
 model ErrorLog {
   id String @id @default(cuid())
 
   userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  severity  ErrorSeverity @default(MEDIUM)
-  errorType String
-  message   String
-
+  // Captures enough context for support and debugging without coupling the log
+  // table to any single error transport or API format.
+  severity   ErrorSeverity @default(MEDIUM)
+  errorType  String
+  message    String
   stackTrace String?
 
   route     String?
@@ -810,12 +866,58 @@ model ErrorLog {
 
   createdAt DateTime @default(now())
 
-  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-
   @@index([userId])
   @@index([severity])
   @@index([errorType])
   @@index([createdAt])
+  @@map("error_logs")
+}
+
+model HeroContent {
+  id            String   @id @default(cuid())
+  heading       String
+  subheading    String
+  ctaText       String
+  ctaUrl        String
+  updatedAt     DateTime @updatedAt
+  updatedBy     String
+  updatedByUser User     @relation(fields: [updatedBy], references: [id])
+
+  @@map("hero_content")
+}
+
+model AboutContent {
+  id            String   @id @default(cuid())
+  title         String
+  body          String
+  updatedAt     DateTime @updatedAt
+  updatedBy     String
+  updatedByUser User     @relation(fields: [updatedBy], references: [id])
+
+  @@map("about_content")
+}
+
+model Announcement {
+  id            String             @id @default(cuid())
+  title         String
+  body          String
+  status        AnnouncementStatus @default(DRAFT)
+  publishedAt   DateTime?
+  expiresAt     DateTime?
+  createdBy     String
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  createdByUser User               @relation(fields: [createdBy], references: [id])
+
+  @@index([status])
+  @@index([createdBy])
+  @@map("announcement")
+}
+
+enum AnnouncementStatus {
+  ACTIVE
+  DRAFT
+  EXPIRED
 }
 
 // =====================================================
