@@ -31,6 +31,18 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
 // =====================================================
 // USER
 // =====================================================
@@ -49,10 +61,21 @@ model User {
   locale    String?
   timezone  String?
 
-  // Timestamps
+username String?    @unique
+  role     UserRole   @default(USER)
+  status   UserStatus @default(ACTIVE)
+
+  // =====================================================
+  // TIMESTAMPS — BETTER AUTH REQUIRED
+  // =====================================================
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  // =====================================================
+  // AUTH RELATIONS
+  // =====================================================
 
   // ===== AUTH RELATIONS =====
   accounts      Account[]
@@ -83,14 +106,23 @@ model User {
   auditLogs     AuditLog[]
   errorLogs     ErrorLog[]
 
+// =====================================================
+  // REPORTS
+  // =====================================================
+
+  reportsSubmitted Report[] @relation("ReportSubmitter")
+
   // ===== ADMIN APIS =====
   heroContent   HeroContent[]
   aboutContent  AboutContent[]
   announcements Announcement[]
 
+  @@index([status])
+  @@index([role])
   @@index([deletedAt])
-  @@map("users")
+  @@map("users")  
 }
+
 
 // =====================================================
 // ACCOUNT
@@ -886,4 +918,74 @@ enum AnnouncementStatus {
   ACTIVE
   DRAFT
   EXPIRED
+}
+
+// =====================================================
+// PLATFORM SETTINGS
+//
+// Singleton table — always exactly one row.
+// We always query/update the row with id = "platform_settings".
+// =====================================================
+
+model PlatformSettings {
+  id String @id @default("platform_settings")
+
+  registrationsEnabled      Boolean @default(true)
+  familyTreeCreationEnabled Boolean @default(true)
+  ecommerceEnabled          Boolean @default(false)
+
+  updatedAt   DateTime @updatedAt
+  updatedById String?
+
+  @@map("platform_settings")
+}
+
+// =====================================================
+// ENUMS — REPORT
+// =====================================================
+
+enum ReportEntityType {
+  TREE
+  TREE_NODE
+  RELATIONSHIP
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  DISMISSED
+  ACTION_TAKEN
+}
+
+// =====================================================
+// REPORT
+//
+// User-submitted moderation reports against
+// trees, tree nodes, or relationships.
+// =====================================================
+
+model Report {
+  id String @id @default(cuid())
+
+  reportedById String
+
+  entityType ReportEntityType
+  entityId   String
+
+  reason String
+
+  status ReportStatus @default(PENDING)
+
+  reviewedById String?
+  reviewedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reportedBy User @relation("ReportSubmitter", fields: [reportedById], references: [id], onDelete: Cascade)
+
+  @@index([reportedById])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([status])
 }
