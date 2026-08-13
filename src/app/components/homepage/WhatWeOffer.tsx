@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 export default function WhatWeOffer() {
   return (
@@ -82,36 +83,48 @@ export default function WhatWeOffer() {
 
           {/* ================= ROW 1 ================= */}
 
-          <ServiceBox>
-            Memoirs, Anthologies,
-            <br />
-            Biographies
-          </ServiceBox>
+            <Link href="#" className="block">
+            <ServiceBox>
+                Memoirs, Anthologies,
+                <br />
+                Biographies
+            </ServiceBox>
+            </Link>
 
-          <ServiceBox>
-            Documentaries,
-            <br />
-            Short Films
-          </ServiceBox>
+            <Link href="#" className="block">
+            <ServiceBox>
+                Documentaries,
+                <br />
+                Short Films
+            </ServiceBox>
+            </Link>
 
-          <ServiceBox>
-            Digital Archive Services
-          </ServiceBox>
+            <Link href="#" className="block">
+            <ServiceBox>
+                Digital Archive Services
+            </ServiceBox>
+            </Link>
 
 
           {/* ================= ROW 2 ================= */}
 
-          <ServiceBox>
-            Exhibition Design
-          </ServiceBox>
+            <Link href="#" className="block">
+            <ServiceBox>
+                Exhibition Design
+            </ServiceBox>
+            </Link>
 
-          <ServiceBox>
-            Life Writing Workshops
-          </ServiceBox>
+            <Link href="#" className="block">
+            <ServiceBox>
+                Life Writing Workshops
+            </ServiceBox>
+            </Link>
 
-          <ServiceBox>
-            Bespoke Journals
-          </ServiceBox>
+            <Link href="/products" className="block">
+            <ServiceBox>
+                Bespoke Journals
+            </ServiceBox>
+            </Link>
 
         </div>
 
