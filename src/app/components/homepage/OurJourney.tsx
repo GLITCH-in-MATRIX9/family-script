@@ -37,17 +37,18 @@ interface JourneyStop {
 
 // Alternating connector-line lengths, set explicitly per stop below instead
 // of relying on the AXIS_GAP fallback.
-const AXIS_GAP_LONG = 68;
-const AXIS_GAP_SHORT = 38;
+const AXIS_GAP_LONG = 108;
+const AXIS_GAP_SHORT = 58;
 
 // Shared with the mobile caption color below, so the two layouts can't drift apart.
 const CAPTION_COLOR = "#cda06e";
 
 /**
- * Timeline copy mirrors the design mock as given: most stops repeat the same
- * placeholder line, with two real captions (2017 registration, the Top 19
- * startup mention) standing out. Swap the placeholder text for real copy
- * per-year when it's available — see Decisions.md for why it was kept as-is.
+ * Real company-history copy (replaces the earlier placeholder text — see
+ * Decisions.md). The 2023-26 stop replaces what used to be a second "2024"
+ * entry; the structural rhythm (photo up/down alternation, gap LONG/SHORT,
+ * labelSide alternation, captionAlign) is unchanged from before, only the
+ * year/caption content changed at that position.
  *
  * xPercent spacing is intentionally uneven (wide through 2015-2019 so the
  * "2020 - 2022" range label has room, then tightening slightly before
@@ -59,33 +60,33 @@ const CAPTION_COLOR = "#cda06e";
 const JOURNEY_STOPS: JourneyStop[] = [
   {
     year: "2015",
-    xPercent: 8,
+    xPercent: 5,
     photo: "none",
     caption:
-      "The beginning of a dream, where ideas sparked into purpose and our journey began",
-    captionOffset: 5,
+      "Two friends, Kshitij and Rishi, envisioned bringing memories out of wardrobes to celebrate family legacies, giving birth to Family Script.",
+    captionOffset: 25,
     captionAlign: "left",
     captionSide: "above",
     labelSide: "above",
-    labelOffset: -15,
+    labelOffset: -40,
   },
   {
     year: "2017",
     xPercent: 12,
     photo: "up",
     caption:
-      "23rd October 2017, the company was registered under the name Prarabdha Info Solutions Private Limited",
+      "Incubated at IGDTUW-Anveshan Foundation and formally registered as Prarabdha Info Solutions Private Limited, marking Family Script's first institutional milestone.",
     captionOffset: 5,
     captionAlign: "left",
     labelSide: "below",
-    gap: AXIS_GAP_LONG,
+    gap: 112,
   },
   {
     year: "2018",
     xPercent: 21,
     photo: "down",
     caption:
-      "Shortlisted among the Top 19 startup ideas in India by Nexus Startup Hub and The University of Texas at Austin, USA.",
+      "Selected among India's top 16 from 400 applicants, Family Script received three months of entrepreneurship training and mentorship from the University of Texas at Austin, USA.",
     captionOffset: 5,
     captionAlign: "left",
     labelSide: "above",
@@ -93,11 +94,11 @@ const JOURNEY_STOPS: JourneyStop[] = [
   },
   {
     year: "2019",
-    xPercent: 30,
+    xPercent: 32,
     photo: "up",
     caption:
-      "The beginning of a dream, where ideas sparked into purpose and our journey began",
-    captionOffset: 5,
+      "Our first 8+ analogue projects tested the waters, transforming personal milestones and intimate family memories into meaningful, tangible legacies.",
+    captionOffset: 9,
     captionAlign: "left",
     labelSide: "below",
     gap: AXIS_GAP_SHORT,
@@ -107,7 +108,7 @@ const JOURNEY_STOPS: JourneyStop[] = [
     xPercent: 41,
     photo: "down",
     caption:
-      "The beginning of a dream, where ideas sparked into purpose and our journey began",
+      "A period of reflection and family time, amidst difficult circumstances, deepened our belief in preserving oral histories before they are lost.",
     captionOffset: 5,
     captionAlign: "left",
     labelSide: "above",
@@ -115,21 +116,21 @@ const JOURNEY_STOPS: JourneyStop[] = [
   },
   {
     year: "2023",
-    xPercent: 52,
+    xPercent: 51,
     photo: "up",
     caption:
-      "The beginning of a dream, where ideas sparked into purpose and our journey began",
+      "Family Script became a daily pursuit as Meenakshi joined as Director, a young team came together, and Family Script 2.0 was launched.",
     captionOffset: 5,
     captionAlign: "left",
     labelSide: "below",
     gap: AXIS_GAP_LONG,
   },
   {
-    year: "2024",
+    year: "2023 - 2026",
     xPercent: 61,
     photo: "down",
     caption:
-      "The beginning of a dream, where ideas sparked into purpose and our journey began",
+      "28+ projects completed across biographies, memoirs, institutional histories, practice histories, and diverse forms of legacy documentation.",
     captionOffset: 5,
     captionAlign: "left",
     labelSide: "above",
@@ -137,21 +138,21 @@ const JOURNEY_STOPS: JourneyStop[] = [
   },
   {
     year: "2024",
-    xPercent: 70,
+    xPercent: 73,
     photo: "up",
     caption:
-      "The beginning of a dream, where ideas sparked into purpose and our journey began",
-    captionOffset: 5,
+      "Exhibited Family Script projects and Indigo Chronicles, a set of three journals to Create, Cherish and Celebrate life, at DCWA's Diplomatic Bazaar; bringing life documentation and legacy-making to a wider audience.",
+    captionOffset: 9,
     captionAlign: "left",
     labelSide: "below",
     gap: AXIS_GAP_SHORT,
   },
   {
     year: "2025",
-    xPercent: 79,
+    xPercent: 83,
     photo: "down",
     caption:
-      "The beginning of a dream, where ideas sparked into purpose and our journey began",
+      "Family Script won the UX India 2025 Design Pitch Competition, emerging among 149 global entries and pitching to leading investors in Hyderabad.",
     captionOffset: 5,
     captionAlign: "right",
     labelSide: "above",
@@ -159,10 +160,10 @@ const JOURNEY_STOPS: JourneyStop[] = [
   },
   {
     year: "2026",
-    xPercent: 87,
+    xPercent: 92,
     photo: "up",
     caption:
-      "The beginning of a dream, where ideas sparked into purpose and our journey began",
+      "Showcased Family Script's Digital Model at the India Impact AI Summit 2026, representing Delhi Government-promoted startups and opening new institutional opportunities.",
     captionOffset: 5,
     captionAlign: "right",
     labelSide: "below",
@@ -186,6 +187,10 @@ const CAPTION_WIDTH = 130;
 // caption's own near-edge distance is derived from this plus the photo size.
 const AXIS_GAP = 42;
 const NONE_CAPTION_GAP = 34;
+// Extra distance (px) the photo sits beyond the connector line's end-dot —
+// only the photo frame reads this, so the line length and dot position
+// (both still driven by `gap` alone) don't move with it.
+const PHOTO_LIFT = 10;
 // Distance (px) a non-"on" year label sits from the axis line. Kept tiny —
 // combined with LABEL_STYLE's lineHeight: 1 below, this is what keeps labels
 // sitting almost flush against the line instead of forming a visibly
@@ -204,7 +209,7 @@ const CAPTION_STYLE = {
 
 const LABEL_STYLE = {
   fontFamily: "futura-pt, sans-serif",
-  fontWeight: 600,
+  fontWeight: 300,
   fontSize: "1.05rem",
   lineHeight: 1,
 } as const;
@@ -257,7 +262,7 @@ export default function OurJourney() {
                 className="text-white"
                 style={{ fontFamily: "futura-pt, sans-serif", fontWeight: 300, fontSize: "1.05rem" }}
               >
-                {stop.year === "Future Vision" ? "→ Future Vision" : stop.year}
+                {stop.year === "Future Vision" ? "Future Vision" : stop.year}
               </span>
               {stop.photo !== "none" && (
                 <img
@@ -289,6 +294,15 @@ export default function OurJourney() {
       <div className="relative mx-auto mt-16 hidden h-[420px] w-[82%] max-w-[1700px] md:mt-20 md:block">
         {/* axis: a single straight line, full width, one consistent y */}
         <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-white/40" />
+        {/* dots at both ends of the axis line, matching the connector-line dots */}
+        <div
+          className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/70"
+          style={{ width: 5, height: 5 }}
+        />
+        <div
+          className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 rounded-full bg-white/70"
+          style={{ width: 5, height: 5 }}
+        />
 
         {JOURNEY_STOPS.map((stop, index) => {
           const gap = stop.gap ?? AXIS_GAP;
@@ -339,7 +353,9 @@ export default function OurJourney() {
                     style={{
                       width: PHOTO_SIZE,
                       height: PHOTO_SIZE,
-                      ...(stop.photo === "up" ? { bottom: gap } : { top: gap }),
+                      ...(stop.photo === "up"
+                        ? { bottom: gap + PHOTO_LIFT }
+                        : { top: gap + PHOTO_LIFT }),
                     }}
                   >
                     <img
@@ -348,6 +364,18 @@ export default function OurJourney() {
                       className="h-full w-full object-cover"
                     />
                   </div>
+                  {/* Dot at the connector line's far end — centered on the
+                      endpoint via -translate-y-1/2 (its own height is small
+                      enough that bottom/top: gap alone would land its edge,
+                      not its center, on the point). */}
+                  <div
+                    className="absolute left-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/70"
+                    style={{
+                      width: 5,
+                      height: 5,
+                      ...(stop.photo === "up" ? { bottom: gap } : { top: gap }),
+                    }}
+                  />
                 </>
               )}
 
@@ -385,16 +413,7 @@ export default function OurJourney() {
                   ...LABEL_STYLE,
                 }}
               >
-                {stop.year === "Future Vision" ? (
-                  <>
-                    <span aria-hidden className="mr-2">
-                      &#8594;
-                    </span>
-                    {stop.year}
-                  </>
-                ) : (
-                  stop.year
-                )}
+                {stop.year}
               </span>
             </div>
           );
