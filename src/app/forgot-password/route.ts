@@ -1,1 +1,0 @@
-export { forgotPasswordHandler as POST } from "@/modules/auth/auth.router";
