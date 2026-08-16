@@ -1,34 +1,70 @@
-.futura-light {
-  font-family: "futura-pt", sans-serif;
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Futura";
+  src: url("/fonts/FuturaStdLight.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Futura";
+  src: url("/fonts/Futura URW Medium Regular.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Futura";
+  src: url("/fonts/Futura URW Medium Regular.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+.futura-light {
+  font-family: "Futura", sans-serif;
+  font-weight: 300;
 }
 
 .futura-medium {
-  font-family: "futura-pt", sans-serif;
+  font-family: "Futura", sans-serif;
   font-weight: 500;
-  font-style: normal;
 }
 
 .futura-bold {
-  font-family: "futura-pt", sans-serif;
+  font-family: "Futura", sans-serif;
   font-weight: 700;
-  font-style: normal;
 }
 
-@import "tailwindcss";
+/* ========================================
+   Root Variables
+   ======================================== */
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
+
+/* ========================================
+   Tailwind Theme
+   ======================================== */
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+
+  --font-sans: "Futura", sans-serif;
   --font-mono: var(--font-geist-mono);
 }
+
+
+/* ========================================
+   Dark Mode
+   ======================================== */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -36,6 +72,11 @@
     --foreground: #ededed;
   }
 }
+
+
+/* ========================================
+   Global Styles
+   ======================================== */
 
 * {
   box-sizing: border-box;
@@ -51,5 +92,6 @@ body {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Futura", sans-serif;
+  font-weight: 300;
 }

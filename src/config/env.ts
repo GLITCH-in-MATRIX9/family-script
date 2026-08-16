@@ -11,11 +11,13 @@ const envSchema = z.object({
 
   RESEND_API_KEY: z.string().min(1, "RESEND_API_KEY is required"),
 
-  GOOGLE_CLIENT_ID: z.string().min(1, "GOOGLE_CLIENT_ID is required"),
-  GOOGLE_CLIENT_SECRET: z.string().min(1, "GOOGLE_CLIENT_SECRET is required"),
+  // Google OAuth is optional for now
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
 
-  GITHUB_CLIENT_ID: z.string().min(1, "GITHUB_CLIENT_ID is required"),
-  GITHUB_CLIENT_SECRET: z.string().min(1, "GITHUB_CLIENT_SECRET is required"),
+  // GitHub OAuth is optional for now
+  GITHUB_CLIENT_ID: z.string().optional(),
+  GITHUB_CLIENT_SECRET: z.string().optional(),
 
   CORS_ORIGIN: z.string().min(1, "CORS_ORIGIN is required"),
   PORT: z.coerce.number().int().positive(),

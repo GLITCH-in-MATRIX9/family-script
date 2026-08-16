@@ -1,133 +1,67 @@
+"use client";
+
 import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <header className="fixed top-0 left-0 z-50 w-full">
-      <nav className="flex items-start justify-between px-7 pt-8 text-white">
+    <header className="absolute left-0 top-0 z-[999] w-full">
+      <nav className="flex items-center justify-between px-7 pt-4 pb-4 text-white">
 
         {/* ================= LOGO ================= */}
         <Link
           href="/"
-          className="shrink-0 -translate-y-4"
-          style={{
-            fontFamily: "futura-pt, sans-serif",
-            fontStyle: "normal",
-          }}
+          className="shrink-0"
+          aria-label="Family Script Home"
         >
-          {/* FAMILY SCRIPT */}
-          <div
-            className="text-[27px] tracking-[5px]"
-            style={{
-              fontFamily: "futura-pt, sans-serif",
-              fontWeight: 500,
-              fontStyle: "normal",
-            }}
-          >
-            FAMILY SCRIPT
-          </div>
-
-          {/* TAGLINE */}
-          <div
-            className="mt-1 text-[7.5px] tracking-[1.5px] opacity-90"
-            style={{
-              fontFamily: "futura-pt, sans-serif",
-              fontWeight: 300,
-              fontStyle: "normal",
-            }}
-          >
-            LIFE WRITING&nbsp;&nbsp; | &nbsp;&nbsp;ORAL HISTORY&nbsp;&nbsp; | &nbsp;&nbsp;STORYTELLING
-          </div>
+          <img
+            src="/assets/homepage/FS_logo.png"
+            alt="Family Script"
+            className="h-[78px] w-[78px] object-contain brightness-0 invert"
+          />
         </Link>
 
 
-        {/* ================= NAVIGATION LINKS ================= */}
-        <div
-          className="hidden items-center gap-12 md:flex"
-          style={{
-            fontFamily: "futura-pt, sans-serif",
-            fontStyle: "normal",
-          }}
-        >
+        {/* ================= NAVIGATION ================= */}
+        <div className="hidden items-center gap-12 md:flex">
 
-          {/* PEOPLE */}
           <Link
             href="/people"
-            className="text-[14px] tracking-wide transition-opacity hover:opacity-60"
-            style={{
-              fontFamily: "futura-pt, sans-serif",
-              fontWeight: 300,
-              fontStyle: "normal",
-            }}
+            className="futura-light text-[16px] tracking-wide transition-opacity duration-300 hover:opacity-60"
           >
             PEOPLE
           </Link>
 
-
-          {/* PROJECT */}
           <Link
-            href="/project"
-            className="text-[14px] tracking-wide transition-opacity hover:opacity-60"
-            style={{
-              fontFamily: "futura-pt, sans-serif",
-              fontWeight: 300,
-              fontStyle: "normal",
-            }}
+            href="/projects"
+            className="futura-light text-[16px] tracking-wide transition-opacity duration-300 hover:opacity-60"
           >
             PROJECT
           </Link>
 
-
-          {/* PURPOSE */}
           <Link
             href="/purpose"
-            className="text-[14px] tracking-wide transition-opacity hover:opacity-60"
-            style={{
-              fontFamily: "futura-pt, sans-serif",
-              fontWeight: 300,
-              fontStyle: "normal",
-            }}
+            className="futura-light text-[16px] tracking-wide transition-opacity duration-300 hover:opacity-60"
           >
             PURPOSE
           </Link>
 
-
-          {/* PROCESS */}
           <Link
             href="/process"
-            className="text-[14px] tracking-wide transition-opacity hover:opacity-60"
-            style={{
-              fontFamily: "futura-pt, sans-serif",
-              fontWeight: 300,
-              fontStyle: "normal",
-            }}
+            className="futura-light text-[16px] tracking-wide transition-opacity duration-300 hover:opacity-60"
           >
             PROCESS
           </Link>
 
-
-          {/* PHILOSOPHY */}
           <Link
             href="/philosophy"
-            className="text-[14px] tracking-wide transition-opacity hover:opacity-60"
-            style={{
-              fontFamily: "futura-pt, sans-serif",
-              fontWeight: 300,
-              fontStyle: "normal",
-            }}
+            className="futura-light text-[16px] tracking-wide transition-opacity duration-300 hover:opacity-60"
           >
             PHILOSOPHY
           </Link>
 
-
-          {/* PRODUCTS */}
           <Link
             href="/products"
-            className="text-[14px] tracking-wide transition-opacity hover:opacity-60"
-            style={{
-              fontFamily: "futura-pt, sans-serif",
-              fontWeight: 300,
-              fontStyle: "normal",
-            }}
+            className="futura-light text-[16px] tracking-wide transition-opacity duration-300 hover:opacity-60"
           >
             PRODUCTS
           </Link>
@@ -139,11 +73,11 @@ export default function Navbar() {
         <button
           type="button"
           aria-label="Open menu"
-          className="ml-6 flex h-7 w-7 flex-col items-center justify-center gap-[5px]"
+          className="ml-6 flex h-8 w-8 shrink-0 flex-col items-center justify-center gap-[5px] rounded-full border border-white/15 bg-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.12]"
         >
-          <span className="block h-[1px] w-[17px] bg-white" />
-          <span className="block h-[1px] w-[17px] bg-white" />
-          <span className="block h-[1px] w-[17px] bg-white" />
+          <span className="block h-[1px] w-[18px] bg-white" />
+          <span className="block h-[1px] w-[18px] bg-white" />
+          <span className="block h-[1px] w-[18px] bg-white" />
         </button>
 
       </nav>
