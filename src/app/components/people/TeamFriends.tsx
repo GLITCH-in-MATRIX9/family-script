@@ -5,93 +5,93 @@ import Image from "next/image";
 const team = [
   {
     name: "SHREYAS V BHATT",
-    role: "Founder | Design | Architect",
+    role: ["Growth Strategy Advisor", "Architect  |  Designer"],
     image: "/assets/People/OurTeam/Shreyas.png",
   },
   {
-    name: "ANJAL SHANIMA",
-    role: "Visual Design | Architect | Designer",
+    name: "AR. ANJAL SHANIMA",
+    role: ["Visual Design Lead", "Architect  |  Designer"],
     image: "/assets/People/OurTeam/AnjalShanima.png",
   },
   {
-    name: "Ar. FARIA CHOUDHRY",
-    role: "Business Strategist | Management Professional",
+    name: "AR. FARIA CHOUDHRY",
+    role: ["Business Strategist", "Architect  |  Management Professional"],
     image: "/assets/People/OurTeam/Faria.png",
   },
 ];
 
 const friends = [
   {
-    name: "Dr. Anu Kumar Sinha",
-    image: "/assets/People/Friends/1.png",
+    name: "Dr. Arvind Kumar Sinha",
+    image: "/assets/People/Friends/arvind.png",
   },
   {
-    name: "Hina Zula",
-    image: "/assets/People/Friends/2.png",
+    name: "Indu Sinha",
+    image: "/assets/People/Friends/indu.png",
   },
   {
-    name: "Dilip Choudhary",
-    image: "/assets/People/Friends/3.png",
+    name: "Dipti Chourasia",
+    image: "/assets/People/Friends/dipti.png",
   },
   {
-    name: "Himanshu Mehta",
-    image: "/assets/People/Friends/4.png",
+    name: "Nandini Mishra",
+    image: "/assets/People/Friends/nandini.png",
   },
   {
-    name: "Anamika Damodgar",
-    image: "/assets/People/Friends/5.png",
+    name: "Avantika Dewangan",
+    image: "/assets/People/Friends/avantika.png",
   },
   {
-    name: "Mukul Sharma",
-    image: "/assets/People/Friends/6.png",
+    name: "Muskan Sharma",
+    image: "/assets/People/Friends/muskan.png",
   },
   {
-    name: "Sukhchain Dubey",
-    image: "/assets/People/Friends/7.png",
+    name: "Siddharth Dubey",
+    image: "/assets/People/Friends/siddharth.png",
   },
   {
-    name: "Rohit Singh",
-    image: "/assets/People/Friends/8.png",
+    name: "Rishi Raj Singh",
+    image: "/assets/People/Friends/rishi.png",
   },
   {
-    name: "Madhu Sinha",
-    image: "/assets/People/Friends/9.png",
+    name: "Madhu Sharan",
+    image: "/assets/People/Friends/madhu.png",
   },
   {
-    name: "Chitra Sinha",
-    image: "/assets/People/Friends/10.png",
+    name: "Chhavi Sinha",
+    image: "/assets/People/Friends/chavi.png",
   },
   {
-    name: "Kanchan Sinha",
-    image: "/assets/People/Friends/11.png",
+    name: "Romonika Sharan",
+    image: "/assets/People/Friends/romonika.png",
   },
   {
-    name: "Karan Sinha",
-    image: "/assets/People/Friends/12.png",
+    name: "Raju Sharan",
+    image: "/assets/People/Friends/raju.png",
   },
   {
-    name: "Anand Rai",
-    image: "/assets/People/Friends/13.png",
+    name: "Akash Raj",
+    image: "/assets/People/Friends/akash.png",
   },
   {
-    name: "Nidhi Arora",
-    image: "/assets/People/Friends/14.png",
+    name: "Nakul Arora",
+    image: "/assets/People/Friends/nakul.png",
   },
   {
-    name: "Lalita Goyal",
-    image: "/assets/People/Friends/15.png",
+    name: "Urvashi Garud",
+    image: "/assets/People/Friends/urvashi.png",
   },
   {
-    name: "A. K. Jindal",
-    image: "/assets/People/Friends/16.png",
+    name: "Ar. Vishal Rai",
+    image: "/assets/People/Friends/vishal.png",
   },
   {
-    name: "Dinesh Kothari",
-    image: "/assets/People/Friends/17.png",
+    name: "Danish Siddiqui",
+    image: "/assets/People/Friends/danish.png",
   },
   {
-    name: "Jawaharlal Foundation",
-    image: "/assets/People/Friends/18.png",
+    name: "Anveshan Foundation, IGDTUW",
+    image: "/assets/People/Friends/anveshan.png",
   },
 ];
 
@@ -101,7 +101,6 @@ export default function TeamFriends() {
       {/* ================= BACKGROUND ================= */}
 
       <div className="pointer-events-none absolute inset-0">
-        {/* Darker outer gradient to merge with previous Hero */}
         <div
           className="absolute inset-0"
           style={{
@@ -110,7 +109,6 @@ export default function TeamFriends() {
           }}
         />
 
-        {/* Very subtle center glow */}
         <div
           className="absolute inset-0"
           style={{
@@ -119,7 +117,6 @@ export default function TeamFriends() {
           }}
         />
 
-        {/* Dark edges */}
         <div
           className="absolute inset-0"
           style={{
@@ -131,27 +128,25 @@ export default function TeamFriends() {
 
       {/* ================= CONTENT ================= */}
 
-      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-4 pb-32 pt-24 md:px-8 md:pt-28">
+      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-4 pb-10 pt-24 md:px-8 md:pt-28">
         {/* =====================================================
-            OUR TEAM
-        ===================================================== */}
+    OUR TEAM
+===================================================== */}
 
         <div className="text-center">
-          <h2 className="futura-light text-[32px] uppercase tracking-[0.05em] text-white md:text-[40px] lg:text-[44px]">
+          <h2 className="futura-light text-[32px] uppercase tracking-[0.05em] text-white md:text-[40px] lg:text-[44px] pb-[40px]">
             Our Team
           </h2>
         </div>
 
         {/* =====================================================
-            TEAM
-        ===================================================== */}
+    TEAM
+===================================================== */}
 
         <div className="relative mx-auto mt-14 w-full max-w-[1250px]">
           {/* ================= RECTANGLE ================= */}
 
-          <div className="relative h-[260px] border border-white/25">
-            {/* ================= PEOPLE ================= */}
-
+          <div className="relative h-[200px] border border-white/25">
             <div className="absolute inset-x-0 bottom-0 flex h-full items-end">
               {team.map((member) => (
                 <div
@@ -164,7 +159,15 @@ export default function TeamFriends() {
                       alt={member.name}
                       fill
                       sizes="33vw"
-                      className="object-contain object-bottom"
+                      className="
+                object-contain
+                object-bottom
+                transition-all
+                duration-500
+                ease-out
+                hover:scale-[1.04]
+                hover:-translate-y-1
+              "
                     />
                   </div>
                 </div>
@@ -173,22 +176,23 @@ export default function TeamFriends() {
           </div>
 
           {/* =================================================
-              NAMES + POSITIONS
-          ================================================= */}
+      NAMES + DESCRIPTIONS
+  ================================================= */}
 
           <div className="grid grid-cols-3">
             {team.map((member) => (
               <div
                 key={member.name}
-                className="flex flex-col items-center pt-6 text-center"
+                className="flex flex-col items-center pt-5 text-center"
               >
-                <h3 className="futura-light text-[12px] uppercase tracking-[0.07em] text-[#e7ad55] md:text-[15px]">
+                <h3 className="futura-light text-[12px] uppercase tracking-[0.06em] text-[#e7ad55] md:text-[14px]">
                   {member.name}
                 </h3>
 
-                <p className="futura-light mt-2 max-w-[240px] text-[9px] leading-[1.5] text-white/80 md:text-[15px]">
-                  {member.role}
-                </p>
+                <div className="futura-light mt-4 text-[10px] leading-[1.6] text-white/85 md:text-[13px]">
+                  <p>{member.role[0]}</p>
+                  <p>{member.role[1]}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -198,7 +202,7 @@ export default function TeamFriends() {
             SPACE BETWEEN SECTIONS
         ===================================================== */}
 
-        <div className="h-[20vh]" />
+        <div className="h-[10vh]" />
 
         {/* =====================================================
             FRIENDS TITLE
@@ -227,7 +231,7 @@ export default function TeamFriends() {
               key={friend.name}
               className="group flex flex-col items-center text-center"
             >
-              {/* ================= IMAGE ================= */}
+              {/* IMAGE */}
 
               <div className="relative aspect-square w-[95px] overflow-hidden rounded-full md:w-[115px] lg:w-[125px]">
                 <Image
@@ -239,7 +243,7 @@ export default function TeamFriends() {
                 />
               </div>
 
-              {/* ================= NAME ================= */}
+              {/* NAME */}
 
               <p className="futura-light mt-5 max-w-[160px] text-[11px] leading-[1.4] text-white/90 md:text-[13px] lg:text-[14px]">
                 {friend.name}

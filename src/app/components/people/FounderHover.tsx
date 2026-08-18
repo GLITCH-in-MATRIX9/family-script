@@ -32,7 +32,7 @@ export default function FounderHover({
   return (
     <div
       onMouseLeave={handleLeave}
-      className="relative mx-auto  h-[560px] w-full max-w-[1100px]"
+      className="relative mx-auto h-[560px] w-full max-w-[1100px]"
     >
       {/* =========================================================
           DEFAULT BORDER
@@ -124,7 +124,6 @@ export default function FounderHover({
 
       {/* =========================================================
           LEFT PERSON HOVER
-          
           POSITION → IMAGE → PARAGRAPH
       ========================================================= */}
 
@@ -137,22 +136,22 @@ export default function FounderHover({
       >
         {/* POSITION — LEFT */}
 
-        <div className="absolute left-[1.2%] top-[18%] w-[25%]">
+        <div className="absolute left-[1.2%] top-[18%] w-[25%] text-left">
           <p className="futura-light text-[14px] text-[#e7ad55] md:text-[15px]">
             {founders[0].role}
           </p>
 
-          <div className="futura-light mt-5 text-[14px] leading-[1.45] text-white md:text-[15px]">
+          <div className="futura-light mt-5 text-left text-[14px] leading-[1.45] text-white md:text-[15px]">
             {founders[0].description.map((line) => (
               <p key={line}>{line}</p>
             ))}
           </div>
         </div>
 
-        {/* PARAGRAPH — RIGHT */}
+        {/* PARAGRAPH — RIGHT / LEFT ALIGNED */}
 
         <div className="absolute right-[1%] top-[17%] w-[43%]">
-          <div className="futura-light text-center text-[14px] leading-[1.35] tracking-[0.015em] text-white/85 md:text-[15px]">
+          <div className="futura-light text-left text-[14px] leading-[1.35] tracking-[0.015em] text-white/85 md:text-[15px]">
             {founders[0].bio.map((paragraph, index) => (
               <p key={index} className="mb-6">
                 {paragraph}
@@ -170,7 +169,6 @@ export default function FounderHover({
 
       {/* =========================================================
           RIGHT PERSON HOVER
-          
           PARAGRAPH → IMAGE → POSITION
       ========================================================= */}
 
@@ -181,10 +179,10 @@ export default function FounderHover({
             : "pointer-events-none opacity-0"
         }`}
       >
-        {/* PARAGRAPH — LEFT */}
+        {/* PARAGRAPH — LEFT / RIGHT ALIGNED */}
 
         <div className="absolute left-[1%] top-[17%] w-[47%]">
-          <div className="futura-light text-center text-[14px] leading-[1.35] tracking-[0.015em] text-white/85 md:text-[15px]">
+          <div className="futura-light text-right text-[14px] leading-[1.35] tracking-[0.015em] text-white/85 md:text-[15px]">
             {founders[1].bio.map((paragraph, index) => (
               <p key={index} className="mb-6">
                 {paragraph}
@@ -200,7 +198,7 @@ export default function FounderHover({
             {founders[1].role}
           </p>
 
-          <div className="futura-light mt-5 text-[14px] leading-[1.45] text-white md:text-[15px]">
+          <div className="futura-light mt-5 text-right text-[14px] leading-[1.45] text-white md:text-[15px]">
             {founders[1].description.map((line) => (
               <p key={line}>{line}</p>
             ))}
@@ -226,6 +224,7 @@ export default function FounderHover({
         }`}
       >
         <div className="flex w-[58%] justify-between">
+
           <h2 className="futura-bold text-[14px] tracking-[0.01em] text-[#e7ad55] md:text-[15px]">
             {founders[0].name}
           </h2>
@@ -233,8 +232,10 @@ export default function FounderHover({
           <h2 className="futura-bold text-[14px] tracking-[0.01em] text-[#e7ad55] md:text-[15px]">
             {founders[1].name}
           </h2>
+
         </div>
       </div>
+
     </div>
   );
 }

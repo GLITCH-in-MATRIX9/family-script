@@ -233,7 +233,7 @@ export default function WhatWeOffer() {
         ref={backgroundRef}
         className="absolute inset-[-8%] bg-cover bg-center"
         style={{
-          backgroundImage: "url('/assets/homepage/WHAT WE OFFER.jpg')",
+          backgroundImage: "url('/assets/homepage/WHAT_WE_OFFER.jpg')",
         }}
       />
 
