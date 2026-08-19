@@ -2,8 +2,6 @@
 
 export type GalleryItem = {
   image: string;
-  position: string;
-  width: string;
 };
 
 export type Project = {
@@ -16,8 +14,8 @@ export type Project = {
 
   description: string[];
 
-  backgroundImage: string;
-  mainImage: string;
+  coverImage: string;
+  bookImage: string;
 
   gallery: GalleryItem[];
 
@@ -33,9 +31,8 @@ export const projects: Project[] = [
     slug: "akhil-bakshi",
     category: "biographical",
 
-    title: "AKHIL BAKSHI",
-
-    subtitle: "HERE THERE & EVERYWHERE",
+    title: "HERE THERE & EVERYWHERE",
+    subtitle: "AKHIL BAKSHI",
 
     location: "GURUGRAM, HARYANA",
 
@@ -47,45 +44,33 @@ export const projects: Project[] = [
       "When FS entered the frame, a huge corpus of old photographs of his travels, letters and extensive work in the social sector surfaced that we worked with to curate a whole volume driven by clarity and precision. Emerging as a portrait in words, FS traced a life journey through multiple correspondences, oral history sessions and careful design ideation, ultimately unfolding into a cohesive narrative arc that stands as a reflection of challenges, adventures and a lifelong commitment to service and curiosity.",
     ],
 
-    backgroundImage: "/assets/projects/biographical/AKHIL BAKSHI/cover.jpg",
+    coverImage:
+      "/assets/projects/biographical/AKHIL BAKSHI/cover.jpg",
 
-    mainImage: "/assets/projects/biographical/AKHIL BAKSHI/1.jpg",
+    bookImage:
+      "/assets/projects/biographical/AKHIL BAKSHI/book.png",
 
     gallery: [
       {
+        image: "/assets/projects/biographical/AKHIL BAKSHI/1.jpeg",
+      },
+      {
         image: "/assets/projects/biographical/AKHIL BAKSHI/2.jpg",
-        position: "left-[0%] top-[3%]",
-        width: "w-[24%]",
       },
       {
-        image: "/assets/projects/biographical/akhil-bakshi/2.png",
-        position: "right-[0%] top-[3%]",
-        width: "w-[20%]",
+        image: "/assets/projects/biographical/AKHIL BAKSHI/3.jpeg",
       },
       {
-        image: "/assets/projects/biographical/akhil-bakshi/3.png",
-        position: "right-[0%] top-[28%]",
-        width: "w-[23%]",
+        image: "/assets/projects/biographical/AKHIL BAKSHI/4.jpg",
       },
       {
-        image: "/assets/projects/biographical/akhil-bakshi/4.png",
-        position: "right-[0%] top-[53%]",
-        width: "w-[20%]",
+        image: "/assets/projects/biographical/AKHIL BAKSHI/5.jpg",
       },
       {
-        image: "/assets/projects/biographical/akhil-bakshi/5.png",
-        position: "left-[0%] bottom-[4%]",
-        width: "w-[22%]",
+        image: "/assets/projects/biographical/AKHIL BAKSHI/6.jpg",
       },
       {
-        image: "/assets/projects/biographical/akhil-bakshi/6.png",
-        position: "left-[32%] bottom-[2%]",
-        width: "w-[20%]",
-      },
-      {
-        image: "/assets/projects/biographical/akhil-bakshi/7.png",
-        position: "right-[32%] bottom-[2%]",
-        width: "w-[18%]",
+        image: "/assets/projects/biographical/AKHIL BAKSHI/7.jpg",
       },
     ],
 
@@ -100,9 +85,8 @@ export const projects: Project[] = [
     slug: "reva-khanna",
     category: "biographical",
 
-    title: "REVA KHANNA",
-
-    subtitle: "THE WINDS WILL BLOW",
+    title: "THE WINDS WILL BLOW",
+    subtitle: "REVA KHANNA",
 
     location: "GOLF LINKS, NEW DELHI",
 
@@ -114,40 +98,30 @@ export const projects: Project[] = [
       "The book that emerged is a tribute to the human grit, where personal memory meets collective history. It stands as an archive of love, strength and belonging, created through collaboration, trust and an unwavering belief in the power of remembering together.",
     ],
 
-    backgroundImage: "/assets/projects/biographical/reva-khanna/background.png",
+    coverImage:
+      "/assets/projects/biographical/REVA KHANNA/cover.jpg",
 
-    mainImage: "/assets/projects/biographical/reva-khanna/main.png",
+    bookImage:
+      "/assets/projects/biographical/REVA KHANNA/book.jpg",
 
     gallery: [
       {
-        image: "/assets/projects/biographical/reva-khanna/1.png",
-        position: "right-[0%] top-[2%]",
-        width: "w-[22%]",
+        image: "/assets/projects/biographical/REVA KHANNA/1.jpg",
       },
       {
-        image: "/assets/projects/biographical/reva-khanna/2.png",
-        position: "left-[2%] top-[8%]",
-        width: "w-[20%]",
+        image: "/assets/projects/biographical/REVA KHANNA/2.jpg",
       },
       {
-        image: "/assets/projects/biographical/reva-khanna/3.png",
-        position: "right-[3%] top-[31%]",
-        width: "w-[24%]",
+        image: "/assets/projects/biographical/REVA KHANNA/3.jpg",
       },
       {
-        image: "/assets/projects/biographical/reva-khanna/4.png",
-        position: "left-[0%] bottom-[15%]",
-        width: "w-[21%]",
+        image: "/assets/projects/biographical/REVA KHANNA/4.jpg",
       },
       {
-        image: "/assets/projects/biographical/reva-khanna/5.png",
-        position: "right-[15%] bottom-[2%]",
-        width: "w-[20%]",
+        image: "/assets/projects/biographical/REVA KHANNA/5.jpg",
       },
       {
-        image: "/assets/projects/biographical/reva-khanna/6.png",
-        position: "left-[34%] bottom-[2%]",
-        width: "w-[18%]",
+        image: "/assets/projects/biographical/REVA KHANNA/6.jpg",
       },
     ],
 
@@ -162,9 +136,8 @@ export const projects: Project[] = [
     slug: "dr-v-k-kutty",
     category: "biographical",
 
-    title: "DR. V K KUTTY",
-
-    subtitle: "NOOR: THE LIGHT THAT LEADS US",
+    title: "NOOR: THE LIGHT THAT LEADS US",
+    subtitle: "DR. V K KUTTY",
 
     location: "TIRUR, KERALA",
 
@@ -174,36 +147,24 @@ export const projects: Project[] = [
       "He founded Dr Kutty Healthcare and his enduring influence lives on through his pioneering efforts in promoting preventive diagnosis through setting up the Nura Centre, in collaboration with Fujifilm, across the world.",
     ],
 
-    backgroundImage:
-      "/assets/projects/biographical/dr-v-k-kutty/background.png",
+    coverImage:
+      "/assets/projects/biographical/DR. V K KUTTY/cover.jpg",
 
-    mainImage: "/assets/projects/biographical/dr-v-k-kutty/main.png",
+    bookImage:
+      "/assets/projects/biographical/DR. V K KUTTY/main.png",
 
     gallery: [
       {
-        image: "/assets/projects/biographical/dr-v-k-kutty/1.png",
-        position: "left-[0%] top-[4%]",
-        width: "w-[21%]",
+        image: "/assets/projects/biographical/DR. V K KUTTY/1.jpg",
       },
       {
-        image: "/assets/projects/biographical/dr-v-k-kutty/2.png",
-        position: "right-[0%] top-[3%]",
-        width: "w-[22%]",
+        image: "/assets/projects/biographical/DR. V K KUTTY/2.jpg",
       },
       {
-        image: "/assets/projects/biographical/dr-v-k-kutty/3.png",
-        position: "right-[2%] top-[32%]",
-        width: "w-[19%]",
+        image: "/assets/projects/biographical/DR. V K KUTTY/3.jpg",
       },
       {
-        image: "/assets/projects/biographical/dr-v-k-kutty/4.png",
-        position: "left-[2%] bottom-[14%]",
-        width: "w-[23%]",
-      },
-      {
-        image: "/assets/projects/biographical/dr-v-k-kutty/5.png",
-        position: "right-[30%] bottom-[2%]",
-        width: "w-[19%]",
+        image: "/assets/projects/biographical/DR. V K KUTTY/4.jpg",
       },
     ],
 
@@ -218,9 +179,8 @@ export const projects: Project[] = [
     slug: "renu-mehra",
     category: "biographical",
 
-    title: "RENU MEHRA",
-
-    subtitle: "MY SCRIBBLES",
+    title: "MY SCRIBBLES",
+    subtitle: "RENU MEHRA",
 
     location: "GOLF LINKS, NEW DELHI",
 
@@ -230,35 +190,27 @@ export const projects: Project[] = [
       "Family Script carefully digitized journals, restored photographs and recorded conversations, bringing together stories of Partition, displacement, resilience and renewal. The book evolved into a living document of a family’s journey through loss, laughter and legacy. Mrs. Mehra’s handwritten scribbles, raw, emotional and spontaneous, were preserved as part of the visual narrative. My Scribbles celebrates a life lived with depth, humour, wisdom and resilience, inviting readers to pause, remember and listen.",
     ],
 
-    backgroundImage: "/assets/projects/biographical/renu-mehra/background.png",
+    coverImage:
+      "/assets/projects/biographical/RENU MEHRA/cover.png",
 
-    mainImage: "/assets/projects/biographical/renu-mehra/main.png",
+    bookImage:
+      "/assets/projects/biographical/RENU MEHRA/main.png",
 
     gallery: [
       {
-        image: "/assets/projects/biographical/renu-mehra/1.png",
-        position: "right-[0%] top-[4%]",
-        width: "w-[22%]",
+        image: "/assets/projects/biographical/RENU MEHRA/1.jpg",
       },
       {
-        image: "/assets/projects/biographical/renu-mehra/2.png",
-        position: "left-[0%] top-[10%]",
-        width: "w-[20%]",
+        image: "/assets/projects/biographical/RENU MEHRA/2.jpg",
       },
       {
-        image: "/assets/projects/biographical/renu-mehra/3.png",
-        position: "right-[2%] top-[34%]",
-        width: "w-[23%]",
+        image: "/assets/projects/biographical/RENU MEHRA/3.jpg",
       },
       {
-        image: "/assets/projects/biographical/renu-mehra/4.png",
-        position: "left-[0%] bottom-[12%]",
-        width: "w-[21%]",
+        image: "/assets/projects/biographical/RENU MEHRA/4.jpg",
       },
       {
-        image: "/assets/projects/biographical/renu-mehra/5.png",
-        position: "right-[28%] bottom-[2%]",
-        width: "w-[19%]",
+        image: "/assets/projects/biographical/RENU MEHRA/5.jpg",
       },
     ],
 
@@ -273,9 +225,8 @@ export const projects: Project[] = [
     slug: "sudha-gupta",
     category: "biographical",
 
-    title: "SUDHA GUPTA",
-
-    subtitle: "GRIT AND GRACE",
+    title: "GRIT AND GRACE",
+    subtitle: "SUDHA GUPTA",
 
     location: "TUGHLAQ LANE, NEW DELHI",
 
@@ -289,36 +240,26 @@ export const projects: Project[] = [
       "It revealed the making of a matriarch, whose strength, grace and enduring values shaped her family and legacy. She was also among the first to establish a children’s clothing line in Delhi.",
     ],
 
-    backgroundImage: "/assets/projects/biographical/sudha-gupta/background.png",
+    coverImage:
+      "/assets/projects/biographical/SUDHA GUPTA/cover.jpg",
 
-    mainImage: "/assets/projects/biographical/sudha-gupta/main.png",
+    bookImage:
+      "/assets/projects/biographical/SUDHA GUPTA/main.png",
 
     gallery: [
       {
-        image: "/assets/projects/biographical/sudha-gupta/1.png",
-        position: "left-[0%] top-[3%]",
-        width: "w-[22%]",
+        image: "/assets/projects/biographical/SUDHA GUPTA/1.jpg",
       },
       {
-        image: "/assets/projects/biographical/sudha-gupta/2.png",
-        position: "right-[0%] top-[5%]",
-        width: "w-[20%]",
+        image: "/assets/projects/biographical/SUDHA GUPTA/2.jpg",
       },
       {
-        image: "/assets/projects/biographical/sudha-gupta/3.png",
-        position: "right-[1%] top-[33%]",
-        width: "w-[23%]",
+        image: "/assets/projects/biographical/SUDHA GUPTA/3.jpg",
       },
       {
-        image: "/assets/projects/biographical/sudha-gupta/4.png",
-        position: "left-[0%] bottom-[13%]",
-        width: "w-[21%]",
+        image: "/assets/projects/biographical/SUDHA GUPTA/4.jpg",
       },
-      {
-        image: "/assets/projects/biographical/sudha-gupta/5.png",
-        position: "left-[34%] bottom-[2%]",
-        width: "w-[18%]",
-      },
+     
     ],
 
     layout: "left",
@@ -332,9 +273,8 @@ export const projects: Project[] = [
     slug: "sudha-raina",
     category: "biographical",
 
-    title: "SUDHA RAINA",
-
-    subtitle: "A FAMILY THAT DREAMED OF RAJASTHAN",
+    title: "A FAMILY THAT DREAMED OF RAJASTHAN",
+    subtitle: "SUDHA RAINA",
 
     location: "JAIPUR, RAJASTHAN",
 
@@ -346,35 +286,30 @@ export const projects: Project[] = [
       "FS traced the legacies of old Kashmiri Pandits who had migrated to Rajasthan, contributed significantly to the Bhoodan Andolan and shaped modern Jaipur. FS identified key players and crafted a trilogy of family histories, heirlooms and culinary traditions.",
     ],
 
-    backgroundImage: "/assets/projects/biographical/sudha-raina/background.png",
+    coverImage:
+      "/assets/projects/biographical/SUDHA RAINA/cover.png",
 
-    mainImage: "/assets/projects/biographical/sudha-raina/main.png",
+    bookImage:
+      "/assets/projects/biographical/SUDHA RAINA/main.png",
 
     gallery: [
       {
-        image: "/assets/projects/biographical/sudha-raina/1.png",
-        position: "right-[0%] top-[3%]",
-        width: "w-[22%]",
+        image: "/assets/projects/biographical/SUDHA RAINA/1.jpg",
       },
       {
-        image: "/assets/projects/biographical/sudha-raina/2.png",
-        position: "left-[0%] top-[8%]",
-        width: "w-[20%]",
+        image: "/assets/projects/biographical/SUDHA RAINA/2.jpg",
       },
       {
-        image: "/assets/projects/biographical/sudha-raina/3.png",
-        position: "right-[0%] top-[34%]",
-        width: "w-[23%]",
+        image: "/assets/projects/biographical/SUDHA RAINA/3.jpg",
       },
       {
-        image: "/assets/projects/biographical/sudha-raina/4.png",
-        position: "left-[1%] bottom-[12%]",
-        width: "w-[20%]",
+        image: "/assets/projects/biographical/SUDHA RAINA/4.jpg",
       },
       {
-        image: "/assets/projects/biographical/sudha-raina/5.png",
-        position: "right-[30%] bottom-[2%]",
-        width: "w-[18%]",
+        image: "/assets/projects/biographical/SUDHA RAINA/5.jpg",
+      },
+      {
+        image: "/assets/projects/biographical/SUDHA RAINA/6.jpg",
       },
     ],
 
@@ -389,9 +324,8 @@ export const projects: Project[] = [
     slug: "vinod-kumar-khanna",
     category: "biographical",
 
-    title: "VINOD KUMAR KHANNA",
-
-    subtitle: "PORTRAIT OF A LEGACY",
+    title: "PORTRAIT OF A LEGACY",
+    subtitle: "VINOD KUMAR KHANNA",
 
     location: "DEFENCE COLONY, NEW DELHI",
 
@@ -403,36 +337,30 @@ export const projects: Project[] = [
       "Together, these fragments will create a meaningful portrait of a life lived with purpose, resilience and enduring impact.",
     ],
 
-    backgroundImage:
-      "/assets/projects/biographical/vinod-kumar-khanna/background.png",
+    coverImage:
+      "/assets/projects/biographical/VINOD KUMAR KHANNA/cover.png",
 
-    mainImage: "/assets/projects/biographical/vinod-kumar-khanna/main.png",
+    bookImage:
+      "/assets/projects/biographical/VINOD KUMAR KHANNA/main.png",
 
     gallery: [
       {
-        image: "/assets/projects/biographical/vinod-kumar-khanna/1.png",
-        position: "left-[0%] top-[3%]",
-        width: "w-[21%]",
+        image: "/assets/projects/biographical/VINOD KUMAR KHANNA/1.jpg",
       },
       {
-        image: "/assets/projects/biographical/vinod-kumar-khanna/2.png",
-        position: "right-[0%] top-[4%]",
-        width: "w-[23%]",
+        image: "/assets/projects/biographical/VINOD KUMAR KHANNA/2.jpg",
       },
       {
-        image: "/assets/projects/biographical/vinod-kumar-khanna/3.png",
-        position: "right-[0%] top-[32%]",
-        width: "w-[20%]",
+        image: "/assets/projects/biographical/VINOD KUMAR KHANNA/3.jpeg",
       },
       {
-        image: "/assets/projects/biographical/vinod-kumar-khanna/4.png",
-        position: "left-[0%] bottom-[13%]",
-        width: "w-[22%]",
+        image: "/assets/projects/biographical/VINOD KUMAR KHANNA/4.jpeg",
       },
       {
-        image: "/assets/projects/biographical/vinod-kumar-khanna/5.png",
-        position: "right-[31%] bottom-[2%]",
-        width: "w-[18%]",
+        image: "/assets/projects/biographical/VINOD KUMAR KHANNA/5.jpeg",
+      },
+      {
+        image: "/assets/projects/biographical/VINOD KUMAR KHANNA/6.jpeg",
       },
     ],
 
@@ -447,9 +375,8 @@ export const projects: Project[] = [
     slug: "bela-devi",
     category: "biographical",
 
-    title: "BELA DEVI",
-
-    subtitle: "A LEGACY OF LOVE, LEARNING, AND QUIET STRENGTH",
+    title: "A LEGACY OF LOVE, LEARNING, AND QUIET STRENGTH",
+    subtitle: "BELA DEVI",
 
     description: [
       "Some lives unfold like verses, serene, steady, and full of depth. This project began as a tribute to a woman whose strength shaped generations of her family. Born in the early 1900s, she lived through immense change while holding firmly to values of care, education, dignity, and equal opportunity. Her legacy of empowerment and resilience lived on through the memories of her children and grandchildren, across homes in Ghaziabad, Shahdara, and Hauz Qazi.",
@@ -457,36 +384,23 @@ export const projects: Project[] = [
       "Over twelve months, Family Script conducted in-depth oral interviews, documented archival photographs, gathered letters, and captured memories of everyday life. Through research, documentation, and thoughtful design, her story emerged as a memoir of devotion, motherhood, learning, and grace. This book is a quiet homage to a woman who transformed obstacles into lessons and lessons into love.",
     ],
 
-    backgroundImage: "/assets/projects/biographical/bela-devi/background.png",
+    coverImage:
+      "/assets/projects/biographical/BELA DEVI/cover.png",
 
-    mainImage: "/assets/projects/biographical/bela-devi/main.png",
+    bookImage:
+      "/assets/projects/biographical/BELA DEVI/main.png",
 
     gallery: [
       {
-        image: "/assets/projects/biographical/bela-devi/1.png",
-        position: "right-[0%] top-[3%]",
-        width: "w-[22%]",
+        image: "/assets/projects/biographical/BELA DEVI/1.jpg",
       },
       {
-        image: "/assets/projects/biographical/bela-devi/2.png",
-        position: "left-[0%] top-[8%]",
-        width: "w-[20%]",
+        image: "/assets/projects/biographical/BELA DEVI/2.jpg",
       },
       {
-        image: "/assets/projects/biographical/bela-devi/3.png",
-        position: "right-[0%] top-[35%]",
-        width: "w-[23%]",
+        image: "/assets/projects/biographical/BELA DEVI/3.jpg",
       },
-      {
-        image: "/assets/projects/biographical/bela-devi/4.png",
-        position: "left-[0%] bottom-[12%]",
-        width: "w-[21%]",
-      },
-      {
-        image: "/assets/projects/biographical/bela-devi/5.png",
-        position: "right-[31%] bottom-[2%]",
-        width: "w-[18%]",
-      },
+    
     ],
 
     layout: "right",
@@ -500,9 +414,8 @@ export const projects: Project[] = [
     slug: "sulakhyana-pattanayak",
     category: "biographical",
 
-    title: "SULAKHYANA PATTANAYAK",
-
-    subtitle: "A VOICE UNBOUND",
+    title: "A VOICE UNBOUND",
+    subtitle: "SULAKHYANA PATTANAYAK",
 
     location: "BHUBHANESHWAR, ORISSA",
 
@@ -512,37 +425,22 @@ export const projects: Project[] = [
       "Family Script began with intimate conversations and explored a rich collection of personal letters, archival photographs, handwritten notes and newspaper clippings. Interviews with loved ones revealed her curiosity, warmth and calm resolve. Through months of curation, transcription, writing and design, these fragments came together as a layered memoir of legacy, love, courage and enduring presence.",
     ],
 
-    backgroundImage:
-      "/assets/projects/biographical/sulakhyana-pattanayak/background.png",
+    coverImage:
+      "/assets/projects/biographical/SULAKHYANA PATTANAYAK/cover.png",
 
-    mainImage: "/assets/projects/biographical/sulakhyana-pattanayak/main.png",
+    bookImage:
+      "/assets/projects/biographical/SULAKHYANA PATTANAYAK/main.png",
 
     gallery: [
       {
-        image: "/assets/projects/biographical/sulakhyana-pattanayak/1.png",
-        position: "left-[0%] top-[3%]",
-        width: "w-[21%]",
+        image:
+          "/assets/projects/biographical/SULAKHYANA PATTANAYAK/1.jpg",
       },
       {
-        image: "/assets/projects/biographical/sulakhyana-pattanayak/2.png",
-        position: "right-[0%] top-[4%]",
-        width: "w-[22%]",
+        image:
+          "/assets/projects/biographical/SULAKHYANA PATTANAYAK/2.jpg",
       },
-      {
-        image: "/assets/projects/biographical/sulakhyana-pattanayak/3.png",
-        position: "right-[0%] top-[33%]",
-        width: "w-[23%]",
-      },
-      {
-        image: "/assets/projects/biographical/sulakhyana-pattanayak/4.png",
-        position: "left-[0%] bottom-[13%]",
-        width: "w-[20%]",
-      },
-      {
-        image: "/assets/projects/biographical/sulakhyana-pattanayak/5.png",
-        position: "right-[30%] bottom-[2%]",
-        width: "w-[18%]",
-      },
+      
     ],
 
     layout: "left",
@@ -556,9 +454,8 @@ export const projects: Project[] = [
     slug: "dr-k-d-bhargava",
     category: "biographical",
 
-    title: "DR. K D BHARGAVA",
-
-    subtitle: "TWIN FLAMES",
+    title: "TWIN FLAMES",
+    subtitle: "DR. K D BHARGAVA",
 
     location: "NEW DELHI & AUSTRALIA",
 
@@ -568,37 +465,26 @@ export const projects: Project[] = [
       "Through the process of documentation, Family Script brought together the voices of family members, friends, colleagues and well-wishers, creating a collective portrait of a life deeply cherished. His handwritten poems, preserved in crumpled pages and ink-smudged papers, were carefully digitized and curated alongside photographs, memories and personal messages. The resulting volume is a deeply personal tribute, celebrating his enduring presence through poetry, remembrance, love and the voices of those whose lives he touched.",
     ],
 
-    backgroundImage:
-      "/assets/projects/biographical/dr-k-d-bhargava/background.png",
+    coverImage:
+      "/assets/projects/biographical/DR. K D BHARGAVA/cover.png",
 
-    mainImage: "/assets/projects/biographical/dr-k-d-bhargava/main.png",
+    bookImage:
+      "/assets/projects/biographical/DR. K D BHARGAVA/main.png",
 
     gallery: [
       {
-        image: "/assets/projects/biographical/dr-k-d-bhargava/1.png",
-        position: "right-[0%] top-[3%]",
-        width: "w-[22%]",
+        image: "/assets/projects/biographical/DR. K D BHARGAVA/1.jpg",
       },
       {
-        image: "/assets/projects/biographical/dr-k-d-bhargava/2.png",
-        position: "left-[0%] top-[8%]",
-        width: "w-[21%]",
+        image: "/assets/projects/biographical/DR. K D BHARGAVA/2.jpg",
       },
       {
-        image: "/assets/projects/biographical/dr-k-d-bhargava/3.png",
-        position: "right-[0%] top-[34%]",
-        width: "w-[23%]",
+        image: "/assets/projects/biographical/DR. K D BHARGAVA/3.jpg",
       },
       {
-        image: "/assets/projects/biographical/dr-k-d-bhargava/4.png",
-        position: "left-[0%] bottom-[12%]",
-        width: "w-[20%]",
+        image: "/assets/projects/biographical/DR. K D BHARGAVA/4.jpg",
       },
-      {
-        image: "/assets/projects/biographical/dr-k-d-bhargava/5.png",
-        position: "right-[30%] bottom-[2%]",
-        width: "w-[18%]",
-      },
+      
     ],
 
     layout: "right",
@@ -612,9 +498,8 @@ export const projects: Project[] = [
     slug: "vasant-valley-school",
     category: "institutional",
 
-    title: "VASANT VALLEY SCHOOL",
-
-    subtitle: "MAKING OF AN INSTITUTION",
+    title: "MAKING OF AN INSTITUTION",
+    subtitle: "VASANT VALLEY SCHOOL",
 
     location: "VASANT KUNJ, DELHI",
 
@@ -630,36 +515,32 @@ export const projects: Project[] = [
       "Through extensive archival research, oral history interviews and a close study of spatial and built environments, the team worked to convey the lived ethos of the school and its values, questions and quiet transformations.",
     ],
 
-    backgroundImage:
+    coverImage:
       "/assets/projects/institutional/vasant-valley-school/background.png",
 
-    mainImage: "/assets/projects/institutional/vasant-valley-school/main.png",
+    bookImage:
+      "/assets/projects/institutional/vasant-valley-school/main.png",
 
     gallery: [
       {
-        image: "/assets/projects/institutional/vasant-valley-school/1.png",
-        position: "right-[0%] top-[3%]",
-        width: "w-[22%]",
+        image:
+          "/assets/projects/institutional/vasant-valley-school/1.png",
       },
       {
-        image: "/assets/projects/institutional/vasant-valley-school/2.png",
-        position: "left-[0%] top-[8%]",
-        width: "w-[21%]",
+        image:
+          "/assets/projects/institutional/vasant-valley-school/2.png",
       },
       {
-        image: "/assets/projects/institutional/vasant-valley-school/3.png",
-        position: "right-[0%] top-[34%]",
-        width: "w-[23%]",
+        image:
+          "/assets/projects/institutional/vasant-valley-school/3.png",
       },
       {
-        image: "/assets/projects/institutional/vasant-valley-school/4.png",
-        position: "left-[0%] bottom-[12%]",
-        width: "w-[20%]",
+        image:
+          "/assets/projects/institutional/vasant-valley-school/4.png",
       },
       {
-        image: "/assets/projects/institutional/vasant-valley-school/5.png",
-        position: "right-[30%] bottom-[2%]",
-        width: "w-[18%]",
+        image:
+          "/assets/projects/institutional/vasant-valley-school/5.png",
       },
     ],
 
@@ -674,9 +555,8 @@ export const projects: Project[] = [
     slug: "stapati-architects",
     category: "institutional",
 
-    title: "STAPATI ARCHITECTS",
-
-    subtitle: "PEOPLE PROJECTS PRACTICES",
+    title: "PEOPLE PROJECTS PRACTICES",
+    subtitle: "STAPATI ARCHITECTS",
 
     location: "CALICUT, KERALA",
 
@@ -690,36 +570,32 @@ export const projects: Project[] = [
       "Through extensive archival research, oral history interviews and a close study of spatial and built environments, the team worked to convey the lived ethos of the school and its values, questions and quiet transformations.",
     ],
 
-    backgroundImage:
+    coverImage:
       "/assets/projects/institutional/stapati-architects/background.png",
 
-    mainImage: "/assets/projects/institutional/stapati-architects/main.png",
+    bookImage:
+      "/assets/projects/institutional/stapati-architects/main.png",
 
     gallery: [
       {
-        image: "/assets/projects/institutional/stapati-architects/1.png",
-        position: "right-[0%] top-[3%]",
-        width: "w-[22%]",
+        image:
+          "/assets/projects/institutional/stapati-architects/1.png",
       },
       {
-        image: "/assets/projects/institutional/stapati-architects/2.png",
-        position: "left-[0%] top-[8%]",
-        width: "w-[21%]",
+        image:
+          "/assets/projects/institutional/stapati-architects/2.png",
       },
       {
-        image: "/assets/projects/institutional/stapati-architects/3.png",
-        position: "right-[0%] top-[34%]",
-        width: "w-[23%]",
+        image:
+          "/assets/projects/institutional/stapati-architects/3.png",
       },
       {
-        image: "/assets/projects/institutional/stapati-architects/4.png",
-        position: "left-[0%] bottom-[12%]",
-        width: "w-[20%]",
+        image:
+          "/assets/projects/institutional/stapati-architects/4.png",
       },
       {
-        image: "/assets/projects/institutional/stapati-architects/5.png",
-        position: "right-[30%] bottom-[2%]",
-        width: "w-[18%]",
+        image:
+          "/assets/projects/institutional/stapati-architects/5.png",
       },
     ],
 

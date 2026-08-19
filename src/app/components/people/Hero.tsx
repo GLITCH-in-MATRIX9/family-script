@@ -2,18 +2,13 @@
 
 "use client";
 
-import FounderHover, {
-  type Founder,
-} from "./FounderHover";
+import FounderHover, { type Founder } from "./FounderHover";
 
 const founders: Founder[] = [
   {
     name: "DR. KSHITIJ KUMAR SINHA",
     role: "Founder & CEO",
-    description: [
-      "Architect, Researcher,",
-      "Educationist",
-    ],
+    description: ["Architect, Researcher,", "Educationist"],
     image: "/assets/People/Founders/KshitijSinha.png",
     position: "left",
     bio: [
@@ -25,10 +20,7 @@ const founders: Founder[] = [
   {
     name: "MEENAKSHI DUBEY",
     role: "Director & Chief Creative Officer",
-    description: [
-      "Conservation Architect,",
-      "Historian, Educationist",
-    ],
+    description: ["Conservation Architect,", "Historian, Educationist"],
     image: "/assets/People/Founders/MeenakshiDubey.png",
     position: "right",
     bio: [
@@ -40,47 +32,47 @@ const founders: Founder[] = [
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-[#32141f] text-white">
-
+    <section className="relative min-h-screen w-full overflow-hidden bg-[#480424] text-white">
       {/* ================= BACKGROUND ================= */}
 
-      <div className="absolute inset-0">
+      <div className="pointer-events-none absolute inset-0">
+        {/* BASE COLOR */}
+        <div className="absolute inset-0 bg-[#480424]" />
 
+        {/* TOP + BOTTOM GRADIENT */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, #431827 0%, #3b1724 42%, #2b1821 72%, #171319 100%)",
+              "linear-gradient(to bottom, #480424 0%, #480424 55%, rgba(48,3,25,0.35) 75%, rgba(48,3,25,0.72) 90%, #300319 100%)",
           }}
         />
 
+        {/* SUBTLE CENTER GLOW */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(circle at 50% 40%, rgba(119,57,65,0.14), transparent 58%)",
+              "radial-gradient(circle at 50% 40%, rgba(120,45,75,0.08), transparent 60%)",
           }}
         />
 
+        {/* SIDE VIGNETTE */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, transparent 55%, rgba(10,8,10,0.35) 100%)",
+              "linear-gradient(to right, rgba(25,2,14,0.10) 0%, transparent 18%, transparent 82%, rgba(25,2,14,0.10) 100%)",
           }}
         />
-
       </div>
-
 
       {/* ================= CONTENT ================= */}
 
       <div className="relative z-10 mx-auto min-h-screen w-full max-w-[1400px] px-8 pb-12 pt-[150px] md:px-[7%] md:pt-[145px]">
-
         {/* ================= HEADING ================= */}
 
         <div className="relative z-50 text-center">
-
           <h1 className="futura-light text-[38px] uppercase leading-none tracking-[0.025em] text-white md:text-[42px] lg:text-[44px]">
             Our Founders
           </h1>
@@ -88,23 +80,17 @@ export default function Hero() {
           <p className="futura-light mt-5 text-[14px] tracking-[0.02em] text-white/85 md:text-[15px]">
             We are a team of dedicated creatives-
             <span className="futura-bold">
-              {" "}Architects, Historians, Conservationists
-            </span>
-            {" "}and{" "}
-            <span className="futura-bold">
-              Designers.
-            </span>
+              {" "}
+              Architects, Historians, Conservationists
+            </span>{" "}
+            and <span className="futura-bold">Designers.</span>
           </p>
-
         </div>
-
 
         {/* ================= HOVER COMPONENT ================= */}
 
         <FounderHover founders={founders} />
-
       </div>
-
     </section>
   );
 }
