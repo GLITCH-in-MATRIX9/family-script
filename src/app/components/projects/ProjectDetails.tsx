@@ -18,6 +18,68 @@ type ProjectDetailsProps = {
   project: Project;
 };
 
+/* =========================================================
+   GALLERY IMAGE
+========================================================= */
+
+type GalleryImageProps = {
+  item: {
+    image: string;
+  } | undefined;
+  title: string;
+  index: number;
+};
+
+const GalleryImage = ({
+  item,
+  title,
+  index,
+}: GalleryImageProps) => {
+
+  if (!item) {
+    return (
+      <div
+        className="
+          h-full
+          w-full
+          min-h-0
+        "
+      />
+    );
+  }
+
+  return (
+    <div
+      className="
+        relative
+        h-full
+        w-full
+        min-h-0
+        overflow-hidden
+      "
+    >
+      <img
+        src={item.image}
+        alt={`${title} gallery image ${
+          index + 1
+        }`}
+        className="
+          block
+          h-full
+          w-full
+          object-cover
+
+          transition-transform
+          duration-700
+          ease-out
+
+          hover:scale-[1.04]
+        "
+      />
+    </div>
+  );
+};
+
 export default function ProjectDetails({
   project,
 }: ProjectDetailsProps) {
@@ -110,61 +172,6 @@ export default function ProjectDetails({
       ease: "power3.out",
       overwrite: true,
     });
-  };
-
-  /* =========================================================
-     GALLERY IMAGE
-  ========================================================= */
-
-  const GalleryImage = ({
-    index,
-  }: {
-    index: number;
-  }) => {
-    const item = galleryImages[index];
-
-    if (!item) {
-      return (
-        <div
-          className="
-            h-full
-            w-full
-            min-h-0
-          "
-        />
-      );
-    }
-
-    return (
-      <div
-        className="
-          relative
-          h-full
-          w-full
-          min-h-0
-          overflow-hidden
-        "
-      >
-        <img
-          src={item.image}
-          alt={`${project.title} gallery image ${
-            index + 1
-          }`}
-          className="
-            block
-            h-full
-            w-full
-            object-cover
-
-            transition-transform
-            duration-700
-            ease-out
-
-            hover:scale-[1.04]
-          "
-        />
-      </div>
-    );
   };
 
   return (
@@ -593,11 +600,23 @@ export default function ProjectDetails({
                     ROW 1 — 3 IMAGES
                 ================================================= */}
 
-                <GalleryImage index={0} />
+                <GalleryImage
+                  item={galleryImages[0]}
+                  title={project.title}
+                  index={0}
+                />
 
-                <GalleryImage index={1} />
+                <GalleryImage
+                  item={galleryImages[1]}
+                  title={project.title}
+                  index={1}
+                />
 
-                <GalleryImage index={2} />
+                <GalleryImage
+                  item={galleryImages[2]}
+                  title={project.title}
+                  index={2}
+                />
 
                 {/* =================================================
                     ROW 2 — BOOK
@@ -697,7 +716,11 @@ export default function ProjectDetails({
                       flex-1
                     "
                   >
-                    <GalleryImage index={3} />
+                    <GalleryImage
+                  item={galleryImages[3]}
+                  title={project.title}
+                  index={3}
+                />
                   </div>
 
                   {/* BOTTOM IMAGE */}
@@ -708,7 +731,11 @@ export default function ProjectDetails({
                       flex-1
                     "
                   >
-                    <GalleryImage index={4} />
+                    <GalleryImage
+                  item={galleryImages[4]}
+                  title={project.title}
+                  index={4}
+                />
                   </div>
                 </div>
 
@@ -716,11 +743,23 @@ export default function ProjectDetails({
                     ROW 3 — 3 IMAGES
                 ================================================= */}
 
-                <GalleryImage index={5} />
+                <GalleryImage
+                  item={galleryImages[5]}
+                  title={project.title}
+                  index={5}
+                />
 
-                <GalleryImage index={6} />
+                <GalleryImage
+                  item={galleryImages[6]}
+                  title={project.title}
+                  index={6}
+                />
 
-                <GalleryImage index={7} />
+                <GalleryImage
+                  item={galleryImages[7]}
+                  title={project.title}
+                  index={7}
+                />
               </div>
             </div>
           </div>
