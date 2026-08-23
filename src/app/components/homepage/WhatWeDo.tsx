@@ -224,7 +224,7 @@ export default function WhatWeDo() {
         ref={backgroundRef}
         className="absolute inset-[-8%] bg-cover bg-center"
         style={{
-          backgroundImage: "url('/assets/homepage/WHAT_WE_DO.jpg')",
+          backgroundImage: "url('/assets/Homepage/WHAT_WE_DO.jpg')",
         }}
       />
 

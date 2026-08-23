@@ -245,7 +245,7 @@ export default function WhoAreWe() {
         ref={backgroundRef}
         className="absolute inset-[-8%] bg-cover bg-center"
         style={{
-          backgroundImage: "url('/assets/homepage/WHO_WE_ARE.jpg')",
+          backgroundImage: "url('/assets/Homepage/WHO_WE_ARE.jpg')",
         }}
       />
 
