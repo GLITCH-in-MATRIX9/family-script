@@ -7,7 +7,7 @@ const projects = [
   {
     title: "BIOGRAPHICAL",
     image: "/assets/PROJECTS/BIOGRAPHICAL.png",
-    href: "/PROJECTS/BIOGRAPHICAL",
+    href: "/projects/biographical",
   },
   {
     title: "INSTITUTIONAL",

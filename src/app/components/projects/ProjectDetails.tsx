@@ -486,7 +486,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
             </span>
 
             <Link
-              href="/PROJECTS/BIOGRAPHICAL"
+              href="/projects/biographical"
               className="
                 futura-light
                 text-[9px]

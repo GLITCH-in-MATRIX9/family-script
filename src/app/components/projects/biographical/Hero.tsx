@@ -6,52 +6,52 @@ const people = [
   {
     name: "AKHIL BAKSHI",
     image: "/assets/PROJECTS/BIOGRAPHICAL/AKHIL BAKSHI/cover.jpg",
-    href: "/PROJECTS/BIOGRAPHICAL/akhil-bakshi",
+    href: "/projects/biographical/akhil-bakshi",
   },
   {
     name: "REVA KHANNA",
     image: "/assets/PROJECTS/BIOGRAPHICAL/REVA KHANNA/cover.jpg",
-    href: "/PROJECTS/BIOGRAPHICAL/reva-khanna",
+    href: "/projects/biographical/reva-khanna",
   },
   {
     name: "DR. V KUTTY",
     image: "/assets/PROJECTS/BIOGRAPHICAL/DR. V K KUTTY/cover.jpg",
-    href: "/PROJECTS/BIOGRAPHICAL/dr-v-k-kutty",
+    href: "/projects/biographical/dr-v-k-kutty",
   },
   {
     name: "RENU MEHRA",
     image: "/assets/PROJECTS/BIOGRAPHICAL/RENU MEHRA/cover.png",
-    href: "/PROJECTS/BIOGRAPHICAL/renu-mehra",
+    href: "/projects/biographical/renu-mehra",
   },
   {
     name: "SUDHA GUPTA",
     image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA GUPTA/cover.jpg",
-    href: "/PROJECTS/BIOGRAPHICAL/sudha-gupta",
+    href: "/projects/biographical/sudha-gupta",
   },
   {
     name: "SUDHA RAINA",
     image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA RAINA/cover.png",
-    href: "/PROJECTS/BIOGRAPHICAL/sudha-raina",
+    href: "/projects/biographical/sudha-raina",
   },
   {
     name: "VINOD KUMAR KHANNA",
     image: "/assets/PROJECTS/BIOGRAPHICAL/VINOD KUMAR KHANNA/cover.png",
-    href: "/PROJECTS/BIOGRAPHICAL/vinod-kumar-khanna",
+    href: "/projects/biographical/vinod-kumar-khanna",
   },
   {
     name: "BELA DEVI",
     image: "/assets/PROJECTS/BIOGRAPHICAL/BELA DEVI/cover.png",
-    href: "/PROJECTS/BIOGRAPHICAL/bela-devi",
+    href: "/projects/biographical/bela-devi",
   },
   {
     name: "SULAKHYANA PATTANAYAK",
     image: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/cover.png",
-    href: "/PROJECTS/BIOGRAPHICAL/sulakhyana-pattanayak",
+    href: "/projects/biographical/sulakhyana-pattanayak",
   },
   {
     name: "DR. K D BHARGAVA",
     image: "/assets/PROJECTS/BIOGRAPHICAL/DR. K D BHARGAVA/cover.png",
-    href: "/PROJECTS/BIOGRAPHICAL/dr-k-d-bhargava",
+    href: "/projects/biographical/dr-k-d-bhargava",
   },
 ];
 
