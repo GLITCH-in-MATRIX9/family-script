@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth/auth" // adjust to wherever your Better Auth instance is exported
+import { auth } from "@/config/auth" // adjust to wherever your Better Auth instance is exported
 import { prisma } from "@/lib/prisma"; // adjust to your Prisma client singleton
 import { getReportsQuerySchema } from "@/lib/validations/report";
 
