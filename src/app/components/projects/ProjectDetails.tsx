@@ -1,20 +1,12 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
 
 import gsap from "gsap";
 
-import {
-  FiFacebook,
-  FiInstagram,
-  FiYoutube,
-} from "react-icons/fi";
+import { FiFacebook, FiInstagram, FiYoutube } from "react-icons/fi";
 
 import { projects } from "@/data/projects";
 
@@ -24,36 +16,26 @@ type ProjectDetailsProps = {
   project: Project;
 };
 
-export default function ProjectDetails({
-  project,
-}: ProjectDetailsProps) {
+export default function ProjectDetails({ project }: ProjectDetailsProps) {
   /* =========================================================
      REFS
   ========================================================= */
 
-  const bookRef =
-    useRef<HTMLDivElement>(null);
+  const bookRef = useRef<HTMLDivElement>(null);
 
-  const galleryTrackRef =
-    useRef<HTMLDivElement>(null);
+  const galleryTrackRef = useRef<HTMLDivElement>(null);
 
-  const galleryContainerRef =
-    useRef<HTMLDivElement>(null);
+  const galleryContainerRef = useRef<HTMLDivElement>(null);
 
-  const currentSlideRef =
-    useRef(0);
+  const currentSlideRef = useRef(0);
 
-  const hoverRef =
-    useRef(false);
-
+  const hoverRef = useRef(false);
 
   /* =========================================================
      STATE
   ========================================================= */
 
-  const [isGalleryHovered, setIsGalleryHovered] =
-    useState(false);
-
+  const [isGalleryHovered, setIsGalleryHovered] = useState(false);
 
   /* =========================================================
      CONSTANTS
@@ -65,49 +47,37 @@ export default function ProjectDetails({
 
   const gap = 12;
 
-
   /* =========================================================
      KEEP HOVER REF IN SYNC
   ========================================================= */
 
   useEffect(() => {
-    hoverRef.current =
-      isGalleryHovered;
+    hoverRef.current = isGalleryHovered;
   }, [isGalleryHovered]);
-
 
   /* =========================================================
      BOOK — DIRECTIONAL 3D TILT
   ========================================================= */
 
-  const handleBookMouseMove = (
-    event: React.MouseEvent<HTMLDivElement>
-  ) => {
+  const handleBookMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     const book = bookRef.current;
 
     if (!book) return;
 
-    const rect =
-      event.currentTarget.getBoundingClientRect();
+    const rect = event.currentTarget.getBoundingClientRect();
 
-    const x =
-      event.clientX - rect.left;
+    const x = event.clientX - rect.left;
 
-    const y =
-      event.clientY - rect.top;
-
+    const y = event.clientY - rect.top;
 
     /*
      * Convert cursor position into
      * -1 to +1.
      */
 
-    const normalizedX =
-      (x / rect.width - 0.5) * 2;
+    const normalizedX = (x / rect.width - 0.5) * 2;
 
-    const normalizedY =
-      (y / rect.height - 0.5) * 2;
-
+    const normalizedY = (y / rect.height - 0.5) * 2;
 
     /*
      * Directional tilt.
@@ -119,20 +89,15 @@ export default function ProjectDetails({
      */
 
     gsap.to(book, {
-      rotationY:
-        normalizedX * 12,
+      rotationY: normalizedX * 12,
 
-      rotationX:
-        normalizedY * -10,
+      rotationX: normalizedY * -10,
 
-      rotationZ:
-        normalizedX * 2,
+      rotationZ: normalizedX * 2,
 
-      x:
-        normalizedX * 7,
+      x: normalizedX * 7,
 
-      y:
-        normalizedY * -6,
+      y: normalizedY * -6,
 
       scale: 1.025,
 
@@ -143,7 +108,6 @@ export default function ProjectDetails({
       overwrite: true,
     });
   };
-
 
   /* =========================================================
      BOOK — RESET
@@ -172,21 +136,18 @@ export default function ProjectDetails({
     });
   };
 
-
   /* =========================================================
      GET SLIDE DISTANCE
   ========================================================= */
 
   const getSlideDistance = () => {
-    const container =
-      galleryContainerRef.current;
+    const container = galleryContainerRef.current;
 
     if (!container) {
       return 0;
     }
 
-    const containerWidth =
-      container.offsetWidth;
+    const containerWidth = container.offsetWidth;
 
     /*
      * Four images visible.
@@ -195,38 +156,28 @@ export default function ProjectDetails({
      */
 
     const imageWidth =
-      (containerWidth -
-        gap * (visibleCount - 1)) /
-      visibleCount;
+      (containerWidth - gap * (visibleCount - 1)) / visibleCount;
 
     return imageWidth + gap;
   };
-
 
   /* =========================================================
      MOVE SLIDESHOW
   ========================================================= */
 
-  const moveGallery = (
-    targetIndex: number,
-    duration = 1.2
-  ) => {
-    const track =
-      galleryTrackRef.current;
+  const moveGallery = (targetIndex: number, duration = 1.2) => {
+    const track = galleryTrackRef.current;
 
     if (!track) return;
 
-    const distance =
-      getSlideDistance();
+    const distance = getSlideDistance();
 
     if (!distance) return;
 
-    currentSlideRef.current =
-      targetIndex;
+    currentSlideRef.current = targetIndex;
 
     gsap.to(track, {
-      x:
-        -(targetIndex * distance),
+      x: -(targetIndex * distance),
 
       duration,
 
@@ -235,7 +186,6 @@ export default function ProjectDetails({
       overwrite: true,
     });
   };
-
 
   /* =========================================================
      SMOOTH AUTO SLIDESHOW
@@ -246,9 +196,7 @@ export default function ProjectDetails({
       return;
     }
 
-    let timeoutId:
-      ReturnType<typeof setTimeout>;
-
+    let timeoutId: ReturnType<typeof setTimeout>;
 
     const play = () => {
       /*
@@ -256,80 +204,51 @@ export default function ProjectDetails({
        */
 
       if (hoverRef.current) {
-        timeoutId = setTimeout(
-          play,
-          500
-        );
+        timeoutId = setTimeout(play, 500);
 
         return;
       }
 
+      const maxSlide = gallery.length - visibleCount;
 
-      const maxSlide =
-        gallery.length -
-        visibleCount;
-
-      let nextSlide =
-        currentSlideRef.current + 1;
-
+      let nextSlide = currentSlideRef.current + 1;
 
       /*
        * Normal movement.
        */
 
       if (nextSlide <= maxSlide) {
-        moveGallery(
-          nextSlide,
-          1.2
-        );
-      }
+        moveGallery(nextSlide, 1.2);
+      } else {
 
       /*
        * When reaching the end,
        * smoothly return to first slide.
        */
-
-      else {
         nextSlide = 0;
 
-        moveGallery(
-          nextSlide,
-          1.5
-        );
+        moveGallery(nextSlide, 1.5);
       }
-
 
       /*
        * Wait 3 seconds before next movement.
        */
 
-      timeoutId = setTimeout(
-        play,
-        3000
-      );
+      timeoutId = setTimeout(play, 3000);
     };
-
 
     /*
      * Initial delay.
      */
 
-    timeoutId = setTimeout(
-      play,
-      3000
-    );
-
+    timeoutId = setTimeout(play, 3000);
 
     return () => {
       clearTimeout(timeoutId);
 
-      gsap.killTweensOf(
-        galleryTrackRef.current
-      );
+      gsap.killTweensOf(galleryTrackRef.current);
     };
-
   }, [gallery.length]);
-
 
   /* =========================================================
      RESPONSIVE SLIDESHOW RESIZE
@@ -337,40 +256,25 @@ export default function ProjectDetails({
 
   useEffect(() => {
     const handleResize = () => {
-      const track =
-        galleryTrackRef.current;
+      const track = galleryTrackRef.current;
 
       if (!track) return;
 
-      const distance =
-        getSlideDistance();
+      const distance = getSlideDistance();
 
       if (!distance) return;
 
       gsap.set(track, {
-        x:
-          -(
-            currentSlideRef.current *
-            distance
-          ),
+        x: -(currentSlideRef.current * distance),
       });
     };
 
-
-    window.addEventListener(
-      "resize",
-      handleResize
-    );
-
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener(
-        "resize",
-        handleResize
-      );
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
-
 
   /* =========================================================
      GALLERY HOVER
@@ -381,18 +285,14 @@ export default function ProjectDetails({
 
     setIsGalleryHovered(true);
 
-    gsap.killTweensOf(
-      galleryTrackRef.current
-    );
+    gsap.killTweensOf(galleryTrackRef.current);
   };
-
 
   const handleGalleryLeave = () => {
     hoverRef.current = false;
 
     setIsGalleryHovered(false);
   };
-
 
   /* =========================================================
      RENDER
@@ -408,7 +308,6 @@ export default function ProjectDetails({
         text-white
       "
     >
-
       {/* =====================================================
           ONE COMPLETE PROJECT SECTION
       ===================================================== */}
@@ -434,8 +333,6 @@ export default function ProjectDetails({
           lg:pb-0
         "
       >
-
-
         {/* ===================================================
             BACKGROUND IMAGE
         =================================================== */}
@@ -448,7 +345,6 @@ export default function ProjectDetails({
             z-0
           "
         >
-
           <img
             src={
               project.coverImage ||
@@ -464,7 +360,6 @@ export default function ProjectDetails({
             "
           />
 
-
           {/* MAROON OVERLAY */}
 
           <div
@@ -475,7 +370,6 @@ export default function ProjectDetails({
             "
           />
 
-
           {/* DARK OVERLAY */}
 
           <div
@@ -485,7 +379,6 @@ export default function ProjectDetails({
               bg-black/30
             "
           />
-
 
           {/* BOTTOM GRADIENT */}
 
@@ -499,9 +392,7 @@ export default function ProjectDetails({
                 "linear-gradient(to bottom, rgba(59,20,37,0.08) 0%, rgba(30,18,24,0.30) 55%, rgba(8,8,10,0.90) 100%)",
             }}
           />
-
         </div>
-
 
         {/* ===================================================
             MAIN CONTENT
@@ -523,8 +414,6 @@ export default function ProjectDetails({
             lg:h-full
           "
         >
-
-
           {/* =================================================
               BREADCRUMB
           ================================================= */}
@@ -542,7 +431,6 @@ export default function ProjectDetails({
               lg:mb-5
             "
           >
-
             <Link
               href="/"
               className="
@@ -561,7 +449,6 @@ export default function ProjectDetails({
               Home
             </Link>
 
-
             <span
               className="
                 text-[9px]
@@ -570,7 +457,6 @@ export default function ProjectDetails({
             >
               &gt;&gt;
             </span>
-
 
             <Link
               href="/projects"
@@ -590,7 +476,6 @@ export default function ProjectDetails({
               Projects
             </Link>
 
-
             <span
               className="
                 text-[9px]
@@ -600,9 +485,8 @@ export default function ProjectDetails({
               &gt;&gt;
             </span>
 
-
             <Link
-              href="/projects/biographical"
+              href="/PROJECTS/BIOGRAPHICAL"
               className="
                 futura-light
                 text-[9px]
@@ -619,7 +503,6 @@ export default function ProjectDetails({
               Biographical
             </Link>
 
-
             <span
               className="
                 text-[9px]
@@ -628,7 +511,6 @@ export default function ProjectDetails({
             >
               &gt;&gt;
             </span>
-
 
             <span
               className="
@@ -646,9 +528,7 @@ export default function ProjectDetails({
             >
               {project.title}
             </span>
-
           </div>
-
 
           {/* =================================================
               RESPONSIVE MAIN GRID
@@ -667,8 +547,6 @@ export default function ProjectDetails({
               lg:gap-0
             "
           >
-
-
             {/* =================================================
                 LEFT SECTION
             ================================================= */}
@@ -682,8 +560,6 @@ export default function ProjectDetails({
                 lg:pr-[8%]
               "
             >
-
-
               {/* =================================================
                   LEFT TOP
 
@@ -700,7 +576,6 @@ export default function ProjectDetails({
                   lg:pb-5
                 "
               >
-
                 <h1
                   className="
                     futura-light
@@ -714,7 +589,6 @@ export default function ProjectDetails({
                   {project.title}
                 </h1>
 
-
                 {/* SUBTITLE / LOCATION */}
 
                 <div
@@ -726,7 +600,6 @@ export default function ProjectDetails({
                     gap-y-1
                   "
                 >
-
                   <p
                     className="
                       futura-light
@@ -740,7 +613,6 @@ export default function ProjectDetails({
                   >
                     {project.subtitle}
                   </p>
-
 
                   {project.location && (
                     <p
@@ -757,11 +629,8 @@ export default function ProjectDetails({
                       {project.location}
                     </p>
                   )}
-
                 </div>
-
               </div>
-
 
               {/* =================================================
                   LEFT BOTTOM — DESCRIPTION
@@ -778,22 +647,15 @@ export default function ProjectDetails({
                   lg:pt-5
                 "
               >
-
                 <div
                   className="
                     space-y-5
                   "
                 >
-
-                  {project.description.map(
-                    (
-                      paragraph,
-                      index
-                    ) => (
-
-                      <p
-                        key={index}
-                        className="
+                  {project.description.map((paragraph, index) => (
+                    <p
+                      key={index}
+                      className="
                           futura-light
                           text-[12px]
                           leading-[1.55]
@@ -806,19 +668,13 @@ export default function ProjectDetails({
 
                           lg:text-[0.9vw]
                         "
-                      >
-                        {paragraph}
-                      </p>
-
-                    )
-                  )}
-
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
                 </div>
-
               </div>
-
             </div>
-
 
             {/* =================================================
                 RIGHT SECTION
@@ -835,8 +691,6 @@ export default function ProjectDetails({
                 lg:gap-0
               "
             >
-
-
               {/* =================================================
                   RIGHT TOP — BOOK
               ================================================= */}
@@ -855,15 +709,10 @@ export default function ProjectDetails({
                   lg:min-h-0
                 "
               >
-
                 <div
                   ref={bookRef}
-                  onMouseMove={
-                    handleBookMouseMove
-                  }
-                  onMouseLeave={
-                    handleBookMouseLeave
-                  }
+                  onMouseMove={handleBookMouseMove}
+                  onMouseLeave={handleBookMouseLeave}
                   className="
                     relative
                     h-[52vh]
@@ -888,14 +737,11 @@ export default function ProjectDetails({
                     xl:max-w-[640px]
                   "
                   style={{
-                    perspective:
-                      "1200px",
+                    perspective: "1200px",
 
-                    transformStyle:
-                      "preserve-3d",
+                    transformStyle: "preserve-3d",
                   }}
                 >
-
                   <img
                     src={
                       project.bookImage ||
@@ -909,20 +755,15 @@ export default function ProjectDetails({
                       drop-shadow-[0_22px_30px_rgba(0,0,0,0.55)]
                     "
                   />
-
                 </div>
-
               </div>
-
 
               {/* =================================================
                   RIGHT BOTTOM — SLIDESHOW
               ================================================= */}
 
               <div
-                ref={
-                  galleryContainerRef
-                }
+                ref={galleryContainerRef}
                 className="
                   flex
                   min-h-[120px]
@@ -936,20 +777,12 @@ export default function ProjectDetails({
 
                   lg:min-h-0
                 "
-                onMouseEnter={
-                  handleGalleryEnter
-                }
-                onMouseLeave={
-                  handleGalleryLeave
-                }
+                onMouseEnter={handleGalleryEnter}
+                onMouseLeave={handleGalleryLeave}
               >
-
                 {gallery.length > 0 && (
-
                   <div
-                    ref={
-                      galleryTrackRef
-                    }
+                    ref={galleryTrackRef}
                     className="
                       flex
                       w-full
@@ -959,36 +792,24 @@ export default function ProjectDetails({
                       sm:gap-3
                     "
                   >
-
-                    {gallery.map(
-                      (
-                        item,
-                        index
-                      ) => (
-
-                        <div
-                          key={`${item.image}-${index}`}
-                          className="
+                    {gallery.map((item, index) => (
+                      <div
+                        key={`${item.image}-${index}`}
+                        className="
                             relative
                             aspect-[1.35/1]
                             shrink-0
                             overflow-hidden
                             bg-black/10
                           "
-                          style={{
-                            width:
-                              "calc((100% - 36px) / 4)",
-                          }}
-                        >
-
-                          <img
-                            src={
-                              item.image
-                            }
-                            alt={`${project.title} gallery image ${
-                              index + 1
-                            }`}
-                            className="
+                        style={{
+                          width: "calc((100% - 36px) / 4)",
+                        }}
+                      >
+                        <img
+                          src={item.image}
+                          alt={`${project.title} gallery image ${index + 1}`}
+                          className="
                               h-full
                               w-full
                               object-cover
@@ -997,25 +818,15 @@ export default function ProjectDetails({
                               ease-out
                               hover:scale-[1.04]
                             "
-                          />
-
-                        </div>
-
-                      )
-                    )}
-
+                        />
+                      </div>
+                    ))}
                   </div>
-
                 )}
-
               </div>
-
             </div>
-
           </div>
-
         </div>
-
 
         {/* =====================================================
             SOCIAL ICONS
@@ -1038,7 +849,6 @@ export default function ProjectDetails({
             sm:gap-5
           "
         >
-
           <Link
             href="#"
             aria-label="Facebook"
@@ -1048,11 +858,8 @@ export default function ProjectDetails({
               hover:opacity-60
             "
           >
-            <FiFacebook
-              size={17}
-            />
+            <FiFacebook size={17} />
           </Link>
-
 
           <Link
             href="#"
@@ -1063,11 +870,8 @@ export default function ProjectDetails({
               hover:opacity-60
             "
           >
-            <FiInstagram
-              size={17}
-            />
+            <FiInstagram size={17} />
           </Link>
-
 
           <Link
             href="#"
@@ -1078,15 +882,10 @@ export default function ProjectDetails({
               hover:opacity-60
             "
           >
-            <FiYoutube
-              size={17}
-            />
+            <FiYoutube size={17} />
           </Link>
-
         </div>
-
       </section>
-
     </main>
   );
 }

@@ -5,53 +5,53 @@ import Link from "next/link";
 const people = [
   {
     name: "AKHIL BAKSHI",
-    image: "/assets/projects/biographical/AKHIL BAKSHI/cover.jpg",
-    href: "/projects/biographical/akhil-bakshi",
+    image: "/assets/PROJECTS/BIOGRAPHICAL/AKHIL BAKSHI/cover.jpg",
+    href: "/PROJECTS/BIOGRAPHICAL/akhil-bakshi",
   },
   {
     name: "REVA KHANNA",
-    image: "/assets/projects/biographical/REVA KHANNA/cover.jpg",
-    href: "/projects/biographical/reva-khanna",
+    image: "/assets/PROJECTS/BIOGRAPHICAL/REVA KHANNA/cover.jpg",
+    href: "/PROJECTS/BIOGRAPHICAL/reva-khanna",
   },
   {
     name: "DR. V KUTTY",
-    image: "/assets/projects/biographical/DR. V K KUTTY/cover.jpg",
-    href: "/projects/biographical/dr-v-k-kutty",
+    image: "/assets/PROJECTS/BIOGRAPHICAL/DR. V K KUTTY/cover.jpg",
+    href: "/PROJECTS/BIOGRAPHICAL/dr-v-k-kutty",
   },
   {
     name: "RENU MEHRA",
-    image: "/assets/projects/biographical/RENU MEHRA/cover.png",
-    href: "/projects/biographical/renu-mehra",
+    image: "/assets/PROJECTS/BIOGRAPHICAL/RENU MEHRA/cover.png",
+    href: "/PROJECTS/BIOGRAPHICAL/renu-mehra",
   },
   {
     name: "SUDHA GUPTA",
-    image: "/assets/projects/biographical/SUDHA GUPTA/cover.jpg",
-    href: "/projects/biographical/sudha-gupta",
+    image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA GUPTA/cover.jpg",
+    href: "/PROJECTS/BIOGRAPHICAL/sudha-gupta",
   },
   {
     name: "SUDHA RAINA",
-    image: "/assets/projects/biographical/SUDHA RAINA/cover.png",
-    href: "/projects/biographical/sudha-raina",
+    image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA RAINA/cover.png",
+    href: "/PROJECTS/BIOGRAPHICAL/sudha-raina",
   },
   {
     name: "VINOD KUMAR KHANNA",
-    image: "/assets/projects/biographical/VINOD KUMAR KHANNA/cover.png",
-    href: "/projects/biographical/vinod-kumar-khanna",
+    image: "/assets/PROJECTS/BIOGRAPHICAL/VINOD KUMAR KHANNA/cover.png",
+    href: "/PROJECTS/BIOGRAPHICAL/vinod-kumar-khanna",
   },
   {
     name: "BELA DEVI",
-    image: "/assets/projects/biographical/BELA DEVI/cover.png",
-    href: "/projects/biographical/bela-devi",
+    image: "/assets/PROJECTS/BIOGRAPHICAL/BELA DEVI/cover.png",
+    href: "/PROJECTS/BIOGRAPHICAL/bela-devi",
   },
   {
     name: "SULAKHYANA PATTANAYAK",
-    image: "/assets/projects/biographical/SULAKHYANA PATTANAYAK/cover.png",
-    href: "/projects/biographical/sulakhyana-pattanayak",
+    image: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/cover.png",
+    href: "/PROJECTS/BIOGRAPHICAL/sulakhyana-pattanayak",
   },
   {
     name: "DR. K D BHARGAVA",
-    image: "/assets/projects/biographical/DR. K D BHARGAVA/cover.png",
-    href: "/projects/biographical/dr-k-d-bhargava",
+    image: "/assets/PROJECTS/BIOGRAPHICAL/DR. K D BHARGAVA/cover.png",
+    href: "/PROJECTS/BIOGRAPHICAL/dr-k-d-bhargava",
   },
 ];
 
