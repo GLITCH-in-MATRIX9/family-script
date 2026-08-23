@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { NextRequest } from "next/server";
 
-import { auth } from "../../../../lib/auth";
+import { auth } from "@/lib/auth";
 import { handleApiError } from "@/lib/api-error";
 import { successResponse } from "@/lib/api-response";
 
@@ -39,7 +39,10 @@ export async function GET(
 
     const { treeId } = treeIdSchema.parse(await params);
 
-    const tree = await treeService.getTreeById(treeId, session.user.id);
+    const tree = await treeService.getTreeById(
+      treeId,
+      session.user.id
+    );
 
     return successResponse(
       tree,
@@ -75,7 +78,6 @@ export async function PATCH(
     const { treeId } = treeIdSchema.parse(await params);
 
     const body = await request.json();
-
     const data = updateTreeSchema.parse(body);
 
     const tree = await treeService.updateTree(

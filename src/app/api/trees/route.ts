@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { NextRequest } from "next/server";
 
-import { auth } from "../../../lib/auth";
+import { auth } from "@/lib/auth";
 import { handleApiError } from "@/lib/api-error";
 import { successResponse } from "@/lib/api-response";
 
