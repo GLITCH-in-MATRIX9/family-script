@@ -1,12 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
     const session = await requireAdmin(req);
+
     if (!session && process.env.NODE_ENV === "production") {
       return NextResponse.json(
-        { success: false, message: "Unauthorized" },
+        {
+          success: false,
+          message: "Unauthorized",
+        },
         { status: 401 }
       );
     }
@@ -20,30 +25,54 @@ export async function GET(req: NextRequest) {
     const page = parseInt(pageRaw, 10);
     const limit = parseInt(limitRaw, 10);
 
-    if (isNaN(page) || page < 1 || isNaN(limit) || limit < 1 || limit > 100) {
+    if (
+      isNaN(page) ||
+      page < 1 ||
+      isNaN(limit) ||
+      limit < 1 ||
+      limit > 100
+    ) {
       return NextResponse.json(
-        { success: false, message: "Invalid Query Params" },
+        {
+          success: false,
+          message: "Invalid Query Params",
+        },
         { status: 400 }
       );
     }
 
-    const validStatuses = ["ACTIVE", "DRAFT", "EXPIRED"];
-    if (status && !validStatuses.includes(status)) {
+    const validStatuses = ["ACTIVE", "DRAFT", "EXPIRED"] as const;
+
+    if (
+      status &&
+      !validStatuses.includes(
+        status as (typeof validStatuses)[number]
+      )
+    ) {
       return NextResponse.json(
-        { success: false, message: "Invalid Query Params: status must be ACTIVE, DRAFT or EXPIRED" },
+        {
+          success: false,
+          message:
+            "Invalid Query Params: status must be ACTIVE, DRAFT or EXPIRED",
+        },
         { status: 400 }
       );
     }
 
-    const where: any = {};
-    if (status) where.status = status;
+    const where: Prisma.AnnouncementWhereInput = {};
+
+    if (status) {
+      where.status = status as Prisma.AnnouncementWhereInput["status"];
+    }
 
     const [announcements, total] = await Promise.all([
       prisma.announcement.findMany({
         where,
         skip: (page - 1) * limit,
         take: limit,
-        orderBy: { createdAt: "desc" },
+        orderBy: {
+          createdAt: "desc",
+        },
         select: {
           id: true,
           title: true,
@@ -55,7 +84,10 @@ export async function GET(req: NextRequest) {
           createdAt: true,
         },
       }),
-      prisma.announcement.count({ where }),
+
+      prisma.announcement.count({
+        where,
+      }),
     ]);
 
     return NextResponse.json({
@@ -72,8 +104,12 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("[ADMIN_ANNOUNCEMENTS_GET]", error);
+
     return NextResponse.json(
-      { success: false, message: "Internal Server Error" },
+      {
+        success: false,
+        message: "Internal Server Error",
+      },
       { status: 500 }
     );
   }
