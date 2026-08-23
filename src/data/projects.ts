@@ -42,11 +42,9 @@ export const projects: Project[] = [
       "When FS entered the frame, a huge corpus of old photographs of his travels, letters and extensive work in the social sector surfaced that we worked with to curate a whole volume driven by clarity and precision. Emerging as a portrait in words, FS traced a life journey through multiple correspondences, oral history sessions and careful design ideation, ultimately unfolding into a cohesive narrative arc that stands as a reflection of challenges, adventures and a lifelong commitment to service and curiosity.",
     ],
 
-    coverImage:
-      "/assets/projects/biographical/AKHIL BAKSHI/cover.jpg",
+    coverImage: "/assets/projects/biographical/AKHIL BAKSHI/cover.jpg",
 
-    bookImage:
-      "/assets/projects/biographical/AKHIL BAKSHI/book.png",
+    bookImage: "/assets/projects/biographical/AKHIL BAKSHI/book.png",
 
     gallery: [
       {
@@ -96,11 +94,9 @@ export const projects: Project[] = [
       "The book that emerged is a tribute to the human grit, where personal memory meets collective history. It stands as an archive of love, strength and belonging, created through collaboration, trust and an unwavering belief in the power of remembering together.",
     ],
 
-    coverImage:
-      "/assets/projects/biographical/REVA KHANNA/cover.jpg",
+    coverImage: "/assets/projects/biographical/REVA KHANNA/cover.jpg",
 
-    bookImage:
-      "/assets/projects/biographical/REVA KHANNA/book.jpg",
+    bookImage: "/assets/projects/biographical/REVA KHANNA/book.jpg",
 
     gallery: [
       {
@@ -145,11 +141,9 @@ export const projects: Project[] = [
       "He founded Dr Kutty Healthcare and his enduring influence lives on through his pioneering efforts in promoting preventive diagnosis through setting up the Nura Centre, in collaboration with Fujifilm, across the world.",
     ],
 
-    coverImage:
-      "/assets/projects/biographical/DR. V K KUTTY/cover.jpg",
+    coverImage: "/assets/projects/biographical/DR. V K KUTTY/cover.jpg",
 
-    bookImage:
-      "/assets/projects/biographical/DR. V K KUTTY/main.png",
+    bookImage: "/assets/projects/biographical/DR. V K KUTTY/main.png",
 
     gallery: [
       {
@@ -188,11 +182,9 @@ export const projects: Project[] = [
       "Family Script carefully digitized journals, restored photographs and recorded conversations, bringing together stories of Partition, displacement, resilience and renewal. The book evolved into a living document of a family’s journey through loss, laughter and legacy. Mrs. Mehra’s handwritten scribbles, raw, emotional and spontaneous, were preserved as part of the visual narrative. My Scribbles celebrates a life lived with depth, humour, wisdom and resilience, inviting readers to pause, remember and listen.",
     ],
 
-    coverImage:
-      "/assets/projects/biographical/RENU MEHRA/cover.png",
+    coverImage: "/assets/projects/biographical/RENU MEHRA/cover.png",
 
-    bookImage:
-      "/assets/projects/biographical/RENU MEHRA/main.png",
+    bookImage: "/assets/projects/biographical/RENU MEHRA/main.png",
 
     gallery: [
       {
@@ -238,11 +230,9 @@ export const projects: Project[] = [
       "It revealed the making of a matriarch, whose strength, grace and enduring values shaped her family and legacy. She was also among the first to establish a children’s clothing line in Delhi.",
     ],
 
-    coverImage:
-      "/assets/projects/biographical/SUDHA GUPTA/cover.jpg",
+    coverImage: "/assets/projects/biographical/SUDHA GUPTA/cover.jpg",
 
-    bookImage:
-      "/assets/projects/biographical/SUDHA GUPTA/main.png",
+    bookImage: "/assets/projects/biographical/SUDHA GUPTA/main.png",
 
     gallery: [
       {
@@ -257,7 +247,6 @@ export const projects: Project[] = [
       {
         image: "/assets/projects/biographical/SUDHA GUPTA/4.jpg",
       },
-     
     ],
 
     layout: "left",
@@ -284,11 +273,9 @@ export const projects: Project[] = [
       "FS traced the legacies of old Kashmiri Pandits who had migrated to Rajasthan, contributed significantly to the Bhoodan Andolan and shaped modern Jaipur. FS identified key players and crafted a trilogy of family histories, heirlooms and culinary traditions.",
     ],
 
-    coverImage:
-      "/assets/projects/biographical/SUDHA RAINA/cover.png",
+    coverImage: "/assets/projects/biographical/SUDHA RAINA/cover.png",
 
-    bookImage:
-      "/assets/projects/biographical/SUDHA RAINA/main.png",
+    bookImage: "/assets/projects/biographical/SUDHA RAINA/main.png",
 
     gallery: [
       {
@@ -335,11 +322,9 @@ export const projects: Project[] = [
       "Together, these fragments will create a meaningful portrait of a life lived with purpose, resilience and enduring impact.",
     ],
 
-    coverImage:
-      "/assets/projects/biographical/VINOD KUMAR KHANNA/cover.png",
+    coverImage: "/assets/projects/biographical/VINOD KUMAR KHANNA/cover.png",
 
-    bookImage:
-      "/assets/projects/biographical/VINOD KUMAR KHANNA/main.png",
+    bookImage: "/assets/projects/biographical/VINOD KUMAR KHANNA/main.png",
 
     gallery: [
       {
@@ -382,11 +367,9 @@ export const projects: Project[] = [
       "Over twelve months, Family Script conducted in-depth oral interviews, documented archival photographs, gathered letters, and captured memories of everyday life. Through research, documentation, and thoughtful design, her story emerged as a memoir of devotion, motherhood, learning, and grace. This book is a quiet homage to a woman who transformed obstacles into lessons and lessons into love.",
     ],
 
-    coverImage:
-      "/assets/projects/biographical/BELA DEVI/cover.png",
+    coverImage: "/assets/projects/biographical/BELA DEVI/cover.png",
 
-    bookImage:
-      "/assets/projects/biographical/BELA DEVI/main.png",
+    bookImage: "/assets/projects/biographical/BELA DEVI/main.png",
 
     gallery: [
       {
@@ -398,7 +381,6 @@ export const projects: Project[] = [
       {
         image: "/assets/projects/biographical/BELA DEVI/3.jpg",
       },
-    
     ],
 
     layout: "right",
@@ -423,22 +405,17 @@ export const projects: Project[] = [
       "Family Script began with intimate conversations and explored a rich collection of personal letters, archival photographs, handwritten notes and newspaper clippings. Interviews with loved ones revealed her curiosity, warmth and calm resolve. Through months of curation, transcription, writing and design, these fragments came together as a layered memoir of legacy, love, courage and enduring presence.",
     ],
 
-    coverImage:
-      "/assets/projects/biographical/SULAKHYANA PATTANAYAK/cover.png",
+    coverImage: "/assets/projects/biographical/SULAKHYANA PATTANAYAK/cover.png",
 
-    bookImage:
-      "/assets/projects/biographical/SULAKHYANA PATTANAYAK/main.png",
+    bookImage: "/assets/projects/biographical/SULAKHYANA PATTANAYAK/main.png",
 
     gallery: [
       {
-        image:
-          "/assets/projects/biographical/SULAKHYANA PATTANAYAK/1.jpg",
+        image: "/assets/projects/biographical/SULAKHYANA PATTANAYAK/1.jpg",
       },
       {
-        image:
-          "/assets/projects/biographical/SULAKHYANA PATTANAYAK/2.jpg",
+        image: "/assets/projects/biographical/SULAKHYANA PATTANAYAK/2.jpg",
       },
-      
     ],
 
     layout: "left",
@@ -463,11 +440,9 @@ export const projects: Project[] = [
       "Through the process of documentation, Family Script brought together the voices of family members, friends, colleagues and well-wishers, creating a collective portrait of a life deeply cherished. His handwritten poems, preserved in crumpled pages and ink-smudged papers, were carefully digitized and curated alongside photographs, memories and personal messages. The resulting volume is a deeply personal tribute, celebrating his enduring presence through poetry, remembrance, love and the voices of those whose lives he touched.",
     ],
 
-    coverImage:
-      "/assets/projects/biographical/DR. K D BHARGAVA/cover.png",
+    coverImage: "/assets/projects/biographical/DR. K D BHARGAVA/cover.png",
 
-    bookImage:
-      "/assets/projects/biographical/DR. K D BHARGAVA/main.png",
+    bookImage: "/assets/projects/biographical/DR. K D BHARGAVA/main.png",
 
     gallery: [
       {
@@ -482,7 +457,6 @@ export const projects: Project[] = [
       {
         image: "/assets/projects/biographical/DR. K D BHARGAVA/4.jpg",
       },
-      
     ],
 
     layout: "right",
@@ -516,29 +490,23 @@ export const projects: Project[] = [
     coverImage:
       "/assets/projects/institutional/vasant-valley-school/background.png",
 
-    bookImage:
-      "/assets/projects/institutional/vasant-valley-school/main.png",
+    bookImage: "/assets/projects/institutional/vasant-valley-school/main.png",
 
     gallery: [
       {
-        image:
-          "/assets/projects/institutional/vasant-valley-school/1.png",
+        image: "/assets/projects/institutional/vasant-valley-school/1.png",
       },
       {
-        image:
-          "/assets/projects/institutional/vasant-valley-school/2.png",
+        image: "/assets/projects/institutional/vasant-valley-school/2.png",
       },
       {
-        image:
-          "/assets/projects/institutional/vasant-valley-school/3.png",
+        image: "/assets/projects/institutional/vasant-valley-school/3.png",
       },
       {
-        image:
-          "/assets/projects/institutional/vasant-valley-school/4.png",
+        image: "/assets/projects/institutional/vasant-valley-school/4.png",
       },
       {
-        image:
-          "/assets/projects/institutional/vasant-valley-school/5.png",
+        image: "/assets/projects/institutional/vasant-valley-school/5.png",
       },
     ],
 
@@ -571,29 +539,23 @@ export const projects: Project[] = [
     coverImage:
       "/assets/projects/institutional/stapati-architects/background.png",
 
-    bookImage:
-      "/assets/projects/institutional/stapati-architects/main.png",
+    bookImage: "/assets/projects/institutional/stapati-architects/main.png",
 
     gallery: [
       {
-        image:
-          "/assets/projects/institutional/stapati-architects/1.png",
+        image: "/assets/projects/institutional/stapati-architects/1.png",
       },
       {
-        image:
-          "/assets/projects/institutional/stapati-architects/2.png",
+        image: "/assets/projects/institutional/stapati-architects/2.png",
       },
       {
-        image:
-          "/assets/projects/institutional/stapati-architects/3.png",
+        image: "/assets/projects/institutional/stapati-architects/3.png",
       },
       {
-        image:
-          "/assets/projects/institutional/stapati-architects/4.png",
+        image: "/assets/projects/institutional/stapati-architects/4.png",
       },
       {
-        image:
-          "/assets/projects/institutional/stapati-architects/5.png",
+        image: "/assets/projects/institutional/stapati-architects/5.png",
       },
     ],
 

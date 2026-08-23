@@ -32,7 +32,7 @@ export default function WhoAreWe() {
       },
       {
         threshold: 0.3,
-      }
+      },
     );
 
     observer.observe(section);
@@ -85,9 +85,8 @@ export default function WhoAreWe() {
             end: "bottom top",
             scrub: 1.2,
           },
-        }
+        },
       );
-
 
       /* ==================================================
          BURGUNDY GRADIENT PARALLAX
@@ -108,9 +107,8 @@ export default function WhoAreWe() {
             end: "bottom top",
             scrub: 1.5,
           },
-        }
+        },
       );
-
 
       /* ==================================================
          CONTENT PARALLAX
@@ -131,9 +129,8 @@ export default function WhoAreWe() {
             end: "bottom top",
             scrub: 1.2,
           },
-        }
+        },
       );
-
 
       /* ==================================================
          HEADING ENTRY
@@ -156,9 +153,8 @@ export default function WhoAreWe() {
             start: "top 75%",
             toggleActions: "play none none reverse",
           },
-        }
+        },
       );
-
 
       /* ==================================================
          DESCRIPTION ENTRY
@@ -182,9 +178,8 @@ export default function WhoAreWe() {
             start: "top 70%",
             toggleActions: "play none none reverse",
           },
-        }
+        },
       );
-
 
       /* ==================================================
          STATISTICS ENTRY
@@ -208,9 +203,8 @@ export default function WhoAreWe() {
             start: "top 65%",
             toggleActions: "play none none reverse",
           },
-        }
+        },
       );
-
 
       /* ==================================================
          CTA ENTRY
@@ -234,9 +228,8 @@ export default function WhoAreWe() {
             start: "top 60%",
             toggleActions: "play none none reverse",
           },
-        }
+        },
       );
-
     }, section);
 
     return () => ctx.revert();
@@ -247,7 +240,6 @@ export default function WhoAreWe() {
       ref={sectionRef}
       className="relative min-h-screen w-full overflow-hidden"
     >
-
       {/* ================= BACKGROUND IMAGE ================= */}
       <div
         ref={backgroundRef}
@@ -256,7 +248,6 @@ export default function WhoAreWe() {
           backgroundImage: "url('/assets/homepage/WHO_WE_ARE.jpg')",
         }}
       />
-
 
       {/* ================= BURGUNDY GRADIENT ================= */}
       <div
@@ -268,19 +259,15 @@ export default function WhoAreWe() {
         }}
       />
 
-
       {/* ================= DARK OVERLAY ================= */}
       <div className="absolute inset-0 bg-black/10" />
-
 
       {/* ================= MAIN CONTENT ================= */}
       <div
         ref={contentRef}
         className="relative z-10 flex min-h-screen flex-col items-center text-center text-white"
       >
-
         <main className="flex w-full flex-1 flex-col items-center px-6 pt-[22vh] pb-12">
-
           {/* ================= HEADING ================= */}
           <h2
             ref={headingRef}
@@ -289,54 +276,36 @@ export default function WhoAreWe() {
             Who Are We?
           </h2>
 
-
           {/* ================= DESCRIPTION ================= */}
           <div
             ref={descriptionRef}
             className="futura-light mt-14 max-w-[750px] text-center"
           >
-
             {/* FIRST PARAGRAPH */}
             <p className="text-[18px] leading-[1.5] md:text-[20px]">
-
-              <span className="futura-medium">
-                Family Script (FS)
-              </span>{" "}
-
-              is a venture of designers, historians, architects and
-
+              <span className="futura-medium">Family Script (FS)</span> is a
+              venture of designers, historians, architects and
               <br className="hidden md:block" />
-
               educationists who{" "}
-
               <span className="futura-medium">
                 celebrate non-hegemonic histories of individuals and
                 collectives.
               </span>
-
             </p>
-
 
             {/* SECOND PARAGRAPH */}
             <p className="mt-7 text-[18px] leading-[1.5] md:text-[20px]">
-
               The untold stories of leaders, artists and changemakers are the
-
               <br className="hidden md:block" />
-
               essence of our work.
-
             </p>
-
           </div>
-
 
           {/* ================= STATISTICS ================= */}
           <div
             ref={statsRef}
             className="mt-16 flex items-center justify-center text-white"
           >
-
             {/* ================= 8+ ================= */}
             <Stat
               target={8}
@@ -345,10 +314,8 @@ export default function WhoAreWe() {
               started={countStarted}
             />
 
-
             {/* DIVIDER */}
             <div className="h-14 w-px bg-white/50" />
-
 
             {/* ================= 25+ ================= */}
             <Stat
@@ -358,10 +325,8 @@ export default function WhoAreWe() {
               started={countStarted}
             />
 
-
             {/* DIVIDER */}
             <div className="h-14 w-px bg-white/50" />
-
 
             {/* ================= 5+ ================= */}
             <Stat
@@ -370,36 +335,21 @@ export default function WhoAreWe() {
               label="Regions covered"
               started={countStarted}
             />
-
           </div>
-
 
           {/* ================= CTA ================= */}
           <button
             ref={ctaRef}
             className="futura-light mt-12 rounded-full border border-white/40 bg-white/15 px-10 py-4 text-[15px] tracking-[0.05em] text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/25"
           >
-
-            Get your Story{" "}
-
-            <span className="futura-bold">
-              Scripted
-            </span>
-
-            <span className="ml-3">
-              &gt;&gt;
-            </span>
-
+            Get your Story <span className="futura-bold">Scripted</span>
+            <span className="ml-3">&gt;&gt;</span>
           </button>
-
         </main>
-
       </div>
-
     </section>
   );
 }
-
 
 /* =========================================================
    ANIMATED STATISTIC
@@ -430,10 +380,7 @@ function Stat({
         startTime = timestamp;
       }
 
-      const progress = Math.min(
-        (timestamp - startTime) / duration,
-        1
-      );
+      const progress = Math.min((timestamp - startTime) / duration, 1);
 
       const easedProgress = 1 - Math.pow(1 - progress, 3);
 
@@ -451,19 +398,16 @@ function Stat({
 
   return (
     <div className="px-8 text-center md:px-12">
-
       {/* NUMBER */}
       <div className="futura-bold text-[32px] leading-none md:text-[36px]">
         {count}
         {suffix}
       </div>
 
-
       {/* LABEL */}
       <div className="futura-light mt-3 whitespace-nowrap text-[14px] md:text-[15px]">
         {label}
       </div>
-
     </div>
   );
 }

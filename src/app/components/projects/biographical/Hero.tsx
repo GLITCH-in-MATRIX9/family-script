@@ -67,7 +67,6 @@ export default function Hero() {
         text-white
       "
     >
-
       {/* =====================================================
           BACKGROUND
       ===================================================== */}
@@ -79,7 +78,6 @@ export default function Hero() {
           inset-0
         "
       >
-
         <div
           className="absolute inset-0"
           style={{
@@ -103,9 +101,7 @@ export default function Hero() {
               "linear-gradient(to bottom, transparent 55%, rgba(10,8,10,0.32) 100%)",
           }}
         />
-
       </div>
-
 
       {/* =====================================================
           MAIN CONTENT
@@ -130,8 +126,6 @@ export default function Hero() {
           md:pt-[7%]
         "
       >
-
-
         {/* =================================================
             BREADCRUMB
         ================================================= */}
@@ -147,7 +141,6 @@ export default function Hero() {
             md:mb-10
           "
         >
-
           <Link
             href="/"
             className="
@@ -221,9 +214,7 @@ export default function Hero() {
           >
             Biographical
           </span>
-
         </div>
-
 
         {/* =================================================
             INTRO
@@ -234,7 +225,6 @@ export default function Hero() {
             max-w-[650px]
           "
         >
-
           <h1
             className="
               futura-bold
@@ -253,7 +243,6 @@ export default function Hero() {
           >
             Biographical
           </h1>
-
 
           <p
             className="
@@ -275,9 +264,7 @@ export default function Hero() {
             <br className="hidden md:block" />
             we preserve stories that matter.
           </p>
-
         </div>
-
 
         {/* =================================================
             PEOPLE GRID
@@ -301,31 +288,22 @@ export default function Hero() {
             lg:gap-y-8
           "
         >
+          {people.map((person) => (
+            <Link key={person.name} href={person.href} className="group block">
+              {/* IMAGE */}
 
-          {people.map(
-            (person) => (
-
-              <Link
-                key={person.name}
-                href={person.href}
-                className="group block"
-              >
-
-                {/* IMAGE */}
-
-                <div
-                  className="
+              <div
+                className="
                     relative
                     aspect-[1.35/1]
                     w-full
                     overflow-hidden
                   "
-                >
-
-                  <img
-                    src={person.image}
-                    alt={person.name}
-                    className="
+              >
+                <img
+                  src={person.image}
+                  alt={person.name}
+                  className="
                       h-full
                       w-full
                       object-cover
@@ -334,10 +312,10 @@ export default function Hero() {
                       ease-out
                       group-hover:scale-[1.045]
                     "
-                  />
+                />
 
-                  <div
-                    className="
+                <div
+                  className="
                       absolute
                       inset-0
                       bg-black/5
@@ -345,22 +323,19 @@ export default function Hero() {
                       duration-500
                       group-hover:bg-black/0
                     "
-                  />
+                />
+              </div>
 
-                </div>
+              {/* NAME */}
 
-
-                {/* NAME */}
-
-                <div
-                  className="
+              <div
+                className="
                     mt-4
                     text-center
                   "
-                >
-
-                  <h2
-                    className="
+              >
+                <h2
+                  className="
                       futura-light
                       text-[15px]
                       uppercase
@@ -371,21 +346,14 @@ export default function Hero() {
 
                       lg:text-[20px]
                     "
-                  >
-                    {person.name}
-                  </h2>
-
-                </div>
-
-              </Link>
-
-            )
-          )}
-
+                >
+                  {person.name}
+                </h2>
+              </div>
+            </Link>
+          ))}
         </div>
-
       </section>
-
     </section>
   );
 }

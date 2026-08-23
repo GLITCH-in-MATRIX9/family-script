@@ -43,7 +43,6 @@ export default function WhatWeDo() {
     }
 
     const ctx = gsap.context(() => {
-
       /* ==================================================
          BACKGROUND PARALLAX
          ================================================== */
@@ -65,9 +64,8 @@ export default function WhatWeDo() {
             end: "bottom top",
             scrub: 1.2,
           },
-        }
+        },
       );
-
 
       /* ==================================================
          BURGUNDY GRADIENT PARALLAX
@@ -88,9 +86,8 @@ export default function WhatWeDo() {
             end: "bottom top",
             scrub: 1.5,
           },
-        }
+        },
       );
-
 
       /* ==================================================
          MAIN CONTENT PARALLAX
@@ -111,9 +108,8 @@ export default function WhatWeDo() {
             end: "bottom top",
             scrub: 1.2,
           },
-        }
+        },
       );
-
 
       /* ==================================================
          HEADING ENTRANCE
@@ -136,9 +132,8 @@ export default function WhatWeDo() {
             start: "top 75%",
             toggleActions: "play none none reverse",
           },
-        }
+        },
       );
-
 
       /* ==================================================
          RIGHT DESCRIPTION ENTRANCE
@@ -162,9 +157,8 @@ export default function WhatWeDo() {
             start: "top 70%",
             toggleActions: "play none none reverse",
           },
-        }
+        },
       );
-
 
       /* ==================================================
          LEFT DESCRIPTION ENTRANCE
@@ -188,9 +182,8 @@ export default function WhatWeDo() {
             start: "top 65%",
             toggleActions: "play none none reverse",
           },
-        }
+        },
       );
-
 
       /* ==================================================
          CTA ENTRANCE
@@ -214,9 +207,8 @@ export default function WhatWeDo() {
             start: "top 60%",
             toggleActions: "play none none reverse",
           },
-        }
+        },
       );
-
     }, section);
 
     return () => ctx.revert();
@@ -227,7 +219,6 @@ export default function WhatWeDo() {
       ref={sectionRef}
       className="relative min-h-screen w-full overflow-hidden"
     >
-
       {/* ================= BACKGROUND IMAGE ================= */}
       <div
         ref={backgroundRef}
@@ -236,7 +227,6 @@ export default function WhatWeDo() {
           backgroundImage: "url('/assets/homepage/WHAT_WE_DO.jpg')",
         }}
       />
-
 
       {/* ================= BURGUNDY OVERLAY ================= */}
       <div
@@ -248,17 +238,14 @@ export default function WhatWeDo() {
         }}
       />
 
-
       {/* ================= DARK OVERLAY ================= */}
       <div className="absolute inset-0 bg-black/10" />
-
 
       {/* ================= MAIN CONTENT ================= */}
       <div
         ref={contentRef}
         className="relative z-10 min-h-screen w-full text-white"
       >
-
         {/* ================= HEADING ================= */}
         <div
           ref={headingRef}
@@ -276,7 +263,6 @@ export default function WhatWeDo() {
           </h2>
         </div>
 
-
         {/* ================= RIGHT DESCRIPTION ================= */}
         <div
           ref={rightDescriptionRef}
@@ -286,27 +272,14 @@ export default function WhatWeDo() {
           }}
         >
           <p className="futura-light text-[1.65vw] leading-[1.35]">
-
-            We explore{" "}
-
-            <span className="futura-medium">
-              Individual and
-            </span>
-
+            We explore <span className="futura-medium">Individual and</span>
             <br />
-
-            <span className="futura-medium">
-              Institutional legacies
-            </span>{" "}
+            <span className="futura-medium">Institutional legacies</span>{" "}
             through social
-
             <br />
-
             and spatial documentation.
-
           </p>
         </div>
-
 
         {/* ================= LEFT DESCRIPTION ================= */}
         <div
@@ -317,54 +290,34 @@ export default function WhatWeDo() {
           }}
         >
           <div className="futura-light text-[1.55vw] leading-[1.42]">
-
             <p>
               We develop forward-looking
               <br />
-
               retrospectives to{" "}
-
-              <span className="futura-medium">
-                create a legacy
-              </span>{" "}
-              from
-
+              <span className="futura-medium">create a legacy</span> from
               <br />
-
               lesser-known histories. Our process is
-
               <br />
-
               <span className="futura-medium">
                 interactive, collaborative and an
               </span>
-
               <br />
-
               <span className="futura-medium">
                 experience worth undertaking.
               </span>
             </p>
 
-
             <p className="mt-8">
               We are empathetic listeners,{" "}
-
               <span className="futura-medium">
                 We co-
                 <br />
                 create with you.
               </span>
             </p>
-
           </div>
         </div>
-
-
-        
-
       </div>
-
     </section>
   );
 }
