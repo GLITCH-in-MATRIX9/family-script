@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { NextRequest } from "next/server";
 
-import { auth } from "@/lib/auth";
+import { auth } from "@/config/auth";
 import { handleApiError } from "@/lib/api-error";
 import { successResponse } from "@/lib/api-response";
 
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     if (!session) {
       return Response.json(
         { success: false, message: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -41,10 +41,7 @@ export async function GET(request: NextRequest) {
 
     const trees = await treeService.getUserTrees(session.user.id);
 
-    return successResponse(
-      trees,
-      "Trees fetched successfully."
-    );
+    return successResponse(trees, "Trees fetched successfully.");
   } catch (error) {
     return handleApiError(error);
   }
@@ -62,7 +59,7 @@ export async function POST(request: NextRequest) {
     if (!session) {
       return Response.json(
         { success: false, message: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -70,16 +67,9 @@ export async function POST(request: NextRequest) {
 
     const data = createTreeSchema.parse(body);
 
-    const tree = await treeService.createTree(
-      data,
-      session.user.id
-    );
+    const tree = await treeService.createTree(data, session.user.id);
 
-    return successResponse(
-      tree,
-      "Tree created successfully.",
-      201
-    );
+    return successResponse(tree, "Tree created successfully.", 201);
   } catch (error) {
     return handleApiError(error);
   }
