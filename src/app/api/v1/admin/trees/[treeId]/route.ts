@@ -1,4 +1,3 @@
-// src/app/api/v1/admin/trees/[treeId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth/permissions";
