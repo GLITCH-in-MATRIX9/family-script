@@ -68,6 +68,9 @@ export const projects: Project[] = [
       {
         image: "/assets/PROJECTS/BIOGRAPHICAL/AKHIL BAKSHI/7.jpg",
       },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/AKHIL BAKSHI/8.jpg",
+      },
     ],
 
     layout: "left",
@@ -96,7 +99,7 @@ export const projects: Project[] = [
 
     coverImage: "/assets/PROJECTS/BIOGRAPHICAL/REVA KHANNA/cover.jpg",
 
-    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/REVA KHANNA/book.jpg",
+    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/REVA KHANNA/book.png",
 
     gallery: [
       {
@@ -116,6 +119,12 @@ export const projects: Project[] = [
       },
       {
         image: "/assets/PROJECTS/BIOGRAPHICAL/REVA KHANNA/6.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/REVA KHANNA/7.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/REVA KHANNA/8.jpg",
       },
     ],
 
@@ -184,7 +193,7 @@ export const projects: Project[] = [
 
     coverImage: "/assets/PROJECTS/BIOGRAPHICAL/RENU MEHRA/cover.png",
 
-    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/RENU MEHRA/main.png",
+    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/RENU MEHRA/book.png",
 
     gallery: [
       {
@@ -232,7 +241,7 @@ export const projects: Project[] = [
 
     coverImage: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA GUPTA/cover.jpg",
 
-    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA GUPTA/main.png",
+    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA GUPTA/book.png",
 
     gallery: [
       {
@@ -275,7 +284,7 @@ export const projects: Project[] = [
 
     coverImage: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA RAINA/cover.png",
 
-    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA RAINA/main.png",
+    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA RAINA/book.png",
 
     gallery: [
       {
@@ -324,7 +333,7 @@ export const projects: Project[] = [
 
     coverImage: "/assets/PROJECTS/BIOGRAPHICAL/VINOD KUMAR KHANNA/cover.png",
 
-    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/VINOD KUMAR KHANNA/main.png",
+    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/VINOD KUMAR KHANNA/book.png",
 
     gallery: [
       {
@@ -407,7 +416,7 @@ export const projects: Project[] = [
 
     coverImage: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/cover.png",
 
-    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/main.png",
+    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/book.png",
 
     gallery: [
       {
@@ -416,6 +425,25 @@ export const projects: Project[] = [
       {
         image: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/2.jpg",
       },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/3.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/4.png",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/5.png",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/6.png",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/7.png",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SULAKHYANA PATTANAYAK/8.png",
+      },
+      
     ],
 
     layout: "left",
@@ -456,6 +484,18 @@ export const projects: Project[] = [
       },
       {
         image: "/assets/PROJECTS/BIOGRAPHICAL/DR. K D BHARGAVA/4.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/DR. K D BHARGAVA/5.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/DR. K D BHARGAVA/6.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/DR. K D BHARGAVA/7.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/DR. K D BHARGAVA/8.jpg",
       },
     ],
 

@@ -5,12 +5,12 @@ import Link from "next/link";
 const projects = [
   {
     name: "VASANT VALLEY SCHOOL",
-    image: "/assets/projects/institutional/VASANT VALLEY SCHOOL.png",
+    image: "/assets/PROJECTS/INSTITUTIONAL/VASANT VALLEY SCHOOL.png",
     href: "/projects/institutional/vasant-valley-school",
   },
   {
     name: "STAPATI ARCHITECTS",
-    image: "/assets/projects/institutional/STAPATI ARCHITECTS.png",
+    image: "/assets/PROJECTS/INSTITUTIONAL/STAPATI ARCHITECTS.png",
     href: "/projects/institutional/stapati-architects",
   },
 ];
