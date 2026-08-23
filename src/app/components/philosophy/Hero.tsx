@@ -53,11 +53,13 @@ function loadInstagramEmbedScript(): Promise<void> {
 
   igScriptPromise = new Promise((resolve, reject) => {
     const existing = document.querySelector<HTMLScriptElement>(
-      'script[src="https://www.instagram.com/embed.js"]'
+      'script[src="https://www.instagram.com/embed.js"]',
     );
     if (existing) {
       existing.addEventListener("load", () => resolve());
-      existing.addEventListener("error", () => reject(new Error("ig embed script failed")));
+      existing.addEventListener("error", () =>
+        reject(new Error("ig embed script failed")),
+      );
       return;
     }
     const script = document.createElement("script");
@@ -73,39 +75,41 @@ function loadInstagramEmbedScript(): Promise<void> {
 
 function InstagramEmbed({ url }: { url: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [status, setStatus] = useState<"loading" | "loaded" | "failed">("loading");
+  const [status, setStatus] = useState<"loading" | "loaded" | "failed">(
+    "loading",
+  );
 
   useEffect(() => {
     let cancelled = false;
-    let timeoutId: ReturnType<typeof setTimeout>;
     let observer: MutationObserver | undefined;
 
     loadInstagramEmbedScript()
       .then(() => {
         if (cancelled) return;
-        // process() scans the DOM for .instagram-media blockquotes and
-        // swaps them for the real embedded iframe.
+
         window.instgrm?.Embeds.process();
       })
       .catch(() => {
-        if (!cancelled) setStatus("failed");
+        if (!cancelled) {
+          setStatus("failed");
+        }
       });
 
-    // Instagram gives no load callback, so watch the DOM for the iframe
-    // it injects once the embed actually renders.
     if (containerRef.current) {
       observer = new MutationObserver(() => {
         if (containerRef.current?.querySelector("iframe")) {
           setStatus("loaded");
-          clearTimeout(timeoutId);
           observer?.disconnect();
         }
       });
-      observer.observe(containerRef.current, { childList: true, subtree: true });
+
+      observer.observe(containerRef.current, {
+        childList: true,
+        subtree: true,
+      });
     }
 
-    // If nothing rendered within a reasonable window, fall back gracefully.
-    timeoutId = setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       if (!cancelled && !containerRef.current?.querySelector("iframe")) {
         setStatus("failed");
       }
@@ -191,7 +195,7 @@ export default function Hero() {
               start: "top 85%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       }
 
@@ -217,7 +221,7 @@ export default function Hero() {
               start: "top 82%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       }
 
@@ -259,7 +263,7 @@ export default function Hero() {
               start: "top 82%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
 
         gsap.to(philosophyTextRef.current, {
@@ -296,7 +300,7 @@ export default function Hero() {
               start: "top 85%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       }
 
@@ -321,7 +325,7 @@ export default function Hero() {
               start: "top 90%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       }
     });
@@ -339,7 +343,6 @@ export default function Hero() {
           ========================================================= */}
 
       <section className="relative z-10 mx-auto w-full max-w-[1400px] px-6 pb-24 pt-14 md:px-[5%] md:pt-16">
-
         {/* ==================================================
             FOUNDING BELIEFS TITLE
             ================================================== */}
@@ -349,13 +352,9 @@ export default function Hero() {
           className="mt-10 flex justify-center text-center md:mt-14"
         >
           <h1 className="futura-light text-[32px] uppercase tracking-[0.08em] text-white md:text-[40px]">
-            Founding{" "}
-            <span className="futura-medium">
-              Beliefs
-            </span>
+            Founding <span className="futura-medium">Beliefs</span>
           </h1>
         </div>
-
 
         {/* ==================================================
             FOUNDING BELIEF CARDS
@@ -378,11 +377,7 @@ export default function Hero() {
                 hover:bg-white/[0.025]
                 md:min-h-[180px]
                 lg:min-h-[190px]
-                ${
-                  index === 0
-                    ? "pl-16 lg:pl-20"
-                    : "pr-16 lg:pr-20"
-                }
+                ${index === 0 ? "pl-16 lg:pl-20" : "pr-16 lg:pr-20"}
               `}
             >
               {/* Portrait */}
@@ -394,11 +389,7 @@ export default function Hero() {
                   rounded-[6px]
                   border border-[#E9E7DA]/25
                   shadow-lg
-                  ${
-                    index === 0
-                      ? "left-[-38px]"
-                      : "right-[-38px]"
-                  }
+                  ${index === 0 ? "left-[-38px]" : "right-[-38px]"}
                 `}
               >
                 <img
@@ -408,14 +399,11 @@ export default function Hero() {
                 />
               </div>
 
-
               {/* Quote */}
 
               <div
                 className={`w-full ${
-                  index === 0
-                    ? "text-left"
-                    : "ml-auto text-right"
+                  index === 0 ? "text-left" : "ml-auto text-right"
                 }`}
               >
                 <p
@@ -434,7 +422,6 @@ export default function Hero() {
           ))}
         </div>
 
-
         {/* ==================================================
             PHILOSOPHY STATEMENT
             ================================================== */}
@@ -444,14 +431,13 @@ export default function Hero() {
           className="mx-auto mt-16 w-full max-w-[820px] text-center md:mt-20"
         >
           <p className="futura-light text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-[16px]">
-            We believe that documentation is an invaluable strategic
-            asset.
+            We believe that documentation is an invaluable strategic asset.
           </p>
 
           <p className="futura-light mt-3 text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-[16px]">
-            It stems from a profound recognition of the inherent value
-            and fragility of oral traditions and cultural heritage of
-            individuals, families, institutions and communities.
+            It stems from a profound recognition of the inherent value and
+            fragility of oral traditions and cultural heritage of individuals,
+            families, institutions and communities.
           </p>
 
           <p className="futura-light mt-4 text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-[16px]">
@@ -460,23 +446,20 @@ export default function Hero() {
           </p>
 
           <p className="futura-light mt-4 text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-[16px]">
-            We envision to be globally recognised as an inspirational
-            powerhouse by 2028 - a living library with a virtual vault
-            of memories.
+            We envision to be globally recognised as an inspirational powerhouse
+            by 2028 - a living library with a virtual vault of memories.
           </p>
 
           <p className="futura-light mt-4 text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-[16px]">
-            Our work aligns with UN SDG 11.4 to protect and safeguard
-            intangible heritage.
+            Our work aligns with UN SDG 11.4 to protect and safeguard intangible
+            heritage.
           </p>
 
           <p className="futura-light mt-4 text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-[16px]">
-            We are strong in publication design, content creation,
-            multimedia storytelling, archival strategy and
-            institutional branding.
+            We are strong in publication design, content creation, multimedia
+            storytelling, archival strategy and institutional branding.
           </p>
         </div>
-
 
         {/* ==================================================
             EPISODES
@@ -498,31 +481,23 @@ export default function Hero() {
               <InstagramEmbed url={episode.url} />
 
               <p className="futura-light mt-3 text-center text-[9px] leading-[1.5] tracking-wide text-white/55">
-                The beginning of a dream, where ideas sparked into
-                purpose and our journey began.
+                The beginning of a dream, where ideas sparked into purpose and
+                our journey began.
               </p>
             </div>
           ))}
         </div>
 
-
         {/* ==================================================
             CTA
             ================================================== */}
 
-        <div
-          ref={ctaRef}
-          className="mt-16 flex justify-center md:mt-20"
-        >
+        <div ref={ctaRef} className="mt-16 flex justify-center md:mt-20">
           <Link
             href="#"
             className="futura-light group inline-flex w-fit items-center rounded-full border border-white/30 bg-white/[0.08] px-8 py-3 text-[13px] tracking-wide text-white backdrop-blur-md transition-all duration-300 hover:bg-white/[0.15]"
           >
-            Get your Story{" "}
-            <span className="futura-bold ml-1">
-              Scripted
-            </span>
-
+            Get your Story <span className="futura-bold ml-1">Scripted</span>
             <span className="ml-3 transition-transform duration-300 group-hover:translate-x-1">
               &gt;&gt;
             </span>
@@ -531,4 +506,4 @@ export default function Hero() {
       </section>
     </main>
   );
-} 
+}
