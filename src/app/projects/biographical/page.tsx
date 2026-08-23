@@ -1,4 +1,4 @@
-import Hero from "../../components/PROJECTS/BIOGRAPHICAL/Hero";
+import Hero from "../../components/projects/biographical/Hero";
 
 export default function BiographicalPage() {
   return (
