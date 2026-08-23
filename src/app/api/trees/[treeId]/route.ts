@@ -2,14 +2,18 @@ import { headers } from "next/headers";
 import { NextRequest } from "next/server";
 
 import { auth } from "@/config/auth";
+import { prisma } from "@/config/database";
 import { handleApiError } from "@/lib/api-error";
 import { successResponse } from "@/lib/api-response";
 
 import { TreeRepository } from "@/modules/tree/tree.repository";
 import { TreeService } from "@/modules/tree/tree.service";
-import { treeIdSchema, updateTreeSchema } from "@/modules/tree/tree.validator";
+import {
+  treeIdSchema,
+  updateTreeSchema,
+} from "@/modules/tree/tree.validator";
 
-const treeRepository = new TreeRepository();
+const treeRepository = new TreeRepository(prisma);
 const treeService = new TreeService(treeRepository);
 
 /**
@@ -36,7 +40,10 @@ export async function GET(
 
     const { treeId } = treeIdSchema.parse(await params);
 
-    const tree = await treeService.getTreeById(treeId, session.user.id);
+    const tree = await treeService.getTreeById(
+      treeId,
+      session.user.id,
+    );
 
     return successResponse(tree, "Tree fetched successfully.");
   } catch (error) {
@@ -71,7 +78,11 @@ export async function PATCH(
     const body = await request.json();
     const data = updateTreeSchema.parse(body);
 
-    const tree = await treeService.updateTree(treeId, data);
+    const tree = await treeService.updateTree(
+      treeId,
+      session.user.id,
+      data,
+    );
 
     return successResponse(tree, "Tree updated successfully.");
   } catch (error) {
@@ -103,7 +114,10 @@ export async function DELETE(
 
     const { treeId } = treeIdSchema.parse(await params);
 
-    await treeService.deleteTree(treeId);
+    await treeService.deleteTree(
+      treeId,
+      session.user.id,
+    );
 
     return successResponse(null, "Tree deleted successfully.");
   } catch (error) {

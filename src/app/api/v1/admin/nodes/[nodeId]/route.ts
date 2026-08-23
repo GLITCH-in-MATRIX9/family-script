@@ -1,72 +1,108 @@
 // src/app/api/v1/admin/nodes/[nodeId]/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
+
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth/permissions";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ nodeId: string }> }
+  { params }: { params: Promise<{ nodeId: string }> },
 ) {
   try {
-    // 1. Check the requester is logged in AND is an admin
+    // Check that the requester is authenticated and has admin access.
     const { error } = await requireAdmin();
 
     if (error === "UNAUTHORIZED") {
       return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
+        {
+          success: false,
+          error: "Unauthorized",
+        },
+        { status: 401 },
       );
     }
 
     if (error === "FORBIDDEN") {
       return NextResponse.json(
-        { success: false, error: "Insufficient role" },
-        { status: 403 }
+        {
+          success: false,
+          error: "Insufficient role",
+        },
+        { status: 403 },
       );
     }
 
-    // 2. Get nodeId from the dynamic route segment
+    // Get the dynamic route parameter.
     const { nodeId } = await params;
 
-    // 3. Query the database for this node
+    // Find the requested tree node.
     const node = await prisma.treeNode.findUnique({
-      where: { id: nodeId },
+      where: {
+        id: nodeId,
+      },
     });
 
-    // 4. If nothing found, return 404
+    // Return 404 if the node does not exist.
     if (!node) {
       return NextResponse.json(
-        { success: false, error: "Node not found" },
-        { status: 404 }
+        {
+          success: false,
+          error: "Node not found",
+        },
+        { status: 404 },
       );
     }
 
-    // 5. Shape the response manually to match the spec exactly
+    // Return only fields that actually exist in the Prisma TreeNode model.
     return NextResponse.json({
       success: true,
       data: {
         id: node.id,
         treeId: node.treeId,
-        name: node.name,
-        photo: node.photo,
-        currentLocation: node.currentLocation,
-        nativePlace: node.nativePlace,
-        dateOfBirth: node.dateOfBirth,
-        dateOfMarriage: node.dateOfMarriage,
-        dateOfDemise: node.dateOfDemise,
-        occupation: node.occupation,
-        bloodGroup: node.bloodGroup,
-        hereditaryDisorders: node.hereditaryDisorders,
-        notes: node.notes,
+
+        // Identity
+        firstName: node.firstName,
+        middleName: node.middleName,
+        lastName: node.lastName,
+        maidenName: node.maidenName,
+        displayName: node.displayName,
+        nickname: node.nickname,
+
+        // Personal details
+        gender: node.gender,
+        birthDate: node.birthDate,
+        birthPlace: node.birthPlace,
+        deathDate: node.deathDate,
+        deathPlace: node.deathPlace,
+        isLiving: node.isLiving,
+
+        // Additional information
+        bio: node.bio,
+        avatarUrl: node.avatarUrl,
+        metadata: node.metadata,
+
+        // Linked platform user
         linkedUserId: node.linkedUserId,
+
+        // Audit fields
         createdAt: node.createdAt,
+        updatedAt: node.updatedAt,
+        deletedAt: node.deletedAt,
       },
     });
-  } catch (err) {
-    console.error("GET /api/v1/admin/nodes/[nodeId] error:", err);
+  } catch (error) {
+    console.error(
+      "GET /api/v1/admin/nodes/[nodeId] error:",
+      error,
+    );
+
     return NextResponse.json(
-      { success: false, error: "Internal server error" },
-      { status: 500 }
+      {
+        success: false,
+        error: "Internal server error",
+      },
+      { status: 500 },
     );
   }
 }

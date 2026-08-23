@@ -12,7 +12,9 @@ import {
   treeQuerySchema,
 } from "@/modules/tree/tree.validator";
 
-const treeRepository = new TreeRepository();
+import { prisma } from "@/config/database";
+
+const treeRepository = new TreeRepository(prisma);
 const treeService = new TreeService(treeRepository);
 
 /**

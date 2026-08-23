@@ -1,5 +1,3 @@
-// src/data/projects.ts
-
 export type GalleryItem = {
   image: string;
 };

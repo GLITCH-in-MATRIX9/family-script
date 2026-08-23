@@ -16,7 +16,7 @@ import {
   FiYoutube,
 } from "react-icons/fi";
 
-import { projects } from "../../../../../data/projects";
+import { projects } from "@/data/projects";
 
 type Project = (typeof projects)[number];
 

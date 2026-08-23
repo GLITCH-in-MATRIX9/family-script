@@ -1,5 +1,4 @@
 import { Prisma } from "@prisma/client";
-
 import { prisma } from "@/config/database";
 
 export const authRepository = {
@@ -21,15 +20,15 @@ export const authRepository = {
     });
   },
 
-  createToken(data: Prisma.VerificationTokenCreateInput) {
-    return prisma.verificationToken.create({
+  createToken(data: Prisma.VerificationCreateInput) {
+    return prisma.verification.create({
       data,
     });
   },
 
   findToken(token: string) {
-    return prisma.verificationToken.findUnique({
-      where: { token },
+    return prisma.verification.findUnique({
+      where: { value: token },
     });
   },
 };

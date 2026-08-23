@@ -25,11 +25,11 @@ export default async function Page({ params }: PageProps) {
   }
 
   const backgroundImage =
-    project.backgroundImage ||
+    project.coverImage ||
     `https://picsum.photos/1920/1080?random=${slug}-background`;
 
   const mainImage =
-    project.mainImage ||
+    project.bookImage ||
     `https://picsum.photos/700/900?random=${slug}-main`;
 
   return (

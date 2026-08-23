@@ -1,13 +1,52 @@
+import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+
+import { auth } from "@/config/auth";
+import { prisma } from "@/config/database";
+
+async function requireAdmin() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    return null;
+  }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: session.user.id,
+    },
+    select: {
+      id: true,
+      role: true,
+    },
+  });
+
+  if (!user) {
+    return null;
+  }
+
+  if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
+    return null;
+  }
+
+  return {
+    userId: user.id,
+  };
+}
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await requireAdmin(req);
-    if (!session && process.env.NODE_ENV === "production") {
+    const session = await requireAdmin();
+
+    if (!session) {
       return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
+        {
+          success: false,
+          message: "Unauthorized",
+        },
+        { status: 401 },
       );
     }
 
@@ -15,8 +54,11 @@ export async function GET(req: NextRequest) {
 
     if (!hero) {
       return NextResponse.json(
-        { success: false, message: "Content Not Found" },
-        { status: 404 }
+        {
+          success: false,
+          message: "Content Not Found",
+        },
+        { status: 404 },
       );
     }
 
@@ -34,57 +76,106 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("[ADMIN_CONTENT_HERO_GET]", error);
+
     return NextResponse.json(
-      { success: false, message: "Internal Server Error" },
-      { status: 500 }
+      {
+        success: false,
+        message: "Internal Server Error",
+      },
+      { status: 500 },
     );
   }
 }
 
 export async function PATCH(req: NextRequest) {
   try {
-    const session = await getSessionFromRequest(req);
-    if (!session && process.env.NODE_ENV === "production") {
+    const session = await requireAdmin();
+
+    if (!session) {
       return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
+        {
+          success: false,
+          message: "Unauthorized",
+        },
+        { status: 401 },
       );
     }
 
     const body = await req.json();
     const { heading, subheading, ctaText, ctaUrl } = body;
 
-    // Validation
-    if (!heading || typeof heading !== "string" || heading.trim().length < 3 || heading.trim().length > 150) {
+    // Validate heading
+    if (
+      !heading ||
+      typeof heading !== "string" ||
+      heading.trim().length < 3 ||
+      heading.trim().length > 150
+    ) {
       return NextResponse.json(
-        { success: false, message: "Validation Error: heading is required and must be 3-150 characters" },
-        { status: 400 }
+        {
+          success: false,
+          message:
+            "Validation Error: heading is required and must be 3-150 characters",
+        },
+        { status: 400 },
       );
     }
 
-    if (subheading && subheading.length > 300) {
+    // Validate subheading
+    if (
+      subheading !== undefined &&
+      (typeof subheading !== "string" || subheading.length > 300)
+    ) {
       return NextResponse.json(
-        { success: false, message: "Validation Error: subheading must be max 300 characters" },
-        { status: 400 }
+        {
+          success: false,
+          message:
+            "Validation Error: subheading must be max 300 characters",
+        },
+        { status: 400 },
       );
     }
 
-    if (ctaText && ctaText.length > 50) {
+    // Validate CTA text
+    if (
+      ctaText !== undefined &&
+      (typeof ctaText !== "string" || ctaText.length > 50)
+    ) {
       return NextResponse.json(
-        { success: false, message: "Validation Error: ctaText must be max 50 characters" },
-        { status: 400 }
+        {
+          success: false,
+          message:
+            "Validation Error: ctaText must be max 50 characters",
+        },
+        { status: 400 },
       );
     }
 
-    if (ctaUrl) {
+    // Validate CTA URL
+    if (ctaUrl !== undefined) {
+      if (typeof ctaUrl !== "string") {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Validation Error: ctaUrl must be a string",
+          },
+          { status: 400 },
+        );
+      }
+
       const isValidUrl =
         ctaUrl.startsWith("/") ||
         ctaUrl.startsWith("http://") ||
         ctaUrl.startsWith("https://");
+
       if (!isValidUrl) {
         return NextResponse.json(
-          { success: false, message: "Validation Error: ctaUrl must be a valid relative or absolute URL" },
-          { status: 400 }
+          {
+            success: false,
+            message:
+              "Validation Error: ctaUrl must be a valid relative or absolute URL",
+          },
+          { status: 400 },
         );
       }
     }
@@ -93,31 +184,44 @@ export async function PATCH(req: NextRequest) {
 
     await prisma.$transaction(async (tx) => {
       await tx.heroContent.upsert({
-        where: { id: existing?.id ?? "hero_1" },
+        where: {
+          id: existing?.id ?? "hero_1",
+        },
         update: {
           heading: heading.trim(),
-          ...(subheading !== undefined && { subheading }),
-          ...(ctaText !== undefined && { ctaText }),
-          ...(ctaUrl !== undefined && { ctaUrl }),
-          updatedBy: session?.userId ?? "usr_001",
+          ...(subheading !== undefined && {
+            subheading: subheading.trim(),
+          }),
+          ...(ctaText !== undefined && {
+            ctaText: ctaText.trim(),
+          }),
+          ...(ctaUrl !== undefined && {
+            ctaUrl: ctaUrl.trim(),
+          }),
+          updatedBy: session.userId,
         },
         create: {
           id: "hero_1",
           heading: heading.trim(),
-          subheading: subheading ?? "",
-          ctaText: ctaText ?? "Get Started",
-          ctaUrl: ctaUrl ?? "/register",
-          updatedBy: session?.userId ?? "usr_001",
+          subheading: subheading?.trim() ?? "",
+          ctaText: ctaText?.trim() ?? "Get Started",
+          ctaUrl: ctaUrl?.trim() ?? "/register",
+          updatedBy: session.userId,
         },
       });
 
       await tx.auditLog.create({
         data: {
-          userId: session?.userId ?? null,
+          userId: session.userId,
           action: "UPDATE_HERO_CONTENT",
           entityType: "HeroContent",
           entityId: existing?.id ?? "hero_1",
-          metadata: { heading, subheading, ctaText, ctaUrl },
+          metadata: {
+            heading,
+            subheading,
+            ctaText,
+            ctaUrl,
+          },
         },
       });
     });
@@ -128,9 +232,13 @@ export async function PATCH(req: NextRequest) {
     });
   } catch (error) {
     console.error("[ADMIN_CONTENT_HERO_PATCH]", error);
+
     return NextResponse.json(
-      { success: false, message: "Internal Server Error" },
-      { status: 500 }
+      {
+        success: false,
+        message: "Internal Server Error",
+      },
+      { status: 500 },
     );
   }
 }

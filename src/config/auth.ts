@@ -18,16 +18,6 @@ export const auth = betterAuth({
   // Bearer support lets API clients authenticate with Authorization: Bearer xxx in addition to cookies.
   plugins: [bearer()],
   // OAuth providers are configured here; route/controller wiring belongs to the auth module owner.
-  socialProviders: {
-    google: {
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    },
-    github: {
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_CLIENT_SECRET,
-    },
-  },
   user: {
     // The app schema calls the Better Auth image field avatarUrl.
     fields: {

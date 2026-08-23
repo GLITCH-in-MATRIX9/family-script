@@ -1,18 +1,53 @@
+import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
-import { prisma } from "@/lib/prisma";
+
+import { auth } from "@/config/auth";
+import { prisma } from "@/config/database";
+
+async function requireAdmin() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    return null;
+  }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: session.user.id,
+    },
+    select: {
+      id: true,
+      role: true,
+    },
+  });
+
+  if (!user) {
+    return null;
+  }
+
+  if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
+    return null;
+  }
+
+  return {
+    userId: user.id,
+  };
+}
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await requireAdmin(req);
+    const session = await requireAdmin();
 
-    if (!session && process.env.NODE_ENV === "production") {
+    if (!session) {
       return NextResponse.json(
         {
           success: false,
           message: "Unauthorized",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -37,7 +72,7 @@ export async function GET(req: NextRequest) {
           success: false,
           message: "Invalid Query Params",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -46,7 +81,7 @@ export async function GET(req: NextRequest) {
     if (
       status &&
       !validStatuses.includes(
-        status as (typeof validStatuses)[number]
+        status as (typeof validStatuses)[number],
       )
     ) {
       return NextResponse.json(
@@ -55,14 +90,15 @@ export async function GET(req: NextRequest) {
           message:
             "Invalid Query Params: status must be ACTIVE, DRAFT or EXPIRED",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const where: Prisma.AnnouncementWhereInput = {};
 
     if (status) {
-      where.status = status as Prisma.AnnouncementWhereInput["status"];
+      where.status =
+        status as Prisma.AnnouncementWhereInput["status"];
     }
 
     const [announcements, total] = await Promise.all([
@@ -110,7 +146,7 @@ export async function GET(req: NextRequest) {
         success: false,
         message: "Internal Server Error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
