@@ -1,3 +1,5 @@
+"use client";
+
 export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -8,6 +10,8 @@ export default function Hero() {
         muted
         loop
         playsInline
+        crossOrigin="anonymous"
+        data-ripple-video="/assets/homepage/HOME_PAGE_VIDEO.mp4"
         className="absolute inset-0 h-full w-full object-cover"
       >
         <source
@@ -15,6 +19,7 @@ export default function Hero() {
           type="video/mp4"
         />
       </video>
+
 
       {/* ================= DARK OVERLAY ================= */}
       <div className="absolute inset-0 bg-black/30" />
@@ -51,6 +56,8 @@ export default function Hero() {
         </button>
 
       </div>
+
+
     </section>
   );
 }

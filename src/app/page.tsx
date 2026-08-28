@@ -8,38 +8,51 @@ import WhatWeOffer from "./components/homepage/WhatWeOffer";
 import ContactSection from "./components/homepage/ContactSection";
 
 import SocialIcons from "./components/layout/SocialIcos";
+import HomepageNavigator from "./components/homepage/HomepageNavigator";
+import { RippleProvider } from "./components/homepage/RippleEngine";
 
 export default function Home() {
   return (
-    <main className="relative">
+    <RippleProvider>
+      <HomepageNavigator>
+        <main className="relative">
+          {/* ================= LOADING SCREEN ================= */}
+          <LoadingScreen />
 
-      {/* ================= LOADING SCREEN ================= */}
-      <LoadingScreen />
+          {/* ================= SOCIAL MEDIA ICONS ================= */}
+          <SocialIcons />
 
+          {/* ================= HERO ================= */}
+          <div data-home-section="0">
+            <Hero />
+          </div>
 
-      {/* ================= SOCIAL MEDIA ICONS ================= */}
-      <SocialIcons />
+          {/* ================= WHO ARE WE ================= */}
+          <div data-home-section="1">
+            <WhoAreWe />
+          </div>
 
-      {/* ================= HOMEPAGE ================= */}
-      <Hero />
+          {/* ================= WHAT WE DO ================= */}
+          <div data-home-section="2">
+            <WhatWeDo />
+          </div>
 
-      {/* ================= WHO ARE WE ================= */}
-      <WhoAreWe />
+          {/* ================= WHAT WE OFFER ================= */}
+          <div data-home-section="3">
+            <WhatWeOffer />
+          </div>
 
-      {/* ================= WHAT WE DO ================= */}
-      <WhatWeDo />
+          {/* ================= OUR JOURNEY ================= */}
+          <div data-home-section="4">
+            <OurJourney />
+          </div>
 
-      {/* ================= WHAT WE OFFER ================= */}
-      <WhatWeOffer />
-
-      {/* ================= OUR JOURNEY ================= */}
-      <OurJourney />
-
-      {/* ================= CONTACT ================= */}
-      <ContactSection />
-
-      
-
-    </main>
+          {/* ================= CONTACT ================= */}
+          <div data-home-section="5">
+            <ContactSection />
+          </div>
+        </main>
+      </HomepageNavigator>
+    </RippleProvider>
   );
 }
