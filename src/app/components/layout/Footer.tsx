@@ -1,12 +1,12 @@
+// components/layout/Footer.tsx
+
 "use client";
 
 import Link from "next/link";
-import {
-  FiInstagram,
-  FiLinkedin,
-  FiMail,
-  FiArrowUpRight,
-} from "react-icons/fi";
+
+/* ============================================================
+   DATA
+============================================================ */
 
 const COMPANY_LINKS = [
   "About Us",
@@ -29,6 +29,10 @@ const LEGAL_LINKS = [
   "Contact Us",
 ];
 
+/* ============================================================
+   FOOTER COLUMN
+============================================================ */
+
 function FooterColumn({
   title,
   links,
@@ -38,23 +42,48 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <h3 className="futura-medium text-[16px] tracking-wide text-white">
+      {/* ======================================================
+          COLUMN TITLE
+      ====================================================== */}
+
+      <h3
+        className="
+          futura-medium
+          text-[13px]
+          leading-none
+          text-white/90
+          md:text-[14px]
+        "
+      >
         {title}
       </h3>
 
-      <ul className="mt-5 space-y-3">
+      {/* ======================================================
+          LINKS
+      ====================================================== */}
+
+      <ul
+        className="
+          mt-3
+          space-y-2.5
+        "
+      >
         {links.map((label) => (
           <li key={label}>
             <Link
               href="#"
-              className="futura-light group inline-flex items-center text-[14px] tracking-wide text-white/65 transition-all duration-300 hover:text-white"
+              className="
+                futura-light
+                text-[11px]
+                leading-none
+                tracking-wide
+                text-white/55
+                transition-colors
+                duration-200
+                hover:text-white/90
+              "
             >
               {label}
-
-              <FiArrowUpRight
-                size={12}
-                className="ml-1 opacity-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-70"
-              />
             </Link>
           </li>
         ))}
@@ -63,143 +92,278 @@ function FooterColumn({
   );
 }
 
+/* ============================================================
+   FOOTER
+============================================================ */
+
 export default function Footer() {
+  const currentYear =
+    new Date().getFullYear();
+
   return (
-    <footer className="w-full bg-[#3b1425] text-white">
+    <footer
+      className="
+        w-full
+        bg-[#57233b]
+        text-white
+      "
+    >
+      {/* ======================================================
+          FOOTER CONTAINER
+      ====================================================== */}
 
-      <div className="mx-auto max-w-7xl px-7 py-14 md:px-10 md:py-16 lg:px-12">
+      <div
+        className="
+          mx-auto
+          w-full
+          max-w-[1300px]
+          px-8
+          py-8
+          md:px-12
+          md:py-9
+          lg:px-14
+        "
+      >
+        {/* ====================================================
+            TOP DIVIDER
+        ==================================================== */}
 
-        {/* ================= TOP DIVIDER ================= */}
-        <div className="border-t border-white/20 pt-10">
+        <div
+          className="
+            border-t
+            border-white/25
+            pt-5
+            md:pt-6
+          "
+        >
 
-          {/* ================= MAIN FOOTER GRID ================= */}
-          <div className="grid grid-cols-2 gap-x-10 gap-y-12 md:grid-cols-4 md:gap-x-16 lg:gap-x-24">
+          {/* ==================================================
+              MAIN FOOTER CONTENT
+          ================================================== */}
 
-            {/* ================= FAMILY SCRIPT ================= */}
-            <div className="col-span-2 md:col-span-1">
+          <div
+            className="
+              grid
+              grid-cols-2
+              gap-x-10
+              gap-y-8
+              md:grid-cols-4
+              md:gap-x-14
+              lg:gap-x-20
+          "
+          >
 
-              {/* LOGO */}
-              <Link
-                href="/"
-                className="inline-block"
+            {/* ================================================
+                FAMILY SCRIPT
+            ================================================ */}
+
+            <div
+              className="
+                col-span-2
+                md:col-span-1
+              "
+            >
+              {/* ==============================================
+                  TITLE
+              ============================================== */}
+
+              <h2
+                className="
+                  futura-medium
+                  text-[13px]
+                  leading-none
+                  text-white
+                  md:text-[14px]
+                "
               >
-                <img
-                  src="/assets/homepage/FS_logo.png"
-                  alt="Family Script"
-                  className="h-[95px] w-[95px] object-contain brightness-0 invert"
-                />
-              </Link> 
+                Family Script
+              </h2>
 
-              {/* DESCRIPTION */}
-              <p className="futura-light mt-5 max-w-[240px] text-[13px] leading-[1.6] tracking-wide text-white/60">
-                Preserving memories, celebrating legacies, and bringing
-                untold stories to life.
+              {/* ==============================================
+                  COMPANY DESCRIPTION
+              ============================================== */}
+
+              <p
+                className="
+                  futura-light
+                  mt-5
+                  max-w-[280px]
+                  text-[9px]
+                  leading-[1.35]
+                  tracking-wide
+                  text-white/55
+                  md:text-[10px]
+                "
+              >
+                An offering of M/s Prarabdha Info
+                Solutions Pvt Ltd,
+                <br />
+                Incubated under IGDTUW-Anveshan
+                Foundation, Delhi
+                <br />
+                Registered under Startup India
+                and MSME Recognised
               </p>
 
-              {/* SOCIAL ICONS */}
-              <div className="mt-6 flex items-center gap-3">
+              {/* ==============================================
+                  CONTACT US
+              ============================================== */}
 
-                <Link
-                  href="#"
-                  aria-label="Instagram"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/[0.05] text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/10 hover:text-white"
+              <div
+                className="
+                  mt-4
+                "
+              >
+                <p
+                  className="
+                    futura-light
+                    text-[9px]
+                    leading-[1.35]
+                    tracking-wide
+                    text-white/55
+                    md:text-[10px]
+                  "
                 >
-                  <FiInstagram size={16} />
-                </Link>
-
-                <Link
-                  href="#"
-                  aria-label="LinkedIn"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/[0.05] text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/10 hover:text-white"
-                >
-                  <FiLinkedin size={16} />
-                </Link>
-
-                <Link
-                  href="#"
-                  aria-label="Email"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/[0.05] text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/10 hover:text-white"
-                >
-                  <FiMail size={16} />
-                </Link>
-
+                  Contact Us:
+                  <br />
+                  Prarabdha Info Solutions Private
+                  Limited,
+                  <br />
+                  IGDTUW-Anveshan Foundation
+                  Premises,
+                  <br />
+                  Kashmere Gate, Delhi-06,
+                  India
+                </p>
               </div>
 
+              {/* ==============================================
+                  EMAIL + PHONE
+              ============================================== */}
+
+              <div
+                className="
+                  mt-3
+                "
+              >
+                <p
+                  className="
+                    futura-light
+                    text-[9px]
+                    leading-[1.4]
+                    tracking-wide
+                    text-white/55
+                    md:text-[10px]
+                  "
+                >
+                  Email: info@familyscript.com,
+                  team@familyscript.in
+                  <br />
+                  +91 9560283939
+                </p>
+              </div>
             </div>
 
+            {/* ================================================
+                COMPANY
+            ================================================ */}
 
-            {/* ================= COMPANY ================= */}
             <FooterColumn
               title="Company"
-              links={COMPANY_LINKS}
+              links={
+                COMPANY_LINKS
+              }
             />
 
+            {/* ================================================
+                PROJECTS
+            ================================================ */}
 
-            {/* ================= PROJECTS ================= */}
             <FooterColumn
               title="Projects"
-              links={PROJECT_LINKS}
+              links={
+                PROJECT_LINKS
+              }
             />
 
+            {/* ================================================
+                LEGAL
+            ================================================ */}
 
-            {/* ================= LEGAL ================= */}
             <FooterColumn
               title="Legal"
-              links={LEGAL_LINKS}
+              links={
+                LEGAL_LINKS
+              }
             />
-
           </div>
 
+          {/* ==================================================
+              BOTTOM DIVIDER
+          ================================================== */}
 
-          {/* ================= CONTACT / CTA STRIP ================= */}
-          <div className="mt-14 flex flex-col gap-5 border-y border-white/15 py-6 md:flex-row md:items-center md:justify-between">
+          <div
+            className="
+              mt-6
+              border-t
+              border-white/25
+              pt-3
+              md:mt-7
+              md:pt-3.5
+            "
+          >
+            {/* ================================================
+                COPYRIGHT ROW
+            ================================================ */}
 
-            <div>
-              <p className="futura-light text-[12px] uppercase tracking-[0.25em] text-white/50">
-                Have a story to tell?
+            <div
+              className="
+                flex
+                flex-col
+                gap-2
+                md:flex-row
+                md:items-center
+                md:justify-between
+              "
+            >
+              {/* ==============================================
+                  COPYRIGHT
+              ============================================== */}
+
+              <p
+                className="
+                  futura-light
+                  text-[9px]
+                  tracking-wide
+                  text-white/50
+                  md:text-[10px]
+                "
+              >
+                © {currentYear} Family Script
+                by Prarabdha Info Solutions
+                Pvt. Ltd.
               </p>
 
-              <p className="futura-light mt-1 text-[15px] text-white/85">
-                Let&apos;s create something meaningful together.
+              {/* ==============================================
+                  RIGHTS
+              ============================================== */}
+
+              <p
+                className="
+                  futura-light
+                  text-[9px]
+                  tracking-wide
+                  text-white/50
+                  md:text-[10px]
+                "
+              >
+                All rights reserved
               </p>
             </div>
-
-            <Link
-              href="#"
-              className="futura-light group inline-flex w-fit items-center rounded-full border border-white/30 bg-white/[0.08] px-7 py-3 text-[13px] tracking-wide text-white backdrop-blur-md transition-all duration-300 hover:bg-white/[0.15]"
-            >
-              Get your Story{" "}
-
-              <span className="futura-bold ml-1">
-                Scripted
-              </span>
-
-              <span className="ml-3 transition-transform duration-300 group-hover:translate-x-1">
-                &gt;&gt;
-              </span>
-            </Link>
-
-          </div>
-
-
-          {/* ================= BOTTOM BAR ================= */}
-          <div className="mt-7 flex flex-col gap-3 text-white/50 md:flex-row md:items-center md:justify-between">
-
-            <p className="futura-light text-[12px] tracking-wide">
-              &copy; {new Date().getFullYear()} Family Script by Prarabdha
-              Info Solutions Pvt. Ltd.
-            </p>
-
-            <p className="futura-light text-[12px] tracking-wide">
-              All rights reserved
-            </p>
-
           </div>
 
         </div>
-
       </div>
-
     </footer>
   );
 }

@@ -265,7 +265,7 @@ export default function ProjectDetails({
             "
             style={{
               background:
-                "linear-gradient(to bottom, rgba(59,20,37,0.08) 0%, rgba(30,18,24,0.30) 55%, rgba(8,8,10,0.90) 100%)",
+                "linear-gradient(to bottom, rgba(83, 36, 57,0.9) 0%, rgba(83, 36, 57,0.2) 55%, rgba(83, 36, 57,0.1) 100%)",
             }}
           />
         </div>

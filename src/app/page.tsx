@@ -1,56 +1,138 @@
-import LoadingScreen from "./components/layout/LoadingScreen";
+// app/page.tsx
 
-import Hero from "./components/homepage/hero";
-import OurJourney from "./components/homepage/OurJourney";
+import Hero from "./components/homepage/Hero";
 import WhoAreWe from "./components/homepage/WhoAreWe";
 import WhatWeDo from "./components/homepage/WhatWeDo";
 import WhatWeOffer from "./components/homepage/WhatWeOffer";
+import OurJourney from "./components/homepage/OurJourney";
 import ContactSection from "./components/homepage/ContactSection";
 
 import SocialIcons from "./components/layout/SocialIcos";
+
 import HomepageNavigator from "./components/homepage/HomepageNavigator";
-import { RippleProvider } from "./components/homepage/RippleEngine";
+import { RippleProvider } from "./components/homepage/ripple/RippleProvider";
 
 export default function Home() {
   return (
     <RippleProvider>
       <HomepageNavigator>
-        <main className="relative">
-          {/* ================= LOADING SCREEN ================= */}
-          <LoadingScreen />
+        <main className="relative w-full">
 
-          {/* ================= SOCIAL MEDIA ICONS ================= */}
+          {/* ==================================================
+              SOCIAL MEDIA
+          ================================================== */}
+
           <SocialIcons />
 
-          {/* ================= HERO ================= */}
-          <div data-home-section="0">
+          {/* ==================================================
+              0 — HERO
+          ================================================== */}
+
+          <section
+            data-home-section="0"
+            className="
+              relative
+              h-screen
+              min-h-screen
+              w-full
+              overflow-hidden
+            "
+          >
             <Hero />
-          </div>
+          </section>
 
-          {/* ================= WHO ARE WE ================= */}
-          <div data-home-section="1">
+          {/* ==================================================
+              1 — WHO ARE WE
+          ================================================== */}
+
+          <section
+            data-home-section="1"
+            data-ripple-background="/assets/Homepage/WHO_WE_ARE.jpg"
+            className="
+              relative
+              h-screen
+              min-h-screen
+              w-full
+              overflow-hidden
+            "
+          >
             <WhoAreWe />
-          </div>
+          </section>
 
-          {/* ================= WHAT WE DO ================= */}
-          <div data-home-section="2">
+          {/* ==================================================
+              2 — WHAT WE DO
+          ================================================== */}
+
+          <section
+            data-home-section="2"
+            data-ripple-background="/assets/Homepage/WHAT_WE_DO.jpg"
+            className="
+              relative
+              h-screen
+              min-h-screen
+              w-full
+              overflow-hidden
+            "
+          >
             <WhatWeDo />
-          </div>
+          </section>
 
-          {/* ================= WHAT WE OFFER ================= */}
-          <div data-home-section="3">
+          {/* ==================================================
+              3 — WHAT WE OFFER
+          ================================================== */}
+
+          <section
+            data-home-section="3"
+            data-ripple-background="/assets/Homepage/WHAT_WE_OFFER.jpg"
+            className="
+              relative
+              h-screen
+              min-h-screen
+              w-full
+              overflow-hidden
+            "
+          >
             <WhatWeOffer />
-          </div>
+          </section>
 
-          {/* ================= OUR JOURNEY ================= */}
-          <div data-home-section="4">
+          {/* ==================================================
+              4 — OUR JOURNEY
+          ================================================== */}
+
+          <section
+            data-home-section="4"
+            data-ripple-color="#000000"
+            className="
+              relative
+              h-screen
+              min-h-screen
+              w-full
+              overflow-hidden
+            "
+          >
             <OurJourney />
-          </div>
+          </section>
 
-          {/* ================= CONTACT ================= */}
-          <div data-home-section="5">
-            <ContactSection />
-          </div>
+          {/* ==================================================
+              5 — CONTACT + FOOTER
+
+              IMPORTANT:
+
+              ContactSection ITSELF is the final
+              ripple section.
+
+              Do NOT wrap it in another
+              data-home-section element.
+
+              ContactSection contains:
+
+                Contact viewport
+                       +
+                Footer
+          ================================================== */}
+
+          <ContactSection />
+
         </main>
       </HomepageNavigator>
     </RippleProvider>

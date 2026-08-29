@@ -1,32 +1,103 @@
+// components/homepage/WhatWeOffer.tsx
+
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+import {
+  useEffect,
+  useRef,
+} from "react";
+
+import gsap from "gsap";
+
+import {
+  ScrollTrigger,
+} from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(
+  ScrollTrigger,
+);
+
+/* ============================================================
+   COMPONENT
+============================================================ */
 
 export default function WhatWeOffer() {
-  const sectionRef = useRef<HTMLElement>(null);
+  /*
+   * IMPORTANT:
+   *
+   * page.tsx owns the actual homepage section:
+   *
+   * <section data-home-section="3">
+   *   <WhatWeOffer />
+   * </section>
+   *
+   * Therefore this component uses a DIV as its root.
+   *
+   * DO NOT add data-home-section here.
+   */
 
-  const backgroundRef = useRef<HTMLDivElement>(null);
-  const gradientRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const sectionRef =
+    useRef<HTMLDivElement>(
+      null,
+    );
 
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const introRef = useRef<HTMLDivElement>(null);
-  const servicesRef = useRef<HTMLDivElement>(null);
+  const backgroundRef =
+    useRef<HTMLDivElement>(
+      null,
+    );
+
+  const gradientRef =
+    useRef<HTMLDivElement>(
+      null,
+    );
+
+  const contentRef =
+    useRef<HTMLDivElement>(
+      null,
+    );
+
+  const headingRef =
+    useRef<HTMLHeadingElement>(
+      null,
+    );
+
+  const introRef =
+    useRef<HTMLDivElement>(
+      null,
+    );
+
+  const servicesRef =
+    useRef<HTMLDivElement>(
+      null,
+    );
+
+  /* ==========================================================
+     GSAP
+  ========================================================== */
 
   useEffect(() => {
-    const section = sectionRef.current;
-    const background = backgroundRef.current;
-    const gradient = gradientRef.current;
-    const content = contentRef.current;
+    const section =
+      sectionRef.current;
 
-    const heading = headingRef.current;
-    const intro = introRef.current;
-    const services = servicesRef.current;
+    const background =
+      backgroundRef.current;
+
+    const gradient =
+      gradientRef.current;
+
+    const content =
+      contentRef.current;
+
+    const heading =
+      headingRef.current;
+
+    const intro =
+      introRef.current;
+
+    const services =
+      servicesRef.current;
 
     if (
       !section ||
@@ -40,288 +111,526 @@ export default function WhatWeOffer() {
       return;
     }
 
-    const ctx = gsap.context(() => {
-      /* ==================================================
-         BACKGROUND PARALLAX
-         ================================================== */
+    /*
+     * Find service cards.
+     */
 
-      gsap.fromTo(
-        background,
-        {
-          yPercent: -8,
-          scale: 1.08,
-        },
-        {
-          yPercent: 8,
-          scale: 1.08,
-          ease: "none",
+    const boxes =
+      services.querySelectorAll<HTMLElement>(
+        ".service-box",
+      );
 
-          scrollTrigger: {
+    const ctx =
+      gsap.context(
+        () => {
+          /* ==================================================
+             INITIAL STATES
+          ================================================== */
+
+          /*
+           * IMPORTANT:
+           *
+           * The background itself is NOT animated.
+           *
+           * It stays exactly where it is and exactly
+           * the same size as the page.tsx section.
+           */
+
+          gsap.set(
+            background,
+            {
+              x: 0,
+              y: 0,
+              scale: 1,
+            },
+          );
+
+          gsap.set(
+            gradient,
+            {
+              x: 0,
+              y: 0,
+            },
+          );
+
+          /*
+           * Content animation.
+           */
+
+          gsap.set(
+            heading,
+            {
+              opacity: 0,
+              y: 45,
+              scale: 0.98,
+            },
+          );
+
+          gsap.set(
+            intro,
+            {
+              opacity: 0,
+              y: 35,
+            },
+          );
+
+          /*
+           * Keep the service container visible.
+           *
+           * Individual cards animate instead.
+           */
+
+          gsap.set(
+            services,
+            {
+              opacity: 1,
+            },
+          );
+
+          gsap.set(
+            boxes,
+            {
+              opacity: 0,
+              y: 30,
+              scale: 0.97,
+            },
+          );
+
+          /* ==================================================
+             ENTRANCE TIMELINE
+          ================================================== */
+
+          const entrance =
+            gsap.timeline({
+              paused: true,
+            });
+
+          /*
+           * --------------------------------------------------
+           * HEADING
+           * --------------------------------------------------
+           */
+
+          entrance.to(
+            heading,
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.9,
+              ease: "power3.out",
+            },
+          );
+
+          /*
+           * --------------------------------------------------
+           * INTRO
+           * --------------------------------------------------
+           */
+
+          entrance.to(
+            intro,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.85,
+              ease: "power3.out",
+            },
+            "-=0.58",
+          );
+
+          /*
+           * --------------------------------------------------
+           * SERVICE BOXES
+           * --------------------------------------------------
+           */
+
+          entrance.to(
+            boxes,
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.7,
+              stagger: {
+                each: 0.09,
+                from: "start",
+              },
+              ease: "power3.out",
+            },
+            "-=0.35",
+          );
+
+          /* ==================================================
+             SECTION ENTRANCE TRIGGER
+          ================================================== */
+
+          ScrollTrigger.create({
             trigger: section,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1.2,
-          },
+
+            start: "top 85%",
+
+            onEnter: () => {
+              entrance.restart();
+            },
+
+            onEnterBack: () => {
+              entrance.restart();
+            },
+
+            /*
+             * IMPORTANT:
+             *
+             * Don't reset everything to the invisible
+             * starting state when navigating backwards.
+             *
+             * Ripple navigation can bring this section
+             * into view without a normal browser scroll.
+             */
+          });
+
+          
+
+          /* ==================================================
+             REFRESH
+          ================================================== */
+
+          requestAnimationFrame(
+            () => {
+              ScrollTrigger.refresh();
+            },
+          );
         },
+        section,
       );
 
-      /* ==================================================
-         BURGUNDY GRADIENT PARALLAX
-         ================================================== */
-
-      gsap.fromTo(
-        gradient,
-        {
-          yPercent: -4,
-        },
-        {
-          yPercent: 4,
-          ease: "none",
-
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1.5,
-          },
-        },
-      );
-
-      /* ==================================================
-         MAIN CONTENT PARALLAX
-         ================================================== */
-
-      gsap.fromTo(
-        content,
-        {
-          y: 35,
-        },
-        {
-          y: -35,
-          ease: "none",
-
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1.2,
-          },
-        },
-      );
-
-      /* ==================================================
-         HEADING ENTRANCE
-         ================================================== */
-
-      gsap.fromTo(
-        heading,
-        {
-          opacity: 0,
-          y: 35,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-
-          scrollTrigger: {
-            trigger: section,
-            start: "top 75%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-
-      /* ==================================================
-         INTRO TEXT ENTRANCE
-         ================================================== */
-
-      gsap.fromTo(
-        intro,
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          delay: 0.15,
-          ease: "power3.out",
-
-          scrollTrigger: {
-            trigger: section,
-            start: "top 70%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-
-      /* ==================================================
-         SERVICES GRID ENTRANCE
-         ================================================== */
-
-      gsap.fromTo(
-        services,
-        {
-          opacity: 0,
-          y: 40,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          delay: 0.25,
-          ease: "power3.out",
-
-          scrollTrigger: {
-            trigger: section,
-            start: "top 65%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-
-      /* ==================================================
-         INDIVIDUAL SERVICE BOXES
-         ================================================== */
-
-      const boxes = services.querySelectorAll(".service-box");
-
-      gsap.fromTo(
-        boxes,
-        {
-          opacity: 0,
-          y: 25,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.08,
-          ease: "power3.out",
-
-          scrollTrigger: {
-            trigger: services,
-            start: "top 75%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-    }, section);
-
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+    };
   }, []);
 
+  /* ==========================================================
+     RENDER
+  ========================================================== */
+
   return (
-    <section
+    <div
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden"
+      className="
+        relative
+        h-full
+        min-h-full
+        w-full
+        overflow-hidden
+      "
     >
-      {/* ================= BACKGROUND IMAGE ================= */}
+      {/* ======================================================
+          BACKGROUND IMAGE
+          
+          EXACTLY MATCHES PAGE.TSX SECTION
+          
+          page.tsx:
+          
+          h-screen
+          min-h-screen
+          w-full
+          overflow-hidden
+          
+          Therefore:
+          
+          inset-0
+          w-full
+          h-full
+          
+          No oversizing.
+          No movement.
+      ====================================================== */}
+
       <div
         ref={backgroundRef}
-        className="absolute inset-[-8%] bg-cover bg-center"
+        data-ripple-background
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          h-full
+          w-full
+          overflow-hidden
+          bg-cover
+          bg-center
+          bg-no-repeat
+        "
         style={{
-          backgroundImage: "url('/assets/Homepage/WHAT_WE_OFFER.jpg')",
+          backgroundImage:
+            "url('/assets/Homepage/WHAT_WE_OFFER.jpg')",
+
+          backgroundSize:
+            "cover",
+
+          backgroundPosition:
+            "center center",
+
+          backgroundRepeat:
+            "no-repeat",
         }}
+        aria-hidden="true"
       />
 
-      {/* ================= BURGUNDY OVERLAY ================= */}
+      {/* ======================================================
+          COLOURISATION / MAROON GRADIENT
+          
+          STATIC.
+          
+          This is what gives the image the burgundy /
+          maroon colourised appearance.
+      ====================================================== */}
+
       <div
         ref={gradientRef}
-        className="absolute inset-[-4%]"
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          h-full
+          w-full
+        "
         style={{
           background:
-            "linear-gradient(to bottom, rgba(59, 20, 37, 0.78) 0%, rgba(59, 20, 37, 0.62) 35%, rgba(59, 20, 37, 0.52) 70%, rgba(59, 20, 37, 0.62) 100%)",
+            "linear-gradient(to bottom, rgba(83, 36, 57, 0.78) 0%, rgba(83, 36, 57, 0.80) 35%, rgba(83, 36, 57, 0.10) 70%, rgba(83, 36, 57, 0.10) 100%)",
         }}
+        aria-hidden="true"
       />
 
-      {/* ================= DARK OVERLAY ================= */}
-      <div className="absolute inset-0 bg-black/10" />
+      {/* ======================================================
+          SUBTLE DARK OVERLAY
+      ====================================================== */}
 
-      {/* ================= MAIN CONTENT ================= */}
+      <div
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          h-full
+          w-full
+          bg-black/10
+        "
+        aria-hidden="true"
+      />
+
+      {/* ======================================================
+          MAIN CONTENT
+          
+          data-ripple-element allows the ripple transition
+          to reveal the actual content.
+      ====================================================== */}
+
       <div
         ref={contentRef}
-        className="relative z-10 min-h-screen w-full text-white"
+        data-ripple-element
+        className="
+          relative
+          z-10
+          h-full
+          min-h-full
+          w-full
+          text-white
+        "
       >
-        {/* ================= HEADING ================= */}
+        {/* ====================================================
+            HEADING
+        ==================================================== */}
+
         <h2
           ref={headingRef}
-          className="futura-light absolute left-0 right-0 top-[22%] text-center text-[3.6vw] uppercase leading-none tracking-[0.04em]"
+          className="
+            futura-light
+            absolute
+            left-0
+            right-0
+            top-[22%]
+            text-center
+            text-[3.6vw]
+            uppercase
+            leading-none
+            tracking-[0.04em]
+          "
         >
           WHAT WE OFFER?
         </h2>
 
-        {/* ================= INTRO TEXT ================= */}
+        {/* ====================================================
+            INTRO TEXT
+        ==================================================== */}
+
         <div
           ref={introRef}
-          className="futura-light absolute left-0 right-0 top-[37%] text-center text-[1.55vw] leading-[1.5]"
+          className="
+            futura-light
+            absolute
+            left-0
+            right-0
+            top-[37%]
+            text-center
+            text-[1.55vw]
+            leading-[1.5]
+          "
         >
-          <p>A nonlinear, open-ended process</p>
+          <p>
+            A nonlinear, open-ended
+            process
+          </p>
 
-          <p>Recording Oral History and Material Memory</p>
+          <p>
+            Recording Oral History and
+            Material Memory
+          </p>
 
           <p>
             Driving a{" "}
-            <span className="futura-medium">“Moving Methodology”</span>
+            <span
+              className="
+                futura-medium
+                font-black
+                text-[#E9C892]
+              "
+            >
+              “Moving Methodology”
+            </span>
           </p>
         </div>
 
-        {/* ================= SERVICES GRID ================= */}
+        {/* ====================================================
+            SERVICES GRID
+        ==================================================== */}
+
         <div
           ref={servicesRef}
-          className="absolute left-1/2 top-[56%] grid w-[75%] -translate-x-1/2 grid-cols-3 gap-x-[15%] gap-y-10"
+          className="
+            absolute
+            left-1/2
+            top-[56%]
+            grid
+            w-[75%]
+            -translate-x-1/2
+            grid-cols-3
+            gap-x-[15%]
+            gap-y-10
+          "
         >
-          {/* ================= ROW 1 ================= */}
+          {/* ==================================================
+              ROW 1
+          ================================================== */}
 
-          <Link href="#" className="block">
+          {/* --------------------------------------------------
+              MEMOIRS
+          -------------------------------------------------- */}
+
+          <div>
             <ServiceBox>
               Memoirs, Anthologies,
               <br />
               Biographies
             </ServiceBox>
-          </Link>
+          </div>
 
-          <Link href="#" className="block">
+          {/* --------------------------------------------------
+              DOCUMENTARIES
+          -------------------------------------------------- */}
+
+          <div>
             <ServiceBox>
               Documentaries,
               <br />
               Short Films
             </ServiceBox>
-          </Link>
+          </div>
 
-          <Link href="#" className="block">
-            <ServiceBox>Digital Archive Services</ServiceBox>
-          </Link>
+          {/* --------------------------------------------------
+              DIGITAL ARCHIVE
+          -------------------------------------------------- */}
 
-          {/* ================= ROW 2 ================= */}
+          <div>
+            <ServiceBox>
+              Digital Archive
+              Services
+            </ServiceBox>
+          </div>
 
-          <Link href="#" className="block">
-            <ServiceBox>Exhibition Design</ServiceBox>
-          </Link>
+          {/* ==================================================
+              ROW 2
+          ================================================== */}
 
-          <Link href="#" className="block">
-            <ServiceBox>Life Writing Workshops</ServiceBox>
-          </Link>
+          {/* --------------------------------------------------
+              EXHIBITION
+          -------------------------------------------------- */}
 
-          <Link href="/products" className="block">
-            <ServiceBox>Bespoke Journals</ServiceBox>
+          <div>
+            <ServiceBox>
+              Exhibition Design
+            </ServiceBox>
+          </div>
+
+          {/* --------------------------------------------------
+              WORKSHOPS
+          -------------------------------------------------- */}
+
+          <div>
+            <ServiceBox>
+              Life Writing
+              Workshops
+            </ServiceBox>
+          </div>
+
+          {/* --------------------------------------------------
+              BESPOKE JOURNALS
+          -------------------------------------------------- */}
+
+          <Link
+            href="/products"
+            className="
+              block
+              cursor-pointer
+            "
+          >
+            <ServiceBox>
+              Bespoke Journals
+            </ServiceBox>
           </Link>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
 /* ============================================================
    SERVICE BOX
-   ============================================================ */
+============================================================ */
 
-function ServiceBox({ children }: { children: React.ReactNode }) {
+function ServiceBox({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="service-box futura-light flex h-[100px] items-center justify-center rounded-[10px] bg-[rgba(72,58,70,0.55)] px-5 text-center text-[1.15vw] leading-[1.35] transition-all duration-300 hover:bg-[rgba(72,58,70,0.7)]">
+    <div
+      className="
+        service-box
+        futura-light
+        flex
+        h-[100px]
+        items-center
+        justify-center
+        rounded-[10px]
+        bg-[rgba(72,58,70,0.55)]
+        px-5
+        text-center
+        text-[1.15vw]
+        leading-[1.35]
+        transition-all
+        duration-300
+        hover:bg-[rgba(72,58,70,0.7)]
+      "
+    >
       {children}
     </div>
   );

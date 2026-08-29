@@ -69,8 +69,8 @@ export default function Navbar() {
         </div>
 
 
-        {/* ================= HAMBURGER ================= */}
-        <button
+        
+        {/* <button
           type="button"
           aria-label="Open menu"
           className="ml-6 flex h-8 w-8 shrink-0 flex-col items-center justify-center gap-[5px] rounded-full border border-white/15 bg-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.12]"
@@ -78,7 +78,7 @@ export default function Navbar() {
           <span className="block h-[1px] w-[18px] bg-white" />
           <span className="block h-[1px] w-[18px] bg-white" />
           <span className="block h-[1px] w-[18px] bg-white" />
-        </button>
+        </button> */}
 
       </nav>
     </header>

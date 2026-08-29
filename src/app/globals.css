@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* ============================================================
+   FONTS
+============================================================ */
+
 @font-face {
   font-family: "Futura";
   src: url("/fonts/FuturaStdLight.otf") format("opentype");
@@ -10,7 +14,8 @@
 
 @font-face {
   font-family: "Futura";
-  src: url("/fonts/Futura URW Medium Regular.ttf") format("truetype");
+  src: url("/fonts/Futura URW Medium Regular.ttf")
+    format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -18,11 +23,16 @@
 
 @font-face {
   font-family: "Futura";
-  src: url("/fonts/Futura URW Medium Regular.ttf") format("truetype");
+  src: url("/fonts/Futura URW Medium Regular.ttf")
+    format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
+
+/* ============================================================
+   FUTURA UTILITY CLASSES
+============================================================ */
 
 .futura-light {
   font-family: "Futura", sans-serif;
@@ -39,19 +49,18 @@
   font-weight: 700;
 }
 
-/* ========================================
-   Root Variables
-   ======================================== */
+/* ============================================================
+   ROOT VARIABLES
+============================================================ */
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-
-/* ========================================
-   Tailwind Theme
-   ======================================== */
+/* ============================================================
+   TAILWIND THEME
+============================================================ */
 
 @theme inline {
   --color-background: var(--background);
@@ -61,10 +70,9 @@
   --font-mono: var(--font-geist-mono);
 }
 
-
-/* ========================================
-   Dark Mode
-   ======================================== */
+/* ============================================================
+   DARK MODE
+============================================================ */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -73,25 +81,234 @@
   }
 }
 
-
-/* ========================================
-   Global Styles
-   ======================================== */
+/* ============================================================
+   GLOBAL RESET
+============================================================ */
 
 * {
   box-sizing: border-box;
 }
 
-html,
+/*
+ * Prevent horizontal overflow caused by:
+ *
+ * - animations
+ * - GSAP transforms
+ * - oversized text
+ * - ripple canvas
+ * - absolutely positioned elements
+ */
+
+html {
+  width: 100%;
+  min-height: 100%;
+
+  overflow-x: hidden;
+
+  /*
+   * IMPORTANT:
+   *
+   * Keep vertical scrolling ENABLED.
+   *
+   * HomepageNavigator uses window.scrollTo()
+   * to move between the full-screen sections.
+   */
+  overflow-y: auto;
+
+  /*
+   * Prevent browser overscroll/bounce.
+   */
+  overscroll-behavior-y: none;
+
+  /*
+   * Hide the browser scrollbar visually.
+   *
+   * Scrolling itself remains possible.
+   */
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+}
+
+/* ============================================================
+   BODY
+============================================================ */
+
 body {
   margin: 0;
   padding: 0;
+
+  width: 100%;
+  min-height: 100%;
+
+  background: var(--background);
+
+  color: var(--foreground);
+
+  font-family: "Futura", sans-serif;
+  font-weight: 300;
+
+  /*
+   * Keep vertical scrolling enabled.
+   *
+   * DO NOT use:
+   *
+   * overflow: hidden;
+   *
+   * because HomepageNavigator needs
+   * window.scrollTo() to work.
+   */
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  /*
+   * Prevent overscroll/bounce at the top and bottom.
+   */
+  overscroll-behavior-y: none;
+
+  /*
+   * Hide scrollbar while keeping scrolling enabled.
+   */
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+}
+
+/* ============================================================
+   HIDE WEBKIT SCROLLBAR
+============================================================ */
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+
+  width: 0;
+  height: 0;
+}
+
+/* ============================================================
+   ROOT CONTAINER
+============================================================ */
+
+/*
+ * Do NOT set overflow: hidden on the root application
+ * container.
+ *
+ * The page contains multiple h-screen sections and
+ * HomepageNavigator moves between them with window.scrollTo().
+ */
+
+#__next {
+  width: 100%;
   min-height: 100%;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Futura", sans-serif;
-  font-weight: 300;
+/*
+ * Next.js App Router commonly renders through <body>
+ * without an #__next container.
+ *
+ * This selector is harmless if it doesn't exist.
+ */
+
+body > div {
+  width: 100%;
+  min-height: 100%;
+}
+
+/* ============================================================
+   IMAGES
+============================================================ */
+
+img {
+  max-width: 100%;
+}
+
+/* ============================================================
+   BUTTONS / INPUTS
+============================================================ */
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+/* ============================================================
+   LINKS
+============================================================ */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================================
+   HOMEPAGE SECTION SAFETY
+============================================================ */
+
+/*
+ * Sections 0–4 are full-screen ripple sections.
+ *
+ * Contact (section 5) is different:
+ *
+ * - the Contact visual is one viewport tall
+ * - the Footer lives INSIDE the Contact section
+ * - the Contact section itself must be allowed to grow
+ * - the Footer must remain in normal document flow
+ */
+
+/* ============================================================
+   RIPPLE SECTIONS — 0 TO 4
+============================================================ */
+
+[data-home-section="0"],
+[data-home-section="1"],
+[data-home-section="2"],
+[data-home-section="3"],
+[data-home-section="4"] {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+/* ============================================================
+   CONTACT — SECTION 5
+============================================================ */
+
+[data-home-section="5"] {
+  position: relative;
+  width: 100%;
+
+  /*
+   * Contact + Footer must be allowed
+   * to determine their own total height.
+   */
+  height: auto !important;
+  min-height: 100svh;
+
+  /*
+   * NEVER clip the Footer.
+   */
+  overflow-x: hidden;
+  overflow-y: visible !important;
+} 
+
+/* ============================================================
+   RIPPLE CANVAS SAFETY
+============================================================ */
+
+canvas {
+  max-width: 100%;
+}
+
+/* ============================================================
+   SELECTION
+============================================================ */
+
+::selection {
+  background: rgba(83, 36, 57, 0.35);
+  color: #ffffff;
 }

@@ -1,10 +1,188 @@
 "use client";
 
-export default function Hero() {
-  return (
-    <section className="relative h-screen w-full overflow-hidden">
+import {
+  useEffect,
+  useRef,
+} from "react";
 
-      {/* ================= BACKGROUND VIDEO ================= */}
+import gsap from "gsap";
+
+/* ============================================================
+   HERO
+============================================================ */
+
+export default function Hero() {
+  /*
+   * IMPORTANT:
+   *
+   * page.tsx owns:
+   *
+   * <section data-home-section="0">
+   *   <Hero />
+   * </section>
+   *
+   * Therefore Hero itself must NOT create another
+   * homepage <section>.
+   */
+
+  const sectionRef =
+    useRef<HTMLDivElement | null>(
+      null,
+    );
+
+  const contentRef =
+    useRef<HTMLDivElement | null>(
+      null,
+    );
+
+  const logoRef =
+    useRef<HTMLDivElement | null>(
+      null,
+    );
+
+  const titleRef =
+    useRef<HTMLHeadingElement | null>(
+      null,
+    );
+
+  const subtitleRef =
+    useRef<HTMLHeadingElement | null>(
+      null,
+    );
+
+  /* ==========================================================
+     HERO ENTRANCE ANIMATION
+  ========================================================== */
+
+  useEffect(() => {
+    const section =
+      sectionRef.current;
+
+    const content =
+      contentRef.current;
+
+    const logo =
+      logoRef.current;
+
+    const title =
+      titleRef.current;
+
+    const subtitle =
+      subtitleRef.current;
+
+    if (
+      !section ||
+      !content ||
+      !logo ||
+      !title ||
+      !subtitle
+    ) {
+      return;
+    }
+
+    const context =
+      gsap.context(
+        () => {
+          /*
+           * Hero is the starting section.
+           *
+           * It does NOT use the ripple system.
+           *
+           * This animation only runs on initial load.
+           */
+
+          gsap.set(
+            [
+              logo,
+              title,
+              subtitle,
+            ],
+            {
+              opacity: 0,
+              y: 30,
+            },
+          );
+
+          const timeline =
+            gsap.timeline({
+              delay: 0.15,
+            });
+
+          /* ==================================================
+             LOGO
+          ================================================== */
+
+          timeline.to(
+            logo,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.9,
+              ease: "power3.out",
+            },
+          );
+
+          /* ==================================================
+             TITLE
+          ================================================== */
+
+          timeline.to(
+            title,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.85,
+              ease: "power3.out",
+            },
+            "-=0.55",
+          );
+
+          /* ==================================================
+             SUBTITLE
+          ================================================== */
+
+          timeline.to(
+            subtitle,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.85,
+              ease: "power3.out",
+            },
+            "-=0.55",
+          );
+        },
+        section,
+      );
+
+    return () => {
+      context.revert();
+    };
+  }, []);
+
+  /* ============================================================
+     RENDER
+============================================================ */
+
+  return (
+    <div
+      ref={sectionRef}
+      className="
+        relative
+        h-full
+        min-h-full
+        w-full
+        overflow-hidden
+      "
+    >
+      {/* ======================================================
+          BACKGROUND VIDEO
+
+          Hero is the initial section.
+
+          No ripple background attribute is needed here.
+      ====================================================== */}
+
       <video
         autoPlay
         muted
@@ -12,7 +190,13 @@ export default function Hero() {
         playsInline
         crossOrigin="anonymous"
         data-ripple-video="/assets/homepage/HOME_PAGE_VIDEO.mp4"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="
+          absolute
+          inset-0
+          h-full
+          w-full
+          object-cover
+        "
       >
         <source
           src="/assets/homepage/HOME_PAGE_VIDEO.mp4"
@@ -20,44 +204,94 @@ export default function Hero() {
         />
       </video>
 
+      {/* ======================================================
+          HERO OVERLAY
+      ====================================================== */}
 
-      {/* ================= DARK OVERLAY ================= */}
-      <div className="absolute inset-0 bg-black/30" />
+      <div
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          bg-black/30
+        "
+      />
 
-      {/* ================= HERO CONTENT ================= */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-end pb-[5vh] text-center text-white">
+      {/* ======================================================
+          HERO CONTENT
+      ====================================================== */}
 
-        {/* ================= LOGO ================= */}
-        <div className="mb-1">
+      <div
+        ref={contentRef}
+        className="
+          relative
+          z-10
+          flex
+          h-full
+          flex-col
+          items-center
+          justify-end
+          pb-[5vh]
+          text-center
+          text-white
+        "
+      >
+        {/* ==================================================
+            LOGO
+        ================================================== */}
+
+        <div
+          ref={logoRef}
+          className="mb-1"
+        >
           <img
             src="/assets/homepage/FS_logo.png"
             alt="Family Script"
-            className="h-[130px] w-[130px] object-contain brightness-0 invert"
+            className="
+              h-[130px]
+              w-[130px]
+              object-contain
+              brightness-0
+              invert
+            "
           />
         </div>
 
-        {/* ================= RECORD YOUR STORY ================= */}
-        <h1 className="futura-light uppercase text-[2.25rem] leading-[1.15] tracking-[0.10em]">
+        {/* ==================================================
+            TITLE
+        ================================================== */}
+
+        <h1
+          ref={titleRef}
+          className="
+            futura-light
+            uppercase
+            text-[2.25rem]
+            leading-[1.15]
+            tracking-[0.10em]
+          "
+        >
           Record Your Story
         </h1>
 
-        {/* ================= CREATE A LEGACY ================= */}
-        <h2 className="futura-bold mt-3 uppercase text-[2.25rem] leading-[1.15] tracking-[0.10em]">
+        {/* ==================================================
+            SUBTITLE
+        ================================================== */}
+
+        <h2
+          ref={subtitleRef}
+          className="
+            futura-bold
+            mt-3
+            uppercase
+            text-[2.25rem]
+            leading-[1.15]
+            tracking-[0.10em]
+          "
+        >
           Create a Legacy
         </h2>
-
-        {/* ================= CTA BUTTON ================= */}
-        <button className="futura-light mt-7 rounded-full border border-white/40 bg-white/15 px-10 py-4 text-[15px] tracking-[0.05em] backdrop-blur-sm transition-all duration-300 hover:bg-white/25">
-          Get your Story{" "}
-          <span className="futura-bold">
-            Scripted
-          </span>
-          <span className="ml-3">&gt;&gt;</span>
-        </button>
-
       </div>
-
-
-    </section>
+    </div>
   );
 }

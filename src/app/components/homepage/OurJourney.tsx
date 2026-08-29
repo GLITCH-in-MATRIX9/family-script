@@ -1,546 +1,761 @@
+// components/homepage/OurJourney.tsx
+
 "use client";
 
-import { useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
-type JourneyPhoto = "up" | "down" | "none";
+import gsap from "gsap";
+import {
+  ScrollTrigger,
+} from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(
+  ScrollTrigger,
+);
+
+/* ============================================================
+   TYPES
+============================================================ */
 
 interface JourneyStop {
   year: string;
-  photo: JourneyPhoto;
-  caption?: string;
-  captionSide?: "above" | "below";
-  labelSide?: "above" | "below" | "on";
+  content: string;
 }
+
+/* ============================================================
+   JOURNEY DATA
+============================================================ */
 
 const JOURNEY_STOPS: JourneyStop[] = [
   {
     year: "2015",
-    photo: "none",
-    caption:
-      "Two friends, Kshitij and Rishi, envisioned bringing memories out of wardrobes to celebrate family legacies, giving birth to Family Script.",
-    captionSide: "above",
-    labelSide: "above",
-  },
-  {
-    year: "2017",
-    photo: "up",
-    caption:
-      "Incubated at IGDTUW-Anveshan Foundation and formally registered as Prarabdha Info Solutions Private Limited, marking Family Script's first institutional milestone.",
-    captionSide: "above",
-    labelSide: "below",
+    content: "Year 1",
   },
   {
     year: "2018",
-    photo: "down",
-    caption:
-      "Selected among India's top 16 from 400 applicants, Family Script received three months of entrepreneurship training and mentorship from the University of Texas at Austin, USA.",
-    captionSide: "below",
-    labelSide: "above",
+    content: "Year 2",
   },
   {
-    year: "2019",
-    photo: "up",
-    caption:
-      "Our first 8+ analogue projects tested the waters, transforming personal milestones and intimate family memories into meaningful, tangible legacies.",
-    captionSide: "above",
-    labelSide: "below",
-  },
-  {
-    year: "2020 - 2022",
-    photo: "down",
-    caption:
-      "A period of reflection and family time, amidst difficult circumstances, deepened our belief in preserving oral histories before they are lost.",
-    captionSide: "below",
-    labelSide: "above",
+    year: "2020",
+    content: "Year 3",
   },
   {
     year: "2023",
-    photo: "up",
-    caption:
-      "Family Script became a daily pursuit as Meenakshi joined as Director, a young team came together, and Family Script 2.0 was launched.",
-    captionSide: "above",
-    labelSide: "below",
+    content: "Year 4",
   },
   {
     year: "2023 - 2026",
-    photo: "down",
-    caption:
-      "28+ projects completed across biographies, memoirs, institutional histories, practice histories, and diverse forms of legacy documentation.",
-    captionSide: "below",
-    labelSide: "above",
+    content: "Year 5",
   },
   {
     year: "2024",
-    photo: "up",
-    caption:
-      "Exhibited Family Script projects and Indigo Chronicles, a set of three journals to Create, Cherish and Celebrate life, at DCWA's Diplomatic Bazaar; bringing life documentation and legacy-making to a wider audience.",
-    captionSide: "above",
-    labelSide: "below",
+    content: "Year 6",
   },
   {
     year: "2025",
-    photo: "down",
-    caption:
-      "Family Script won the UX India 2025 Design Pitch Competition, emerging among 149 global entries and pitching to leading investors in Hyderabad.",
-    captionSide: "below",
-    labelSide: "above",
+    content: "Year 7",
   },
   {
     year: "2026",
-    photo: "up",
-    caption:
-      "Showcased Family Script's Digital Model at the India Impact AI Summit 2026, representing Delhi Government-promoted startups and opening new institutional opportunities.",
-    captionSide: "above",
-    labelSide: "below",
+    content: "Year 8",
   },
   {
     year: "Future Vision",
-    photo: "none",
-    labelSide: "on",
+    content: "Year 9",
   },
 ];
 
-const ITEMS_PER_VIEW = 4;
-const PHOTO_SIZE = 78;
+/* ============================================================
+   CONSTANTS
+============================================================ */
+
 const CAPTION_COLOR = "#cda06e";
 
+/* ============================================================
+   COMPONENT
+============================================================ */
+
 export default function OurJourney() {
-  const [startIndex, setStartIndex] = useState(0);
+  /* ==========================================================
+     REFS
+  ========================================================== */
 
-  const maxIndex = JOURNEY_STOPS.length - ITEMS_PER_VIEW;
+  const sectionRef =
+    useRef<HTMLDivElement | null>(null);
 
-  const goPrevious = () => {
-    setStartIndex((current) => Math.max(0, current - 1));
+  const headingRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const contentRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const timelineRef =
+    useRef<HTMLDivElement | null>(null);
+
+  /* ==========================================================
+     STATE
+  ========================================================== */
+
+  const [
+    activeIndex,
+    setActiveIndex,
+  ] = useState(0);
+
+  /* ==========================================================
+     ACTIVE ITEM
+  ========================================================== */
+
+  const activeJourney =
+    JOURNEY_STOPS[activeIndex];
+
+  /* ==========================================================
+     CHANGE TIMELINE ITEM
+  ========================================================== */
+
+  const handleDotClick = (
+    index: number,
+  ) => {
+    if (
+      index === activeIndex
+    ) {
+      return;
+    }
+
+    setActiveIndex(index);
   };
 
-  const goNext = () => {
-    setStartIndex((current) =>
-      Math.min(maxIndex, current + 1)
+  /* ==========================================================
+     CONTENT ANIMATION
+  ========================================================== */
+
+  useEffect(() => {
+    const content =
+      contentRef.current;
+
+    if (!content) {
+      return;
+    }
+
+    gsap.fromTo(
+      content,
+      {
+        opacity: 0,
+        y: 15,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.45,
+        ease: "power3.out",
+      },
     );
-  };
+  }, [
+    activeIndex,
+  ]);
+
+  /* ==========================================================
+     ENTRANCE ANIMATION
+  ========================================================== */
+
+  useEffect(() => {
+    const section =
+      sectionRef.current;
+
+    const heading =
+      headingRef.current;
+
+    const content =
+      contentRef.current;
+
+    const timeline =
+      timelineRef.current;
+
+    if (
+      !section ||
+      !heading ||
+      !content ||
+      !timeline
+    ) {
+      return;
+    }
+
+    const ctx =
+      gsap.context(() => {
+        /* ----------------------------------------------------
+           INITIAL STATE
+        ---------------------------------------------------- */
+
+        gsap.set(
+          heading,
+          {
+            opacity: 1,
+            y: 0,
+          },
+        );
+
+        gsap.set(
+          content,
+          {
+            opacity: 1,
+            y: 0,
+          },
+        );
+
+        gsap.set(
+          timeline,
+          {
+            opacity: 1,
+            y: 0,
+          },
+        );
+
+        /* ----------------------------------------------------
+           ENTRANCE TIMELINE
+        ---------------------------------------------------- */
+
+        const entrance =
+          gsap.timeline({
+            paused: true,
+          });
+
+        entrance.fromTo(
+          heading,
+          {
+            opacity: 0,
+            y: 30,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "power3.out",
+          },
+        );
+
+        entrance.fromTo(
+          content,
+          {
+            opacity: 0,
+            y: 20,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power3.out",
+          },
+          "-=0.35",
+        );
+
+        entrance.fromTo(
+          timeline,
+          {
+            opacity: 0,
+            y: 20,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            ease: "power3.out",
+          },
+          "-=0.3",
+        );
+
+        /* ----------------------------------------------------
+           SCROLL TRIGGER
+        ---------------------------------------------------- */
+
+        ScrollTrigger.create({
+          trigger: section,
+
+          start: "top 85%",
+
+          onEnter: () => {
+            entrance.restart();
+          },
+
+          onEnterBack: () => {
+            entrance.restart();
+          },
+        });
+
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+        });
+      }, section);
+
+    return () => {
+      ctx.revert();
+    };
+  }, []);
+
+  /* ==========================================================
+     RENDER
+  ========================================================== */
 
   return (
-    <section
-      className="relative w-full overflow-hidden py-24 md:py-32"
+    <div
+      ref={sectionRef}
+      className="
+        relative
+        h-full
+        min-h-full
+        w-full
+        overflow-hidden
+        px-6
+        py-10
+        md:px-10
+        md:py-12
+        lg:px-16
+        lg:py-14
+      "
       style={{
         background:
           "radial-gradient(circle at 50% 0%, rgba(94, 33, 51, 1) 0%, rgba(52, 18, 30, 1) 45%, rgba(22, 9, 14, 1) 100%)",
       }}
     >
-      {/* =====================================================
-          HEADING
-      ===================================================== */}
+      {/* ======================================================
+          ATMOSPHERIC GLOW
+      ====================================================== */}
 
-      <div className="futura-light flex flex-col items-center text-center text-white">
-        <div className="uppercase text-[1.1rem] leading-none">
-          Our
+      <div
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          z-0
+          opacity-40
+        "
+        style={{
+          background:
+            "radial-gradient(circle at 50% 20%, rgba(150, 70, 90, 0.18), transparent 55%)",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* ======================================================
+          CONTENT
+      ====================================================== */}
+
+      <div
+        className="
+          relative
+          z-10
+          flex
+          h-full
+          min-h-0
+          flex-col
+        "
+      >
+        {/* ====================================================
+            HEADING
+        ==================================================== */}
+
+        <div
+          ref={headingRef}
+          data-ripple-element
+          className="
+            futura-light
+            flex
+            shrink-0
+            flex-col
+            items-center
+            text-center
+            text-white
+          "
+        >
+          <div
+            className="
+              uppercase
+              text-[0.9rem]
+              leading-none
+              md:text-[1.1rem]
+            "
+          >
+            Our
+          </div>
+
+          <h2
+            className="
+              mt-2
+              uppercase
+              text-[clamp(2.5rem,6vw,4.5rem)]
+              leading-none
+              tracking-[0.12em]
+            "
+          >
+            Journey
+          </h2>
         </div>
 
-        <h2 className="mt-3 uppercase text-[clamp(2.5rem,6vw,4.5rem)] leading-none tracking-[0.12em]">
-          Journey
-        </h2>
-      </div>
+        {/* ====================================================
+            SELECTED CONTENT
+        ==================================================== */}
 
+        <div
+          ref={contentRef}
+          data-ripple-element
+          className="
+            mt-8
+            flex
+            flex-1
+            min-h-0
+            flex-col
+            items-center
+            justify-center
+            text-center
+          "
+        >
+          {/* SMALL YEAR */}
 
-      {/* =====================================================
-          MOBILE
-      ===================================================== */}
-
-      <div className="mt-12 space-y-10 px-6 md:hidden">
-
-        {JOURNEY_STOPS.map((stop, index) => (
           <div
-            key={`${stop.year}-${index}`}
-            className="flex gap-5"
+            className="
+              futura-light
+              uppercase
+              text-[14px]
+              tracking-[0.18em]
+              text-white/70
+              md:text-[16px]
+            "
           >
-
-            <div className="flex flex-col items-center">
-
-              <div className="h-2.5 w-2.5 rounded-full bg-white/70" />
-
-              {index < JOURNEY_STOPS.length - 1 && (
-                <div className="mt-1 w-px flex-1 bg-white/25" />
-              )}
-
-            </div>
-
-
-            <div className="flex-1 pb-8">
-
-              <span className="futura-light text-[18px] text-white">
-                {stop.year}
-              </span>
-
-              {stop.photo !== "none" && (
-                <div className="mt-3 h-[80px] w-[96px] overflow-hidden rounded-sm shadow-lg">
-                  <img
-                    src="/assets/homepage/REVA KHANNA.png"
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              )}
-
-              {stop.caption && (
-                <p
-                  className="futura-light mt-3 max-w-[450px] text-[13px] leading-[1.5]"
-                  style={{
-                    color: CAPTION_COLOR,
-                  }}
-                >
-                  {stop.caption}
-                </p>
-              )}
-
-            </div>
-
+            {activeJourney.year}
           </div>
-        ))}
 
-      </div>
-
-
-      {/* =====================================================
-          DESKTOP TIMELINE
-      ===================================================== */}
-
-      <div className="relative mx-auto mt-20 hidden h-[500px] w-[86%] max-w-[1500px] md:block">
-
-        {/* ===================================================
-            LEFT ARROW
-        =================================================== */}
-
-        <button
-          type="button"
-          onClick={goPrevious}
-          disabled={startIndex === 0}
-          aria-label="Previous years"
-          className="
-            absolute
-            left-[-55px]
-            top-1/2
-            z-50
-            flex
-            h-12
-            w-12
-            -translate-y-1/2
-            items-center
-            justify-center
-            rounded-full
-            border
-            border-white/20
-            bg-white/[0.03]
-            text-[25px]
-            text-white
-            backdrop-blur-sm
-            transition-all
-            duration-300
-            hover:border-white/40
-            hover:bg-white/10
-            disabled:pointer-events-none
-            disabled:opacity-20
-          "
-        >
-          ←
-        </button>
-
-
-        {/* ===================================================
-            RIGHT ARROW
-        =================================================== */}
-
-        <button
-          type="button"
-          onClick={goNext}
-          disabled={startIndex === maxIndex}
-          aria-label="Next years"
-          className="
-            absolute
-            right-[-55px]
-            top-1/2
-            z-50
-            flex
-            h-12
-            w-12
-            -translate-y-1/2
-            items-center
-            justify-center
-            rounded-full
-            border
-            border-white/20
-            bg-white/[0.03]
-            text-[25px]
-            text-white
-            backdrop-blur-sm
-            transition-all
-            duration-500
-            hover:border-white/40
-            hover:bg-white/10
-            disabled:pointer-events-none
-            disabled:opacity-20
-          "
-        >
-          →
-        </button>
-
-
-        {/* ===================================================
-            VIEWPORT
-            ONLY 4 YEARS ARE VISIBLE
-        =================================================== */}
-
-        <div className="absolute inset-0 overflow-hidden">
-
-          {/* ================= AXIS ================= */}
-
-          <div className="absolute left-0 right-0 top-1/2 z-10 h-px bg-white/35" />
-
-          <div className="absolute left-0 top-1/2 z-20 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/70" />
-
-          <div className="absolute right-0 top-1/2 z-20 h-2 w-2 translate-x-1/2 -translate-y-1/2 rounded-full bg-white/70" />
-
-
-          {/* =================================================
-              MOVING TRACK
-          ================================================= */}
+          {/* MAIN CONTENT */}
 
           <div
-            className="absolute left-0 top-0 flex h-full transition-transform duration-700 ease-in-out"
+            className="
+              futura-light
+              mt-3
+              text-[clamp(2rem,5vw,4rem)]
+              uppercase
+              tracking-[0.08em]
+              text-white
+            "
+          >
+            {activeJourney.content}
+          </div>
+
+          {/* SMALL CAPTION */}
+
+          <div
+            className="
+              futura-light
+              mt-4
+              text-[11px]
+              uppercase
+              tracking-[0.12em]
+              md:text-[12px]
+            "
             style={{
-              width: `${(JOURNEY_STOPS.length / ITEMS_PER_VIEW) * 100}%`,
-              transform: `translateX(-${
-                startIndex * (100 / JOURNEY_STOPS.length)
-              }%)`,
+              color:
+                CAPTION_COLOR,
             }}
           >
+            Click a point on the timeline
+          </div>
+        </div>
 
-            {JOURNEY_STOPS.map((stop, index) => (
+        {/* ====================================================
+            DESKTOP TIMELINE
+        ==================================================== */}
 
-              <div
-                key={`${stop.year}-${index}`}
-                className="relative h-full shrink-0"
-                style={{
-                  width: `${100 / JOURNEY_STOPS.length}%`,
-                }}
-              >
+        <div
+          ref={timelineRef}
+          data-ripple-element
+          className="
+            relative
+            mx-auto
+            mb-8
+            hidden
+            w-[86%]
+            max-w-[1500px]
+            md:block
+          "
+        >
+          {/* ==================================================
+              TIMELINE LINE
+          ================================================== */}
 
-                {/* =========================================
-                    CENTER POINT
-                ========================================= */}
+          <div
+            className="
+              absolute
+              left-0
+              right-0
+              top-1/2
+              z-0
+              h-px
+              -translate-y-1/2
+              bg-white/25
+            "
+          />
 
-                <div className="absolute left-1/2 top-1/2 z-30 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/70" />
+          {/* ==================================================
+              DOTS
+          ================================================== */}
 
+          <div
+            className="
+              relative
+              flex
+              w-full
+              items-center
+              justify-between
+            "
+          >
+            {JOURNEY_STOPS.map(
+              (
+                stop,
+                index,
+              ) => {
+                const isActive =
+                  index ===
+                  activeIndex;
 
-                {/* =========================================
-                    PHOTO CONNECTOR
-                ========================================= */}
-
-                {stop.photo !== "none" && (
-                  <div
-                    className="absolute left-1/2 z-20 w-px -translate-x-1/2 bg-white/35"
-                    style={
-                      stop.photo === "up"
-                        ? {
-                            bottom: "50%",
-                            height: 105,
-                          }
-                        : {
-                            top: "50%",
-                            height: 105,
-                          }
+                return (
+                  <button
+                    key={`${stop.year}-${index}`}
+                    type="button"
+                    onClick={() =>
+                      handleDotClick(
+                        index,
+                      )
                     }
-                  />
-                )}
-
-
-                {/* =========================================
-                    PHOTO
-                ========================================= */}
-
-                {stop.photo !== "none" && (
-                  <div
-                    className="absolute left-1/2 z-30 overflow-hidden rounded-sm shadow-lg"
-                    style={
-                      stop.photo === "up"
-                        ? {
-                            bottom: "calc(50% + 115px)",
-                            width: PHOTO_SIZE,
-                            height: PHOTO_SIZE,
-                            transform: "translateX(-50%)",
-                          }
-                        : {
-                            top: "calc(50% + 115px)",
-                            width: PHOTO_SIZE,
-                            height: PHOTO_SIZE,
-                            transform: "translateX(-50%)",
-                          }
+                    aria-label={`Show ${stop.year}`}
+                    aria-pressed={
+                      isActive
                     }
+                    className="
+                      group
+                      relative
+                      z-10
+                      flex
+                      h-10
+                      w-10
+                      items-center
+                      justify-center
+                      rounded-full
+                      focus:outline-none
+                    "
                   >
-                    <img
-                      src="/assets/homepage/REVA KHANNA.png"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                )}
+                    {/* ======================================
+                        HOVER / ACTIVE CIRCLE
+                    ====================================== */}
 
-
-                {/* =========================================
-                    CAPTION
-                ========================================= */}
-
-                {stop.caption && (
-                  <p
-                    className={`
-                      futura-light
-                      absolute
-                      left-1/2
-                      z-20
-                      w-[180px]
-                      -translate-x-1/2
-                      text-center
-                      text-[11px]
-                      leading-[1.45]
-                    `}
-                    style={{
-                      color: CAPTION_COLOR,
-                      ...(stop.captionSide === "below"
-                        ? {
-                            top: "calc(50% + 215px)",
-                          }
-                        : {
-                            bottom: "calc(50% + 215px)",
-                          }),
-                    }}
-                  >
-                    {stop.caption}
-                  </p>
-                )}
-
-
-                {/* =========================================
-                    YEAR
-                ========================================= */}
-
-                <span
-                  className={`
-                    futura-light
-                    absolute
-                    left-1/2
-                    z-40
-                    whitespace-nowrap
-                    text-[16px]
-                    text-white
-                  `}
-                  style={
-                    stop.labelSide === "above"
-                      ? {
-                          bottom: "calc(50% + 14px)",
-                          transform: "translateX(-50%)",
+                    <span
+                      className={`
+                        pointer-events-none
+                        absolute
+                        inset-0
+                        rounded-full
+                        border
+                        border-white/50
+                        transition-all
+                        duration-300
+                        ${
+                          isActive
+                            ? "scale-100 opacity-100"
+                            : "scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100"
                         }
-                      : stop.labelSide === "below"
-                        ? {
-                            top: "calc(50% + 14px)",
-                            transform: "translateX(-50%)",
-                          }
-                        : {
-                            top: "50%",
-                            transform:
-                              "translate(-50%, -50%)",
-                          }
-                  }
-                >
-                  {stop.year}
-                </span>
+                      `}
+                    />
 
-              </div>
+                    {/* ======================================
+                        DOT
+                    ====================================== */}
 
-            ))}
+                    <span
+                      className={`
+                        relative
+                        block
+                        rounded-full
+                        transition-all
+                        duration-300
+                        ${
+                          isActive
+                            ? "h-3 w-3 bg-white"
+                            : "h-2 w-2 bg-white/70 group-hover:h-2.5 group-hover:w-2.5 group-hover:bg-white"
+                        }
+                      `}
+                    />
 
+                    {/* ======================================
+                        YEAR LABEL
+                    ====================================== */}
+
+                    <span
+                      className={`
+                        futura-light
+                        pointer-events-none
+                        absolute
+                        top-[calc(50%+18px)]
+                        left-1/2
+                        -translate-x-1/2
+                        whitespace-nowrap
+                        text-[10px]
+                        transition-all
+                        duration-300
+                        ${
+                          isActive
+                            ? "text-white"
+                            : "text-white/45 group-hover:text-white/80"
+                        }
+                      `}
+                    >
+                      {stop.year}
+                    </span>
+                  </button>
+                );
+              },
+            )}
+          </div>
+        </div>
+
+        {/* ====================================================
+            MOBILE TIMELINE
+        ==================================================== */}
+
+        <div
+          className="
+            relative
+            mx-auto
+            mb-6
+            w-full
+            md:hidden
+          "
+        >
+          {/* ==================================================
+              MOBILE LINE
+          ================================================== */}
+
+          <div
+            className="
+              absolute
+              left-[5%]
+              right-[5%]
+              top-1/2
+              z-0
+              h-px
+              -translate-y-1/2
+              bg-white/25
+            "
+          />
+
+          {/* ==================================================
+              MOBILE DOTS
+          ================================================== */}
+
+          <div
+            className="
+              relative
+              flex
+              w-full
+              items-center
+              justify-between
+              px-[3%]
+            "
+          >
+            {JOURNEY_STOPS.map(
+              (
+                stop,
+                index,
+              ) => {
+                const isActive =
+                  index ===
+                  activeIndex;
+
+                return (
+                  <button
+                    key={`mobile-${stop.year}-${index}`}
+                    type="button"
+                    onClick={() =>
+                      handleDotClick(
+                        index,
+                      )
+                    }
+                    aria-label={`Show ${stop.year}`}
+                    aria-pressed={
+                      isActive
+                    }
+                    className="
+                      group
+                      relative
+                      z-10
+                      flex
+                      h-8
+                      w-8
+                      items-center
+                      justify-center
+                      rounded-full
+                    "
+                  >
+                    {/* ======================================
+                        HOVER / ACTIVE RING
+                    ====================================== */}
+
+                    <span
+                      className={`
+                        pointer-events-none
+                        absolute
+                        inset-0
+                        rounded-full
+                        border
+                        border-white/50
+                        transition-all
+                        duration-300
+                        ${
+                          isActive
+                            ? "scale-100 opacity-100"
+                            : "scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100"
+                        }
+                      `}
+                    />
+
+                    {/* ======================================
+                        DOT
+                    ====================================== */}
+
+                    <span
+                      className={`
+                        relative
+                        rounded-full
+                        transition-all
+                        duration-300
+                        ${
+                          isActive
+                            ? "h-2.5 w-2.5 bg-white"
+                            : "h-2 w-2 bg-white/70 group-hover:bg-white"
+                        }
+                      `}
+                    />
+                  </button>
+                );
+              },
+            )}
           </div>
 
+          {/* ==================================================
+              MOBILE ACTIVE YEAR
+          ================================================== */}
+
+          <div
+            className="
+              futura-light
+              mt-4
+              text-center
+              text-[11px]
+              text-white/60
+            "
+          >
+            {activeJourney.year}
+          </div>
         </div>
-
-
-        {/* ===================================================
-            PAGINATION
-        =================================================== */}
-
-        <div className="absolute bottom-[-25px] left-1/2 flex -translate-x-1/2 items-center gap-2">
-
-          {Array.from({
-            length: maxIndex + 1,
-          }).map((_, index) => (
-
-            <button
-              key={index}
-              type="button"
-              aria-label={`Timeline position ${index + 1}`}
-              onClick={() => setStartIndex(index)}
-              className={`
-                h-1.5
-                rounded-full
-                transition-all
-                duration-300
-                ${
-                  index === startIndex
-                    ? "w-7 bg-white/80"
-                    : "w-1.5 bg-white/25 hover:bg-white/50"
-                }
-              `}
-            />
-
-          ))}
-
-        </div>
-
       </div>
-
-
-      {/* =====================================================
-          MOBILE ARROWS
-      ===================================================== */}
-
-      <div className="mt-8 flex justify-center gap-5 md:hidden">
-
-        <button
-          type="button"
-          onClick={goPrevious}
-          disabled={startIndex === 0}
-          className="
-            rounded-full
-            border
-            border-white/20
-            px-6
-            py-2
-            text-white
-            transition-all
-            disabled:opacity-20
-          "
-        >
-          ←
-        </button>
-
-        <button
-          type="button"
-          onClick={goNext}
-          disabled={startIndex === maxIndex}
-          className="
-            rounded-full
-            border
-            border-white/20
-            px-6
-            py-2
-            text-white
-            transition-all
-            disabled:opacity-20
-          "
-        >
-          →
-        </button>
-
-      </div>
-
-    </section>
+    </div>
   );
 }
