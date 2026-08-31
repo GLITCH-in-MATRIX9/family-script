@@ -5,6 +5,7 @@ import WhoAreWe from "./components/homepage/WhoAreWe";
 import WhatWeDo from "./components/homepage/WhatWeDo";
 import WhatWeOffer from "./components/homepage/WhatWeOffer";
 import OurJourney from "./components/homepage/OurJourney";
+import Testimonials from "./components/homepage/testimonials/Testimonials";
 import ContactSection from "./components/homepage/ContactSection";
 
 import SocialIcons from "./components/layout/SocialIcos";
@@ -114,7 +115,25 @@ export default function Home() {
           </section>
 
           {/* ==================================================
-              5 — CONTACT + FOOTER
+              5 — TESTIMONIALS
+          ================================================== */}
+
+          <section
+            data-home-section="5"
+            data-ripple-background="/assets/testimonials/testimonials-bg.png"
+            className="
+              relative
+              h-screen
+              min-h-screen
+              w-full
+              overflow-hidden
+            "
+          >
+            <Testimonials />
+          </section>
+
+          {/* ==================================================
+              6 — CONTACT + FOOTER
 
               IMPORTANT:
 

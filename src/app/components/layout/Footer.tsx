@@ -8,21 +8,28 @@ import Link from "next/link";
    DATA
 ============================================================ */
 
-const COMPANY_LINKS = [
+type FooterLink = {
+  label: string;
+  href: string;
+};
+
+// Plain strings still work everywhere below — only entries that need a real
+// destination (like Testimonials) get upgraded to { label, href }.
+const COMPANY_LINKS: (string | FooterLink)[] = [
   "About Us",
   "Our Team",
   "Our Story",
   "Awards & Events",
 ];
 
-const PROJECT_LINKS = [
+const PROJECT_LINKS: (string | FooterLink)[] = [
   "Portfolio Showcase",
   "Videos",
   "Behind The Scenes",
   "Testimonials",
 ];
 
-const LEGAL_LINKS = [
+const LEGAL_LINKS: (string | FooterLink)[] = [
   "Privacy Policy",
   "Terms & Conditions",
   "FAQs",
@@ -38,7 +45,7 @@ function FooterColumn({
   links,
 }: {
   title: string;
-  links: string[];
+  links: (string | FooterLink)[];
 }) {
   return (
     <div>
@@ -68,25 +75,30 @@ function FooterColumn({
           space-y-2.5
         "
       >
-        {links.map((label) => (
-          <li key={label}>
-            <Link
-              href="#"
-              className="
-                futura-light
-                text-[11px]
-                leading-none
-                tracking-wide
-                text-white/55
-                transition-colors
-                duration-200
-                hover:text-white/90
-              "
-            >
-              {label}
-            </Link>
-          </li>
-        ))}
+        {links.map((link) => {
+          const label = typeof link === "string" ? link : link.label;
+          const href = typeof link === "string" ? "#" : link.href;
+
+          return (
+            <li key={label}>
+              <Link
+                href={href}
+                className="
+                  futura-light
+                  text-[11px]
+                  leading-none
+                  tracking-wide
+                  text-white/55
+                  transition-colors
+                  duration-200
+                  hover:text-white/90
+                "
+              >
+                {label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
