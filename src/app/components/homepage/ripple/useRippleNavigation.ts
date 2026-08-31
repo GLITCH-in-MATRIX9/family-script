@@ -17,6 +17,10 @@ import {
   prepareRippleSection,
 } from "./RippleTransition";
 
+import {
+  testimonialsStepRef,
+} from "./testimonialsStepBridge";
+
 /* ============================================================
    TYPES
 ============================================================ */
@@ -232,6 +236,29 @@ export function useRippleNavigation({
           sections.length > 0 &&
           index ===
             sections.length - 1
+        );
+      },
+      [
+        sections.length,
+      ],
+    );
+
+  /* ==========================================================
+     IS TESTIMONIALS SECTION
+
+     Testimonials is always the section immediately BEFORE
+     the final (Contact) section — same "derived, not
+     hardcoded" style as isFinalSection, so this keeps
+     working if the section count changes again later.
+  ========================================================== */
+
+  const isTestimonialsSection =
+    useCallback(
+      (index: number) => {
+        return (
+          sections.length > 1 &&
+          index ===
+            sections.length - 2
         );
       },
       [
@@ -507,6 +534,25 @@ export function useRippleNavigation({
           );
 
           /*
+           * Landing on Testimonials: resume on the last pair
+           * when arriving from Contact (direction -1),
+           * otherwise start fresh on the first pair.
+           */
+          if (
+            isTestimonialsSection(
+              targetIndex,
+            )
+          ) {
+            if (
+              direction === 1
+            ) {
+              testimonialsStepRef.current?.enterFromStart();
+            } else {
+              testimonialsStepRef.current?.enterFromEnd();
+            }
+          }
+
+          /*
            * Contact is now native-scroll territory.
            */
           if (
@@ -586,6 +632,7 @@ export function useRippleNavigation({
         moveToSection,
         onIndexChange,
         isFinalSection,
+        isTestimonialsSection,
       ],
     );
 
@@ -791,6 +838,84 @@ export function useRippleNavigation({
         }
 
         /* ====================================================
+           TESTIMONIALS SECTION
+
+           One wheel tick steps one testimonial pair while
+           inside this section; only at the first/last pair
+           does a wheel tick hand off to normal ripple
+           navigation (into Our Journey / Contact).
+        ==================================================== */
+
+        if (
+          isTestimonialsSection(
+            index,
+          )
+        ) {
+          const controller =
+            testimonialsStepRef.current;
+
+          if (
+            controller
+          ) {
+            if (
+              event.cancelable
+            ) {
+              event.preventDefault();
+            }
+
+            if (
+              animatingRef.current ||
+              controller.isAnimating()
+            ) {
+              return;
+            }
+
+            const pairIndex =
+              controller.getPairIndex();
+
+            const pairCount =
+              controller.getPairCount();
+
+            if (
+              scrollingDown
+            ) {
+              if (
+                pairIndex <
+                pairCount - 1
+              ) {
+                controller.stepForward();
+              } else {
+                next();
+              }
+
+              return;
+            }
+
+            if (
+              scrollingUp
+            ) {
+              if (
+                pairIndex > 0
+              ) {
+                controller.stepBackward();
+              } else {
+                previous();
+              }
+
+              return;
+            }
+
+            return;
+          }
+
+          /*
+           * Controller not yet mounted — fall through to
+           * normal section-jump behavior below so the user
+           * isn't stranded.
+           */
+        }
+
+        /* ====================================================
            NORMAL RIPPLE SECTIONS
         ==================================================== */
 
@@ -840,6 +965,7 @@ export function useRippleNavigation({
     next,
     previous,
     isAtFinalSectionTop,
+    isTestimonialsSection,
   ]);
 
   /* ==========================================================

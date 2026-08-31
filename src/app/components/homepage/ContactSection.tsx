@@ -39,21 +39,28 @@ const FIELD_OPTION_BG =
    FOOTER DATA
 ============================================================ */
 
-const COMPANY_LINKS = [
+type FooterLink = {
+  label: string;
+  href: string;
+};
+
+// Plain strings still work everywhere below — only entries that need a real
+// destination (like Testimonials) get upgraded to { label, href }.
+const COMPANY_LINKS: (string | FooterLink)[] = [
   "About Us",
   "Our Team",
   "Our Story",
   "Awards & Events",
 ];
 
-const PROJECT_LINKS = [
+const PROJECT_LINKS: (string | FooterLink)[] = [
   "Portfolio Showcase",
   "Videos",
   "Behind The Scenes",
   "Testimonials",
 ];
 
-const LEGAL_LINKS = [
+const LEGAL_LINKS: (string | FooterLink)[] = [
   "Privacy Policy",
   "Terms & Conditions",
   "FAQs",
@@ -335,7 +342,7 @@ function FooterColumn({
   links,
 }: {
   title: string;
-  links: string[];
+  links: (string | FooterLink)[];
 }) {
   return (
     <div>
@@ -350,27 +357,33 @@ function FooterColumn({
       >
         {title}
       </h3>
-      <ul className="mt-2 space-y-1.5">
-        {links.map((label) => (
-          <li key={label}>
-            <Link
-              href="#"
-              className="
-                futura-light
-                text-[13px]
-                leading-none
-                tracking-wide
-                text-white/60
-                transition-colors
-                duration-200
-                hover:text-white
-                md:text-[14px]
-              "
-            >
-              {label}
-            </Link>
-          </li>
-        ))}
+
+      <ul className="mt-4 space-y-2.5">
+        {links.map((link) => {
+          const label = typeof link === "string" ? link : link.label;
+          const href = typeof link === "string" ? "#" : link.href;
+
+          return (
+            <li key={label}>
+              <Link
+                href={href}
+                className="
+                  futura-light
+                  text-[13px]
+                  leading-none
+                  tracking-wide
+                  text-white/60
+                  transition-colors
+                  duration-200
+                  hover:text-white
+                  md:text-[14px]
+                "
+              >
+                {label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
@@ -922,7 +935,7 @@ export default function ContactSection() {
   return (
     <section
       ref={sectionRef}
-      data-home-section="5"
+      data-home-section="6"
       className="
         relative
         flex
