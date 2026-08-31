@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import type { MouseEvent } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 
@@ -23,56 +24,55 @@ type ProjectDetailsProps = {
 ========================================================= */
 
 type GalleryImageProps = {
-  item: {
-    image: string;
-  } | undefined;
+  item:
+    | {
+        image: string;
+      }
+    | undefined;
   title: string;
   index: number;
+  className?: string;
 };
 
 const GalleryImage = ({
   item,
   title,
   index,
+  className = "",
 }: GalleryImageProps) => {
-
   if (!item) {
     return (
       <div
-        className="
-          h-full
+        className={`
+          relative
           w-full
-          min-h-0
-        "
+          overflow-hidden
+          ${className}
+        `}
       />
     );
   }
 
   return (
     <div
-      className="
+      className={`
         relative
-        h-full
         w-full
-        min-h-0
         overflow-hidden
-      "
+        ${className}
+      `}
     >
       <img
         src={item.image}
-        alt={`${title} gallery image ${
-          index + 1
-        }`}
+        alt={`${title} gallery image ${index + 1}`}
         className="
           block
           h-full
           w-full
           object-cover
-
           transition-transform
           duration-700
           ease-out
-
           hover:scale-[1.04]
         "
       />
@@ -94,21 +94,6 @@ export default function ProjectDetails({
   ========================================================= */
 
   const gallery = project.gallery ?? [];
-
-  /*
-   * RIGHT SIDE LAYOUT:
-   *
-   * ┌──────────┬──────────┬──────────┐
-   * │ IMAGE 1  │ IMAGE 2  │ IMAGE 3  │
-   * ├─────────────────────┼──────────┤
-   * │                     │ IMAGE 4  │
-   * │        BOOK         ├──────────┤
-   * │                     │ IMAGE 5  │
-   * ├──────────┬──────────┼──────────┤
-   * │ IMAGE 6  │ IMAGE 7  │ IMAGE 8  │
-   * └──────────┴──────────┴──────────┘
-   */
-
   const galleryImages = gallery.slice(0, 8);
 
   /* =========================================================
@@ -116,7 +101,7 @@ export default function ProjectDetails({
   ========================================================= */
 
   const handleBookMouseMove = (
-    event: React.MouseEvent<HTMLDivElement>
+    event: MouseEvent<HTMLDivElement>
   ) => {
     const book = bookRef.current;
 
@@ -134,18 +119,11 @@ export default function ProjectDetails({
     const normalizedY =
       (y / rect.height - 0.5) * 2;
 
-    /*
-     * Only tilt.
-     * No x/y movement so the book stays in place.
-     */
-
     gsap.to(book, {
       rotationY: normalizedX * 7,
       rotationX: normalizedY * -5,
       rotationZ: normalizedX * 1,
-
       scale: 1.01,
-
       duration: 0.35,
       ease: "power2.out",
       overwrite: true,
@@ -165,9 +143,7 @@ export default function ProjectDetails({
       rotationY: 0,
       rotationX: 0,
       rotationZ: 0,
-
       scale: 1,
-
       duration: 0.6,
       ease: "power3.out",
       overwrite: true,
@@ -194,14 +170,10 @@ export default function ProjectDetails({
           min-h-[100svh]
           w-full
           overflow-hidden
-
           pt-[80px]
           pb-8
-
           sm:pt-[90px]
-
           md:pt-[100px]
-
           lg:min-h-[100svh]
           lg:h-auto
           lg:overflow-hidden
@@ -282,9 +254,7 @@ export default function ProjectDetails({
             w-full
             max-w-[1500px]
             px-5
-
             sm:px-8
-
             md:px-[5%]
           "
         >
@@ -299,9 +269,7 @@ export default function ProjectDetails({
               flex-wrap
               items-center
               gap-2
-
               sm:mb-7
-
               lg:mb-5
             "
           >
@@ -316,19 +284,13 @@ export default function ProjectDetails({
                 transition-colors
                 duration-300
                 hover:text-white/80
-
                 sm:text-[10px]
               "
             >
               Home
             </Link>
 
-            <span
-              className="
-                text-[9px]
-                text-white/30
-              "
-            >
+            <span className="text-[9px] text-white/30">
               &gt;&gt;
             </span>
 
@@ -343,19 +305,13 @@ export default function ProjectDetails({
                 transition-colors
                 duration-300
                 hover:text-white/80
-
                 sm:text-[10px]
               "
             >
               Projects
             </Link>
 
-            <span
-              className="
-                text-[9px]
-                text-white/30
-              "
-            >
+            <span className="text-[9px] text-white/30">
               &gt;&gt;
             </span>
 
@@ -370,19 +326,13 @@ export default function ProjectDetails({
                 transition-colors
                 duration-300
                 hover:text-white/80
-
                 sm:text-[10px]
               "
             >
               Biographical
             </Link>
 
-            <span
-              className="
-                text-[9px]
-                text-white/30
-              "
-            >
+            <span className="text-[9px] text-white/30">
               &gt;&gt;
             </span>
 
@@ -395,7 +345,6 @@ export default function ProjectDetails({
                 uppercase
                 tracking-wide
                 text-white/45
-
                 sm:max-w-none
                 sm:text-[10px]
               "
@@ -406,8 +355,6 @@ export default function ProjectDetails({
 
           {/* =================================================
               MAIN TWO-COLUMN GRID
-
-              REDUCED OVERALL HEIGHT
           ================================================= */}
 
           <div
@@ -415,9 +362,7 @@ export default function ProjectDetails({
               grid
               grid-cols-1
               gap-10
-
               md:gap-12
-
               lg:min-h-[calc(100svh-220px)]
               lg:grid-cols-[45%_55%]
               lg:gap-0
@@ -425,31 +370,22 @@ export default function ProjectDetails({
           >
             {/* =================================================
                 LEFT SECTION
-
-                ROW 1 → EMPTY / SMALL
-                ROW 2 → TITLE
-                ROW 3 → DESCRIPTION
             ================================================= */}
 
             <div
               className="
                 grid
                 h-full
-
+                -translate-y-6
                 grid-rows-[0.55fr_0.9fr_1fr]
-
                 lg:pr-[8%]
               "
             >
-              {/* =================================================
-                  LEFT ROW 1 — EMPTY
-              ================================================= */}
+              {/* EMPTY ROW */}
 
               <div />
 
-              {/* =================================================
-                  LEFT ROW 2 — TITLE + SUBTITLE
-              ================================================= */}
+              {/* TITLE */}
 
               <div
                 className="
@@ -472,8 +408,6 @@ export default function ProjectDetails({
                   {project.title}
                 </h1>
 
-                {/* SUBTITLE / LOCATION */}
-
                 <div
                   className="
                     mt-3
@@ -490,7 +424,6 @@ export default function ProjectDetails({
                       uppercase
                       tracking-[0.08em]
                       text-white/85
-
                       sm:text-xs
                     "
                   >
@@ -505,7 +438,6 @@ export default function ProjectDetails({
                         uppercase
                         tracking-[0.08em]
                         text-white/65
-
                         sm:text-xs
                       "
                     >
@@ -515,9 +447,7 @@ export default function ProjectDetails({
                 </div>
               </div>
 
-              {/* =================================================
-                  LEFT ROW 3 — DESCRIPTION
-              ================================================= */}
+              {/* DESCRIPTION */}
 
               <div
                 className="
@@ -530,7 +460,7 @@ export default function ProjectDetails({
                 <div
                   className="
                     max-w-[620px]
-                    space-y-4
+                    space-y-0
                   "
                 >
                   {project.description.map(
@@ -543,11 +473,8 @@ export default function ProjectDetails({
                           leading-[1.5]
                           tracking-[0.01em]
                           text-white/85
-
                           sm:text-[13px]
-
                           md:text-[14px]
-
                           lg:text-[0.9vw]
                         "
                       >
@@ -560,117 +487,105 @@ export default function ProjectDetails({
             </div>
 
             {/* =================================================
-                RIGHT SECTION
-
-                ROW 1 → SMALL
-                ROW 2 → SMALLER THAN BEFORE
-                ROW 3 → LARGEST
-
-                1st and 2nd rows are intentionally reduced.
+                RIGHT SECTION — GALLERY
             ================================================= */}
 
             <div
               className="
                 relative
                 w-full
-
-                lg:h-full
                 lg:pl-[4%]
               "
             >
+              {/* =================================================
+                  DESKTOP GALLERY
+              ================================================= */}
+
               <div
                 className="
-                  relative
-                  grid
-
-                  h-full
-                  min-h-0
+                  hidden
                   w-full
-
                   grid-cols-3
-
-                  grid-rows-[176px_247px_176px]
-
-                  gap-10
-
-                  sm:gap-4
+                  grid-rows-[120px_130px_130px_150px]
+                  gap-4
+                  gap-y-2
+                  lg:grid
                 "
               >
-                {/* =================================================
-                    ROW 1 — 3 IMAGES
-                ================================================= */}
+                {/* PHOTO 1 */}
 
                 <GalleryImage
                   item={galleryImages[0]}
                   title={project.title}
                   index={0}
+                  className="
+                    col-start-1
+                    row-start-1
+                    aspect-[1.6/1]
+                  "
                 />
+
+                {/* PHOTO 2 */}
 
                 <GalleryImage
                   item={galleryImages[1]}
                   title={project.title}
                   index={1}
+                  className="
+                    col-start-2
+                    row-start-1
+                    aspect-[1.6/1]
+                  "
                 />
+
+                {/* PHOTO 3 */}
 
                 <GalleryImage
                   item={galleryImages[2]}
                   title={project.title}
                   index={2}
+                  className="
+                    col-start-3
+                    row-start-1
+                    aspect-[1.6/1]
+                  "
                 />
 
                 {/* =================================================
-                    ROW 2 — BOOK
-                    FIRST TWO COLUMNS
+                    BOOK
                 ================================================= */}
 
                 <div
                   className="
                     relative
+                    col-start-1
                     col-span-2
-
-                    h-full
-                    min-h-0
-                    w-full
-
+                    row-start-2
+                    row-span-2
+                    flex
                     items-center
                     justify-center
-
                     overflow-visible
                   "
                 >
                   <div
                     ref={bookRef}
-                    onMouseMove={
-                      handleBookMouseMove
-                    }
-                    onMouseLeave={
-                      handleBookMouseLeave
-                    }
+                    onMouseMove={handleBookMouseMove}
+                    onMouseLeave={handleBookMouseLeave}
                     className="
-                      absolute
-                      left-1/2
-                      top-1/2
-
+                      relative
                       z-30
-
                       flex
-
-                      h-[90%]
-                      w-[82%]
-
-                      -translate-x-1/2
-                      -translate-y-1/2
-
+                      h-full
+                      w-full
                       cursor-pointer
                       items-center
                       justify-center
-
                       will-change-transform
                     "
                     style={{
                       perspective: "1200px",
-                      transformStyle:
-                        "preserve-3d",
+                      transformStyle: "preserve-3d",
                     }}
                   >
                     <img
@@ -680,86 +595,122 @@ export default function ProjectDetails({
                       }
                       alt={project.title}
                       className="
-                        h-full
-                        w-full
+                        h-[140%]
+                        w-[70%]
                         object-contain
-
                         drop-shadow-[0_25px_35px_rgba(0,0,0,0.65)]
                       "
                     />
                   </div>
                 </div>
 
-                {/* =================================================
-                    ROW 2 — RIGHT SIDE
-
-                    TWO STACKED IMAGES
-                ================================================= */}
+                {/* PHOTO 4 */}
 
                 <div
                   className="
+                    col-start-3
+                    row-start-2
                     flex
-                    h-full
-                    min-h-0
-                    w-full
-                    flex-col
-                    gap-3
-
-                    sm:gap-4
+                    items-center
+                    justify-center
                   "
                 >
-                  {/* TOP IMAGE */}
-
-                  <div
+                  <GalleryImage
+                    item={galleryImages[3]}
+                    title={project.title}
+                    index={3}
                     className="
-                      min-h-0
-                      flex-1
+                      aspect-square
+                      h-full
+                      w-full
                     "
-                  >
-                    <GalleryImage
-                  item={galleryImages[3]}
-                  title={project.title}
-                  index={3}
-                />
-                  </div>
-
-                  {/* BOTTOM IMAGE */}
-
-                  <div
-                    className="
-                      min-h-0
-                      flex-1
-                    "
-                  >
-                    <GalleryImage
-                  item={galleryImages[4]}
-                  title={project.title}
-                  index={4}
-                />
-                  </div>
+                  />
                 </div>
 
-                {/* =================================================
-                    ROW 3 — 3 IMAGES
-                ================================================= */}
+                {/* PHOTO 5 */}
+
+                <div
+                  className="
+                    col-start-3
+                    row-start-3
+                    flex
+                    items-center
+                    justify-center
+                  "
+                >
+                  <GalleryImage
+                    item={galleryImages[4]}
+                    title={project.title}
+                    index={4}
+                    className="
+                      aspect-square
+                      h-full
+                      w-full
+                    "
+                  />
+                </div>
+
+                {/* PHOTO 6 */}
 
                 <GalleryImage
                   item={galleryImages[5]}
                   title={project.title}
                   index={5}
+                  className="
+                    col-start-1
+                    row-start-4
+                    aspect-[1.6/1]
+                  "
                 />
+
+                {/* PHOTO 7 */}
 
                 <GalleryImage
                   item={galleryImages[6]}
                   title={project.title}
                   index={6}
+                  className="
+                    col-start-2
+                    row-start-4
+                    aspect-[1.6/1]
+                  "
                 />
+
+                {/* PHOTO 8 */}
 
                 <GalleryImage
                   item={galleryImages[7]}
                   title={project.title}
                   index={7}
+                  className="
+                    col-start-3
+                    row-start-4
+                    aspect-[1.6/1]
+                  "
                 />
+              </div>
+
+              {/* =================================================
+                  MOBILE / TABLET
+              ================================================= */}
+
+              <div
+                className="
+                  grid
+                  grid-cols-2
+                  gap-4
+                  lg:hidden
+                "
+              >
+                {galleryImages.map((item, index) => (
+                  <GalleryImage
+                    key={index}
+                    item={item}
+                    title={project.title}
+                    index={index}
+                    className="aspect-[1.25/1]"
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -775,14 +726,11 @@ export default function ProjectDetails({
             bottom-5
             right-5
             z-50
-
             flex
             flex-col
             items-center
             gap-4
-
             text-white
-
             sm:bottom-7
             sm:right-7
             sm:gap-5
