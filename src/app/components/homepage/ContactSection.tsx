@@ -350,8 +350,7 @@ function FooterColumn({
       >
         {title}
       </h3>
-
-      <ul className="mt-4 space-y-2.5">
+      <ul className="mt-2 space-y-1.5">
         {links.map((label) => (
           <li key={label}>
             <Link
@@ -407,12 +406,13 @@ function ContactFooter() {
       ====================================================== */}
 
       <div
+      //py-3 from py-5 & md:py-4 from 
         className="
           w-full
           px-8
-          py-5
+          py-3
           md:px-12
-          md:py-6
+          md:py-4
           lg:px-16
           xl:px-20
         "
@@ -421,10 +421,11 @@ function ContactFooter() {
         {/* TOP DIVIDER */}
 
         <div
+        //pt-3 from pt-5
           className="
             border-t
             border-white/20
-            pt-5
+            pt-3
           "
         >
 
@@ -433,11 +434,12 @@ function ContactFooter() {
           ================================================== */}
 
           <div
+          //gap-y-5 from gap-y-8
   className="
     grid
     grid-cols-2
     gap-x-12
-    gap-y-8
+    gap-y-5
     md:grid-cols-[1.35fr_1fr_1fr_1fr]
     md:gap-x-16
     lg:grid-cols-[1.45fr_1fr_1fr_1fr]
@@ -448,7 +450,7 @@ function ContactFooter() {
             {/* ==================================================
                 FAMILY SCRIPT
             ================================================== */}
-
+          
             <div
               className="
                 col-span-2
@@ -466,18 +468,16 @@ function ContactFooter() {
                 Family Script
               </h2>
 
-              <p
-                className="
-                  futura-light
-                  mt-4
-                  max-w-[340px]
-                  text-[11px]
-                  leading-[1.45]
-                  tracking-wide
-                  text-white/60
-                  md:text-[12px]
-                "
-              >
+              <p className="
+                futura-light 
+                mt-2 
+                max-w-[340px] 
+                text-[11px] 
+                leading-[1.35] 
+                tracking-wide 
+                text-white/60 
+                md:text-[12px]">
+
                 An offering of M/s
                 Prarabdha Info
                 Solutions Pvt Ltd,
@@ -489,17 +489,14 @@ function ContactFooter() {
                 MSME Recognised
               </p>
 
-              <p
-                className="
-                  futura-light
-                  mt-3
-                  text-[11px]
-                  leading-[1.45]
-                  tracking-wide
-                  text-white/60
-                  md:text-[12px]
-                "
-              >
+              <p className="
+                futura-light 
+                mt-2 
+                text-[11px] 
+                leading-[1.35] 
+                tracking-wide 
+                text-white/60 
+                md:text-[12px]">
                 Contact Us:
                 <br />
                 Prarabdha Info
@@ -513,17 +510,15 @@ function ContactFooter() {
                 Delhi-06, India
               </p>
 
-              <p
-                className="
-                  futura-light
-                  mt-3
-                  text-[11px]
-                  leading-[1.45]
-                  tracking-wide
-                  text-white/60
-                  md:text-[12px]
-                "
-              >
+              
+              <p className="
+                futura-light 
+                mt-2 
+                text-[11px] 
+                leading-[1.35] 
+                tracking-wide 
+                text-white/60 
+                md:text-[12px]">
                 Email:
                 info@familyscript.com,
                 <br />
@@ -534,8 +529,7 @@ function ContactFooter() {
 
               {/* SOCIAL ICONS */}
 
-              <div className="mt-4 flex items-center gap-3">
-
+              <div className="mt-3 flex items-center gap-3">
                 <Link
                   href="#"
                   aria-label="Instagram"
@@ -646,10 +640,10 @@ function ContactFooter() {
 
           <div
             className="
-              mt-5
+              mt-3
               border-t
               border-white/20
-              pt-3.5
+              pt-2
             "
           >
             <div
