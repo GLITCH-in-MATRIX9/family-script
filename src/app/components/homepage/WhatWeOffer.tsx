@@ -4,20 +4,13 @@
 
 import Link from "next/link";
 
-import {
-  useEffect,
-  useRef,
-} from "react";
+import { useEffect, useRef } from "react";
 
 import gsap from "gsap";
 
-import {
-  ScrollTrigger,
-} from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(
-  ScrollTrigger,
-);
+gsap.registerPlugin(ScrollTrigger);
 
 /* ============================================================
    COMPONENT
@@ -38,66 +31,38 @@ export default function WhatWeOffer() {
    * DO NOT add data-home-section here.
    */
 
-  const sectionRef =
-    useRef<HTMLDivElement>(
-      null,
-    );
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-  const backgroundRef =
-    useRef<HTMLDivElement>(
-      null,
-    );
+  const backgroundRef = useRef<HTMLDivElement>(null);
 
-  const gradientRef =
-    useRef<HTMLDivElement>(
-      null,
-    );
+  const gradientRef = useRef<HTMLDivElement>(null);
 
-  const contentRef =
-    useRef<HTMLDivElement>(
-      null,
-    );
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  const headingRef =
-    useRef<HTMLHeadingElement>(
-      null,
-    );
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
-  const introRef =
-    useRef<HTMLDivElement>(
-      null,
-    );
+  const introRef = useRef<HTMLDivElement>(null);
 
-  const servicesRef =
-    useRef<HTMLDivElement>(
-      null,
-    );
+  const servicesRef = useRef<HTMLDivElement>(null);
 
   /* ==========================================================
      GSAP
   ========================================================== */
 
   useEffect(() => {
-    const section =
-      sectionRef.current;
+    const section = sectionRef.current;
 
-    const background =
-      backgroundRef.current;
+    const background = backgroundRef.current;
 
-    const gradient =
-      gradientRef.current;
+    const gradient = gradientRef.current;
 
-    const content =
-      contentRef.current;
+    const content = contentRef.current;
 
-    const heading =
-      headingRef.current;
+    const heading = headingRef.current;
 
-    const intro =
-      introRef.current;
+    const intro = introRef.current;
 
-    const services =
-      servicesRef.current;
+    const services = servicesRef.current;
 
     if (
       !section ||
@@ -115,194 +80,161 @@ export default function WhatWeOffer() {
      * Find service cards.
      */
 
-    const boxes =
-      services.querySelectorAll<HTMLElement>(
-        ".service-box",
-      );
+    const boxes = services.querySelectorAll<HTMLElement>(".service-box");
 
-    const ctx =
-      gsap.context(
-        () => {
-          /* ==================================================
+    const ctx = gsap.context(() => {
+      /* ==================================================
              INITIAL STATES
           ================================================== */
 
-          /*
-           * IMPORTANT:
-           *
-           * The background itself is NOT animated.
-           *
-           * It stays exactly where it is and exactly
-           * the same size as the page.tsx section.
-           */
+      /*
+       * IMPORTANT:
+       *
+       * The background itself is NOT animated.
+       *
+       * It stays exactly where it is and exactly
+       * the same size as the page.tsx section.
+       */
 
-          gsap.set(
-            background,
-            {
-              x: 0,
-              y: 0,
-              scale: 1,
-            },
-          );
+      gsap.set(background, {
+        x: 0,
+        y: 0,
+        scale: 1,
+      });
 
-          gsap.set(
-            gradient,
-            {
-              x: 0,
-              y: 0,
-            },
-          );
+      gsap.set(gradient, {
+        x: 0,
+        y: 0,
+      });
 
-          /*
-           * Content animation.
-           */
+      /*
+       * Content animation.
+       */
 
-          gsap.set(
-            heading,
-            {
-              opacity: 0,
-              y: 45,
-              scale: 0.98,
-            },
-          );
+      gsap.set(heading, {
+        opacity: 0,
+        y: 45,
+        scale: 0.98,
+      });
 
-          gsap.set(
-            intro,
-            {
-              opacity: 0,
-              y: 35,
-            },
-          );
+      gsap.set(intro, {
+        opacity: 0,
+        y: 35,
+      });
 
-          /*
-           * Keep the service container visible.
-           *
-           * Individual cards animate instead.
-           */
+      /*
+       * Keep the service container visible.
+       *
+       * Individual cards animate instead.
+       */
 
-          gsap.set(
-            services,
-            {
-              opacity: 1,
-            },
-          );
+      gsap.set(services, {
+        opacity: 1,
+      });
 
-          gsap.set(
-            boxes,
-            {
-              opacity: 0,
-              y: 30,
-              scale: 0.97,
-            },
-          );
+      gsap.set(boxes, {
+        opacity: 0,
+        y: 30,
+        scale: 0.97,
+      });
 
-          /* ==================================================
+      /* ==================================================
              ENTRANCE TIMELINE
           ================================================== */
 
-          const entrance =
-            gsap.timeline({
-              paused: true,
-            });
+      const entrance = gsap.timeline({
+        paused: true,
+      });
 
-          /*
-           * --------------------------------------------------
-           * HEADING
-           * --------------------------------------------------
-           */
+      /*
+       * --------------------------------------------------
+       * HEADING
+       * --------------------------------------------------
+       */
 
-          entrance.to(
-            heading,
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.9,
-              ease: "power3.out",
-            },
-          );
+      entrance.to(heading, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.9,
+        ease: "power3.out",
+      });
 
-          /*
-           * --------------------------------------------------
-           * INTRO
-           * --------------------------------------------------
-           */
+      /*
+       * --------------------------------------------------
+       * INTRO
+       * --------------------------------------------------
+       */
 
-          entrance.to(
-            intro,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.85,
-              ease: "power3.out",
-            },
-            "-=0.58",
-          );
+      entrance.to(
+        intro,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          ease: "power3.out",
+        },
+        "-=0.58",
+      );
 
-          /*
-           * --------------------------------------------------
-           * SERVICE BOXES
-           * --------------------------------------------------
-           */
+      /*
+       * --------------------------------------------------
+       * SERVICE BOXES
+       * --------------------------------------------------
+       */
 
-          entrance.to(
-            boxes,
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.7,
-              stagger: {
-                each: 0.09,
-                from: "start",
-              },
-              ease: "power3.out",
-            },
-            "-=0.35",
-          );
+      entrance.to(
+        boxes,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          stagger: {
+            each: 0.09,
+            from: "start",
+          },
+          ease: "power3.out",
+        },
+        "-=0.35",
+      );
 
-          /* ==================================================
+      /* ==================================================
              SECTION ENTRANCE TRIGGER
           ================================================== */
 
-          ScrollTrigger.create({
-            trigger: section,
+      ScrollTrigger.create({
+        trigger: section,
 
-            start: "top 85%",
+        start: "top 85%",
 
-            onEnter: () => {
-              entrance.restart();
-            },
+        onEnter: () => {
+          entrance.restart();
+        },
 
-            onEnterBack: () => {
-              entrance.restart();
-            },
+        onEnterBack: () => {
+          entrance.restart();
+        },
 
-            /*
-             * IMPORTANT:
-             *
-             * Don't reset everything to the invisible
-             * starting state when navigating backwards.
-             *
-             * Ripple navigation can bring this section
-             * into view without a normal browser scroll.
-             */
-          });
+        /*
+         * IMPORTANT:
+         *
+         * Don't reset everything to the invisible
+         * starting state when navigating backwards.
+         *
+         * Ripple navigation can bring this section
+         * into view without a normal browser scroll.
+         */
+      });
 
-          
-
-          /* ==================================================
+      /* ==================================================
              REFRESH
           ================================================== */
 
-          requestAnimationFrame(
-            () => {
-              ScrollTrigger.refresh();
-            },
-          );
-        },
-        section,
-      );
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    }, section);
 
     return () => {
       ctx.revert();
@@ -321,7 +253,7 @@ export default function WhatWeOffer() {
         h-full
         min-h-full
         w-full
-        overflow-hidden
+        
       "
     >
       {/* ======================================================
@@ -334,7 +266,7 @@ export default function WhatWeOffer() {
           h-screen
           min-h-screen
           w-full
-          overflow-hidden
+          
           
           Therefore:
           
@@ -355,23 +287,19 @@ export default function WhatWeOffer() {
           inset-0
           h-full
           w-full
-          overflow-hidden
+          
           bg-cover
           bg-center
           bg-no-repeat
         "
         style={{
-          backgroundImage:
-            "url('/assets/Homepage/WHAT_WE_OFFER.jpg')",
+          backgroundImage: "url('/assets/Homepage/WHAT_WE_OFFER.jpg')",
 
-          backgroundSize:
-            "cover",
+          backgroundSize: "cover",
 
-          backgroundPosition:
-            "center center",
+          backgroundPosition: "center center",
 
-          backgroundRepeat:
-            "no-repeat",
+          backgroundRepeat: "no-repeat",
         }}
         aria-hidden="true"
       />
@@ -475,15 +403,9 @@ export default function WhatWeOffer() {
             leading-[1.5]
           "
         >
-          <p>
-            A nonlinear, open-ended
-            process
-          </p>
+          <p>A nonlinear, open-ended process</p>
 
-          <p>
-            Recording Oral History and
-            Material Memory
-          </p>
+          <p>Recording Oral History and Material Memory</p>
 
           <p>
             Driving a{" "}
@@ -550,10 +472,7 @@ export default function WhatWeOffer() {
           -------------------------------------------------- */}
 
           <div>
-            <ServiceBox>
-              Digital Archive
-              Services
-            </ServiceBox>
+            <ServiceBox>Digital Archive Services</ServiceBox>
           </div>
 
           {/* ==================================================
@@ -565,9 +484,7 @@ export default function WhatWeOffer() {
           -------------------------------------------------- */}
 
           <div>
-            <ServiceBox>
-              Exhibition Design
-            </ServiceBox>
+            <ServiceBox>Exhibition Design</ServiceBox>
           </div>
 
           {/* --------------------------------------------------
@@ -575,10 +492,7 @@ export default function WhatWeOffer() {
           -------------------------------------------------- */}
 
           <div>
-            <ServiceBox>
-              Life Writing
-              Workshops
-            </ServiceBox>
+            <ServiceBox>Life Writing Workshops</ServiceBox>
           </div>
 
           {/* --------------------------------------------------
@@ -592,9 +506,7 @@ export default function WhatWeOffer() {
               cursor-pointer
             "
           >
-            <ServiceBox>
-              Bespoke Journals
-            </ServiceBox>
+            <ServiceBox>Bespoke Journals</ServiceBox>
           </Link>
         </div>
       </div>
@@ -606,11 +518,7 @@ export default function WhatWeOffer() {
    SERVICE BOX
 ============================================================ */
 
-function ServiceBox({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function ServiceBox({ children }: { children: React.ReactNode }) {
   return (
     <div
       className="

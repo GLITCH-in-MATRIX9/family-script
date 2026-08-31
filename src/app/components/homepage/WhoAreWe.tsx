@@ -1,21 +1,12 @@
-
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
 import gsap from "gsap";
 
-import {
-  ScrollTrigger,
-} from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(
-  ScrollTrigger,
-);
+gsap.registerPlugin(ScrollTrigger);
 
 /* ============================================================
    TYPES
@@ -46,79 +37,44 @@ export default function WhoAreWe() {
    * <section>.
    */
 
-  const sectionRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const sectionRef = useRef<HTMLDivElement | null>(null);
 
-  const backgroundRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const backgroundRef = useRef<HTMLDivElement | null>(null);
 
-  const gradientRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const gradientRef = useRef<HTMLDivElement | null>(null);
 
-  const contentRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
-  const headingRef =
-    useRef<HTMLHeadingElement | null>(
-      null,
-    );
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
 
-  const descriptionRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const descriptionRef = useRef<HTMLDivElement | null>(null);
 
-  const statsRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const statsRef = useRef<HTMLDivElement | null>(null);
 
-  const ctaRef =
-    useRef<HTMLButtonElement | null>(
-      null,
-    );
+  const ctaRef = useRef<HTMLButtonElement | null>(null);
 
-  const [
-    countStarted,
-    setCountStarted,
-  ] = useState(false);
+  const [countStarted, setCountStarted] = useState(false);
 
   /* ==========================================================
      SECTION ANIMATION
   ========================================================== */
 
   useEffect(() => {
-    const section =
-      sectionRef.current;
+    const section = sectionRef.current;
 
-    const background =
-      backgroundRef.current;
+    const background = backgroundRef.current;
 
-    const gradient =
-      gradientRef.current;
+    const gradient = gradientRef.current;
 
-    const content =
-      contentRef.current;
+    const content = contentRef.current;
 
-    const heading =
-      headingRef.current;
+    const heading = headingRef.current;
 
-    const description =
-      descriptionRef.current;
+    const description = descriptionRef.current;
 
-    const stats =
-      statsRef.current;
+    const stats = statsRef.current;
 
-    const cta =
-      ctaRef.current;
+    const cta = ctaRef.current;
 
     if (
       !section ||
@@ -133,10 +89,8 @@ export default function WhoAreWe() {
       return;
     }
 
-    const context =
-      gsap.context(
-        () => {
-          /* ==================================================
+    const context = gsap.context(() => {
+      /* ==================================================
              BACKGROUND
              
              IMPORTANT:
@@ -152,124 +106,101 @@ export default function WhoAreWe() {
              It exactly fills the page.tsx section.
           ================================================== */
 
-          gsap.set(
-            background,
-            {
-              x: 0,
-              y: 0,
-              scale: 1,
-            },
-          );
+      gsap.set(background, {
+        x: 0,
+        y: 0,
+        scale: 1,
+      });
 
-          gsap.set(
-            gradient,
-            {
-              x: 0,
-              y: 0,
-              scale: 1,
-            },
-          );
+      gsap.set(gradient, {
+        x: 0,
+        y: 0,
+        scale: 1,
+      });
 
-          /* ==================================================
+      /* ==================================================
              INITIAL CONTENT STATE
           ================================================== */
 
-          gsap.set(
-            [
-              heading,
-              description,
-              stats,
-              cta,
-            ],
-            {
-              opacity: 0,
-              y: 35,
-            },
-          );
+      gsap.set([heading, description, stats, cta], {
+        opacity: 0,
+        y: 35,
+      });
 
-          gsap.set(
-            cta,
-            {
-              scale: 0.96,
-            },
-          );
+      gsap.set(cta, {
+        scale: 0.96,
+      });
 
-          /* ==================================================
+      /* ==================================================
              ENTRANCE TIMELINE
           ================================================== */
 
-          const entrance =
-            gsap.timeline({
-              paused: true,
-            });
+      const entrance = gsap.timeline({
+        paused: true,
+      });
 
-          /* --------------------------------------------------
+      /* --------------------------------------------------
              HEADING
           -------------------------------------------------- */
 
-          entrance.to(
-            heading,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-          );
+      entrance.to(heading, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      });
 
-          /* --------------------------------------------------
+      /* --------------------------------------------------
              DESCRIPTION
           -------------------------------------------------- */
 
-          entrance.to(
-            description,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-            "-=0.55",
-          );
+      entrance.to(
+        description,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.55",
+      );
 
-          /* --------------------------------------------------
+      /* --------------------------------------------------
              STATS
           -------------------------------------------------- */
 
-          entrance.to(
-            stats,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.75,
-              ease: "power3.out",
+      entrance.to(
+        stats,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          ease: "power3.out",
 
-              onStart: () => {
-                setCountStarted(
-                  true,
-                );
-              },
-            },
-            "-=0.5",
-          );
+          onStart: () => {
+            setCountStarted(true);
+          },
+        },
+        "-=0.5",
+      );
 
-          /* --------------------------------------------------
+      /* --------------------------------------------------
              CTA
           -------------------------------------------------- */
 
-          entrance.to(
-            cta,
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.7,
-              ease: "power3.out",
-            },
-            "-=0.4",
-          );
+      entrance.to(
+        cta,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          ease: "power3.out",
+        },
+        "-=0.4",
+      );
 
-          /* ==================================================
+      /* ==================================================
              SECTION ENTER
              
              ScrollTrigger controls ONLY content.
@@ -277,30 +208,30 @@ export default function WhoAreWe() {
              It does NOT animate the background.
           ================================================== */
 
-          ScrollTrigger.create({
-            trigger: section,
+      ScrollTrigger.create({
+        trigger: section,
 
-            start: "top 80%",
+        start: "top 80%",
 
-            onEnter: () => {
-              entrance.restart();
-            },
+        onEnter: () => {
+          entrance.restart();
+        },
 
-            onEnterBack: () => {
-              entrance.restart();
-            },
+        onEnterBack: () => {
+          entrance.restart();
+        },
 
-            /*
-             * IMPORTANT:
-             *
-             * No onLeaveBack reset.
-             *
-             * Ripple navigation can move directly between
-             * sections without normal browser scrolling.
-             */
-          });
+        /*
+         * IMPORTANT:
+         *
+         * No onLeaveBack reset.
+         *
+         * Ripple navigation can move directly between
+         * sections without normal browser scrolling.
+         */
+      });
 
-          /* ==================================================
+      /* ==================================================
              NO BACKGROUND PARALLAX
              
              Intentionally empty.
@@ -308,13 +239,13 @@ export default function WhoAreWe() {
              The image must stay completely still.
           ================================================== */
 
-          /* ==================================================
+      /* ==================================================
              NO GRADIENT PARALLAX
              
              The colourisation remains completely static.
           ================================================== */
 
-          /* ==================================================
+      /* ==================================================
              NO CONTENT PARALLAX
              
              The content entrance is enough.
@@ -324,18 +255,14 @@ export default function WhoAreWe() {
              moving.
           ================================================== */
 
-          /* ==================================================
+      /* ==================================================
              REFRESH
           ================================================== */
 
-          requestAnimationFrame(
-            () => {
-              ScrollTrigger.refresh();
-            },
-          );
-        },
-        section,
-      );
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    }, section);
 
     return () => {
       context.revert();
@@ -354,7 +281,7 @@ export default function WhoAreWe() {
         h-full
         min-h-full
         w-full
-        overflow-hidden
+        
       "
     >
       {/* ======================================================
@@ -367,7 +294,7 @@ export default function WhoAreWe() {
           h-screen
           min-h-screen
           w-full
-          overflow-hidden
+          
 
           Therefore this is:
 
@@ -389,23 +316,19 @@ export default function WhoAreWe() {
           inset-0
           h-full
           w-full
-          overflow-hidden
+          
           bg-cover
           bg-center
           bg-no-repeat
         "
         style={{
-          backgroundImage:
-            "url('/assets/Homepage/WHO_WE_ARE.jpg')",
+          backgroundImage: "url('/assets/Homepage/WHO_WE_ARE.jpg')",
 
-          backgroundSize:
-            "cover",
+          backgroundSize: "cover",
 
-          backgroundPosition:
-            "center center",
+          backgroundPosition: "center center",
 
-          backgroundRepeat:
-            "no-repeat",
+          backgroundRepeat: "no-repeat",
         }}
         aria-hidden="true"
       />
@@ -534,17 +457,13 @@ export default function WhoAreWe() {
                 md:text-[20px]
               "
             >
-              <span className="futura-medium">
-                Family Script (FS)
-              </span>{" "}
-              is a venture of designers,
-              historians, architects and
+              <span className="futura-medium">Family Script (FS)</span> is a
+              venture of designers, historians, architects and
               <br className="hidden md:block" />
               educationists who{" "}
               <span className="futura-medium">
-                celebrate non-hegemonic
-                histories of individuals
-                and collectives.
+                celebrate non-hegemonic histories of individuals and
+                collectives.
               </span>
             </p>
 
@@ -556,9 +475,7 @@ export default function WhoAreWe() {
                 md:text-[20px]
               "
             >
-              The untold stories of leaders,
-              artists and changemakers are
-              the
+              The untold stories of leaders, artists and changemakers are the
               <br className="hidden md:block" />
               essence of our work.
             </p>
@@ -583,9 +500,7 @@ export default function WhoAreWe() {
               target={8}
               suffix="+"
               label="Years of Experience"
-              started={
-                countStarted
-              }
+              started={countStarted}
             />
 
             <div
@@ -601,9 +516,7 @@ export default function WhoAreWe() {
               target={25}
               suffix="+"
               label="Projects Completed"
-              started={
-                countStarted
-              }
+              started={countStarted}
             />
 
             <div
@@ -619,9 +532,7 @@ export default function WhoAreWe() {
               target={5}
               suffix="+"
               label="Regions covered"
-              started={
-                countStarted
-              }
+              started={countStarted}
             />
           </div>
 
@@ -651,14 +562,8 @@ export default function WhoAreWe() {
               hover:bg-white/25
             "
           >
-            Get your Story{" "}
-            <span className="futura-bold">
-              Scripted
-            </span>
-
-            <span className="ml-3">
-              &gt;&gt;
-            </span>
+            Get your Story <span className="futura-bold">Scripted</span>
+            <span className="ml-3">&gt;&gt;</span>
           </button>
         </div>
       </div>
@@ -670,16 +575,8 @@ export default function WhoAreWe() {
    STAT
 ============================================================ */
 
-function Stat({
-  target,
-  suffix,
-  label,
-  started,
-}: StatProps) {
-  const [
-    count,
-    setCount,
-  ] = useState(0);
+function Stat({ target, suffix, label, started }: StatProps) {
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (!started) {
@@ -687,74 +584,36 @@ function Stat({
       return;
     }
 
-    let startTime:
-      number | null = null;
+    let startTime: number | null = null;
 
-    let animationFrame =
-      0;
+    let animationFrame = 0;
 
-    const duration =
-      1200;
+    const duration = 1200;
 
-    const animate = (
-      timestamp: number,
-    ) => {
-      if (
-        startTime === null
-      ) {
-        startTime =
-          timestamp;
+    const animate = (timestamp: number) => {
+      if (startTime === null) {
+        startTime = timestamp;
       }
 
-      const progress =
-        Math.min(
-          (timestamp -
-            startTime) /
-            duration,
-          1,
-        );
+      const progress = Math.min((timestamp - startTime) / duration, 1);
 
-      const eased =
-        1 -
-        Math.pow(
-          1 - progress,
-          3,
-        );
+      const eased = 1 - Math.pow(1 - progress, 3);
 
-      setCount(
-        Math.floor(
-          eased * target,
-        ),
-      );
+      setCount(Math.floor(eased * target));
 
-      if (
-        progress < 1
-      ) {
-        animationFrame =
-          requestAnimationFrame(
-            animate,
-          );
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
       } else {
-        setCount(
-          target,
-        );
+        setCount(target);
       }
     };
 
-    animationFrame =
-      requestAnimationFrame(
-        animate,
-      );
+    animationFrame = requestAnimationFrame(animate);
 
     return () => {
-      cancelAnimationFrame(
-        animationFrame,
-      );
+      cancelAnimationFrame(animationFrame);
     };
-  }, [
-    started,
-    target,
-  ]);
+  }, [started, target]);
 
   return (
     <div
@@ -790,4 +649,3 @@ function Stat({
     </div>
   );
 }
-

@@ -32,7 +32,7 @@ const founders: Founder[] = [
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-[#480424] text-white">
+    <section className="relative min-h-screen w-full bg-[#480424] text-white">
       {/* ================= BACKGROUND ================= */}
 
       <div className="pointer-events-none absolute inset-0">

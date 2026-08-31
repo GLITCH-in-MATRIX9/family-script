@@ -5,7 +5,7 @@ import WhoAreWe from "./components/homepage/WhoAreWe";
 import WhatWeDo from "./components/homepage/WhatWeDo";
 import WhatWeOffer from "./components/homepage/WhatWeOffer";
 import OurJourney from "./components/homepage/OurJourney";
-import Testimonials from "./components/homepage/testimonials/Testimonials";
+import Testimonials from "./components/homepage/Testimonials";
 import ContactSection from "./components/homepage/ContactSection";
 
 import SocialIcons from "./components/layout/SocialIcos";
@@ -18,7 +18,6 @@ export default function Home() {
     <RippleProvider>
       <HomepageNavigator>
         <main className="relative w-full">
-
           {/* ==================================================
               SOCIAL MEDIA
           ================================================== */}
@@ -36,7 +35,7 @@ export default function Home() {
               h-screen
               min-h-screen
               w-full
-              overflow-hidden
+              
             "
           >
             <Hero />
@@ -54,7 +53,7 @@ export default function Home() {
               h-screen
               min-h-screen
               w-full
-              overflow-hidden
+              
             "
           >
             <WhoAreWe />
@@ -72,7 +71,7 @@ export default function Home() {
               h-screen
               min-h-screen
               w-full
-              overflow-hidden
+              
             "
           >
             <WhatWeDo />
@@ -90,7 +89,7 @@ export default function Home() {
               h-screen
               min-h-screen
               w-full
-              overflow-hidden
+              
             "
           >
             <WhatWeOffer />
@@ -108,7 +107,7 @@ export default function Home() {
               h-screen
               min-h-screen
               w-full
-              overflow-hidden
+              
             "
           >
             <OurJourney />
@@ -126,7 +125,7 @@ export default function Home() {
               h-screen
               min-h-screen
               w-full
-              overflow-hidden
+              
             "
           >
             <Testimonials />
@@ -151,7 +150,6 @@ export default function Home() {
           ================================================== */}
 
           <ContactSection />
-
         </main>
       </HomepageNavigator>
     </RippleProvider>

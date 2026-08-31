@@ -97,7 +97,7 @@ const friends = [
 
 export default function TeamFriends() {
   return (
-    <section className="relative min-h-[160vh] w-full overflow-hidden bg-[#480424] text-white">
+    <section className="relative min-h-[160vh] w-full  bg-[#480424] text-white">
       {/* ================= BACKGROUND ================= */}
 
       <div className="pointer-events-none absolute inset-0">
@@ -239,7 +239,7 @@ export default function TeamFriends() {
             >
               {/* IMAGE */}
 
-              <div className="relative aspect-square w-[95px] overflow-hidden rounded-full md:w-[115px] lg:w-[125px]">
+              <div className="relative aspect-square w-[95px]  rounded-full md:w-[115px] lg:w-[125px]">
                 <Image
                   src={friend.image}
                   alt={friend.name}

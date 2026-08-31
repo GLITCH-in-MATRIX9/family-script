@@ -16,9 +16,7 @@ import Link from "next/link";
 
 import gsap from "gsap";
 
-import {
-  ScrollTrigger,
-} from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,14 +24,11 @@ gsap.registerPlugin(ScrollTrigger);
    CONSTANTS
 ============================================================ */
 
-const FIELD_BG =
-  "rgba(105, 31, 62, 0.78)";
+const FIELD_BG = "rgba(105, 31, 62, 0.78)";
 
-const FIELD_BORDER =
-  "rgba(105, 31, 62, 0.25)";
+const FIELD_BORDER = "rgba(105, 31, 62, 0.25)";
 
-const FIELD_OPTION_BG =
-  "#691f3e";
+const FIELD_OPTION_BG = "#691f3e";
 
 /* ============================================================
    FOOTER DATA
@@ -139,11 +134,7 @@ function FormField({
    FORM SELECT
 ============================================================ */
 
-function FormSelect({
-  placeholder,
-}: {
-  placeholder: string;
-}) {
+function FormSelect({ placeholder }: { placeholder: string }) {
   return (
     <div
       className="
@@ -394,8 +385,7 @@ function FooterColumn({
 ============================================================ */
 
 function ContactFooter() {
-  const currentYear =
-    new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer
@@ -419,7 +409,7 @@ function ContactFooter() {
       ====================================================== */}
 
       <div
-      //py-3 from py-5 & md:py-4 from 
+        //py-3 from py-5 & md:py-4 from
         className="
           w-full
           px-8
@@ -430,25 +420,23 @@ function ContactFooter() {
           xl:px-20
         "
       >
-
         {/* TOP DIVIDER */}
 
         <div
-        //pt-3 from pt-5
+          //pt-3 from pt-5
           className="
             border-t
             border-white/20
             pt-3
           "
         >
-
           {/* ==================================================
               FOOTER GRID
           ================================================== */}
 
           <div
-          //gap-y-5 from gap-y-8
-  className="
+            //gap-y-5 from gap-y-8
+            className="
     grid
     grid-cols-2
     gap-x-12
@@ -458,12 +446,11 @@ function ContactFooter() {
     lg:grid-cols-[1.45fr_1fr_1fr_1fr]
     lg:gap-x-24
   "
->
-
+          >
             {/* ==================================================
                 FAMILY SCRIPT
             ================================================== */}
-          
+
             <div
               className="
                 col-span-2
@@ -481,7 +468,8 @@ function ContactFooter() {
                 Family Script
               </h2>
 
-              <p className="
+              <p
+                className="
                 futura-light 
                 mt-2 
                 max-w-[340px] 
@@ -489,51 +477,43 @@ function ContactFooter() {
                 leading-[1.35] 
                 tracking-wide 
                 text-white/60 
-                md:text-[12px]">
-
-                An offering of M/s
-                Prarabdha Info
-                Solutions Pvt Ltd,
-                Incubated under
-                IGDTUW-Anveshan
-                Foundation, Delhi
-                Registered under
-                Startup India and
-                MSME Recognised
+                md:text-[12px]"
+              >
+                An offering of M/s Prarabdha Info Solutions Pvt Ltd, Incubated
+                under IGDTUW-Anveshan Foundation, Delhi Registered under Startup
+                India and MSME Recognised
               </p>
 
-              <p className="
+              <p
+                className="
                 futura-light 
                 mt-2 
                 text-[11px] 
                 leading-[1.35] 
                 tracking-wide 
                 text-white/60 
-                md:text-[12px]">
+                md:text-[12px]"
+              >
                 Contact Us:
                 <br />
-                Prarabdha Info
-                Solutions Private
-                Limited,
+                Prarabdha Info Solutions Private Limited,
                 <br />
-                IGDTUW-Anveshan
-                Foundation Premises,
+                IGDTUW-Anveshan Foundation Premises,
                 <br />
-                Kashmere Gate,
-                Delhi-06, India
+                Kashmere Gate, Delhi-06, India
               </p>
 
-              
-              <p className="
+              <p
+                className="
                 futura-light 
                 mt-2 
                 text-[11px] 
                 leading-[1.35] 
                 tracking-wide 
                 text-white/60 
-                md:text-[12px]">
-                Email:
-                info@familyscript.com,
+                md:text-[12px]"
+              >
+                Email: info@familyscript.com,
                 <br />
                 team@familyscript.in
                 <br />
@@ -614,7 +594,6 @@ function ContactFooter() {
                 >
                   <FiMail size={14} />
                 </Link>
-
               </div>
             </div>
 
@@ -622,29 +601,19 @@ function ContactFooter() {
                 COMPANY
             ================================================== */}
 
-            <FooterColumn
-              title="Company"
-              links={COMPANY_LINKS}
-            />
+            <FooterColumn title="Company" links={COMPANY_LINKS} />
 
             {/* ==================================================
                 PROJECTS
             ================================================== */}
 
-            <FooterColumn
-              title="Projects"
-              links={PROJECT_LINKS}
-            />
+            <FooterColumn title="Projects" links={PROJECT_LINKS} />
 
             {/* ==================================================
                 LEGAL
             ================================================== */}
 
-            <FooterColumn
-              title="Legal"
-              links={LEGAL_LINKS}
-            />
-
+            <FooterColumn title="Legal" links={LEGAL_LINKS} />
           </div>
 
           {/* ==================================================
@@ -678,8 +647,8 @@ function ContactFooter() {
                   md:text-[11px]
                 "
               >
-                © {currentYear} Family Script by
-                Prarabdha Info Solutions Pvt. Ltd.
+                © {currentYear} Family Script by Prarabdha Info Solutions Pvt.
+                Ltd.
               </p>
 
               <p
@@ -695,7 +664,6 @@ function ContactFooter() {
               </p>
             </div>
           </div>
-
         </div>
       </div>
     </footer>
@@ -707,13 +675,12 @@ function ContactFooter() {
 ============================================================ */
 
 function ScrollToTopButton() {
-  const handleScrollToTop =
-    () => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    };
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <button
@@ -765,163 +732,122 @@ function ScrollToTopButton() {
 ============================================================ */
 
 export default function ContactSection() {
-  const sectionRef =
-    useRef<HTMLElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
-  const headingRef =
-    useRef<HTMLHeadingElement | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
 
-  const formRef =
-    useRef<HTMLFormElement | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
 
-  const submitRef =
-    useRef<HTMLButtonElement | null>(null);
+  const submitRef = useRef<HTMLButtonElement | null>(null);
 
   /* ==========================================================
      GSAP ANIMATION
   ========================================================== */
 
   useEffect(() => {
-    const section =
-      sectionRef.current;
+    const section = sectionRef.current;
 
-    const heading =
-      headingRef.current;
+    const heading = headingRef.current;
 
-    const form =
-      formRef.current;
+    const form = formRef.current;
 
-    const submit =
-      submitRef.current;
+    const submit = submitRef.current;
 
-    if (
-      !section ||
-      !heading ||
-      !form ||
-      !submit
-    ) {
+    if (!section || !heading || !form || !submit) {
       return;
     }
 
-    const fields =
-      form.querySelectorAll<HTMLElement>(
-        ".contact-field",
-      );
+    const fields = form.querySelectorAll<HTMLElement>(".contact-field");
 
-    const message =
-      form.querySelector<HTMLElement>(
-        ".contact-message",
-      );
+    const message = form.querySelector<HTMLElement>(".contact-message");
 
     if (!message) {
       return;
     }
 
-    const ctx =
-      gsap.context(
-        () => {
-          gsap.set(
-            heading,
-            {
-              opacity: 0,
-              y: 12,
-            },
-          );
+    const ctx = gsap.context(() => {
+      gsap.set(heading, {
+        opacity: 0,
+        y: 12,
+      });
 
-          gsap.set(
-            fields,
-            {
-              opacity: 0,
-              y: 10,
-            },
-          );
+      gsap.set(fields, {
+        opacity: 0,
+        y: 10,
+      });
 
-          gsap.set(
-            message,
-            {
-              opacity: 0,
-              y: 10,
-            },
-          );
+      gsap.set(message, {
+        opacity: 0,
+        y: 10,
+      });
 
-          gsap.set(
-            submit,
-            {
-              opacity: 0,
-              y: 10,
-            },
-          );
+      gsap.set(submit, {
+        opacity: 0,
+        y: 10,
+      });
 
-          const timeline =
-            gsap.timeline({
-              paused: true,
-            });
+      const timeline = gsap.timeline({
+        paused: true,
+      });
 
-          timeline.to(
-            heading,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.45,
-              ease: "power2.out",
-            },
-          );
+      timeline.to(heading, {
+        opacity: 1,
+        y: 0,
+        duration: 0.45,
+        ease: "power2.out",
+      });
 
-          timeline.to(
-            fields,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.3,
-              stagger: 0.04,
-              ease: "power2.out",
-            },
-            "-=0.18",
-          );
-
-          timeline.to(
-            message,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.3,
-              ease: "power2.out",
-            },
-            "-=0.12",
-          );
-
-          timeline.to(
-            submit,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.35,
-              ease: "power2.out",
-            },
-            "-=0.1",
-          );
-
-          ScrollTrigger.create({
-            trigger: section,
-            start: "top 80%",
-
-            onEnter: () => {
-              timeline.restart();
-            },
-
-            onEnterBack: () => {
-              timeline.restart();
-            },
-          });
-
-          requestAnimationFrame(
-            () => {
-              ScrollTrigger.refresh();
-            },
-          );
+      timeline.to(
+        fields,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.3,
+          stagger: 0.04,
+          ease: "power2.out",
         },
-        section,
+        "-=0.18",
       );
+
+      timeline.to(
+        message,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.3,
+          ease: "power2.out",
+        },
+        "-=0.12",
+      );
+
+      timeline.to(
+        submit,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.35,
+          ease: "power2.out",
+        },
+        "-=0.1",
+      );
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 80%",
+
+        onEnter: () => {
+          timeline.restart();
+        },
+
+        onEnterBack: () => {
+          timeline.restart();
+        },
+      });
+
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    }, section);
 
     return () => {
       ctx.revert();
@@ -943,10 +869,9 @@ export default function ContactSection() {
         min-h-[100svh]
         w-full
         flex-col
-        overflow-hidden
+        
       "
     >
-
       {/* ======================================================
           BACKGROUND IMAGE
 
@@ -961,7 +886,7 @@ export default function ContactSection() {
           z-0
           h-[100svh]
           w-full
-          overflow-hidden
+          
         "
         aria-hidden="true"
       >
@@ -981,16 +906,14 @@ export default function ContactSection() {
         <div
           className="absolute inset-0"
           style={{
-            background:
-              "rgba(246, 239, 218, 0.66)",
+            background: "rgba(246, 239, 218, 0.66)",
           }}
         />
 
         <div
           className="absolute inset-0"
           style={{
-            background:
-              "rgba(235, 220, 188, 0.12)",
+            background: "rgba(235, 220, 188, 0.12)",
           }}
         />
       </div>
@@ -1014,7 +937,6 @@ export default function ContactSection() {
           flex-col
         "
       >
-
         {/* ====================================================
             CONTACT FORM
         ==================================================== */}
@@ -1044,7 +966,6 @@ export default function ContactSection() {
               xl:w-[64%]
             "
           >
-
             {/* TITLE */}
 
             <h2
@@ -1061,10 +982,7 @@ export default function ContactSection() {
                 lg:text-[18px]
               "
             >
-              Get your Story{" "}
-              <span className="futura-bold">
-                Scripted
-              </span>{" "}
+              Get your Story <span className="futura-bold">Scripted</span>{" "}
               &gt;&gt;
             </h2>
 
@@ -1083,44 +1001,28 @@ export default function ContactSection() {
                 event.preventDefault();
               }}
             >
-
               <FormField
-                icon={
-                  <FiUser size={15} />
-                }
+                icon={<FiUser size={15} />}
                 placeholder="First name*"
               />
 
-              <FormField
-                icon={
-                  <FiUser size={15} />
-                }
-                placeholder="Last name"
-              />
+              <FormField icon={<FiUser size={15} />} placeholder="Last name" />
 
               <FormField
-                icon={
-                  <FiMail size={15} />
-                }
+                icon={<FiMail size={15} />}
                 placeholder="Email*"
                 type="email"
               />
 
               <FormField
-                icon={
-                  <FiPhone size={15} />
-                }
+                icon={<FiPhone size={15} />}
                 placeholder="Phone*"
                 type="tel"
               />
 
-              <FormSelect
-                placeholder="What service would you like to avail?*"
-              />
+              <FormSelect placeholder="What service would you like to avail?*" />
 
-              <FormField
-                placeholder="Documentation purpose"
-              />
+              <FormField placeholder="Documentation purpose" />
 
               <MessageField />
 
@@ -1156,7 +1058,6 @@ export default function ContactSection() {
                   Submit
                 </button>
               </div>
-
             </form>
           </div>
         </div>
@@ -1170,7 +1071,6 @@ export default function ContactSection() {
         ==================================================== */}
 
         <ContactFooter />
-
       </div>
 
       {/* ======================================================
@@ -1178,7 +1078,6 @@ export default function ContactSection() {
       ====================================================== */}
 
       <ScrollToTopButton />
-
     </section>
   );
 }

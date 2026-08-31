@@ -43,7 +43,7 @@ export default function Hero() {
               end: "bottom top",
               scrub: 1.5,
             },
-          }
+          },
         );
       }
 
@@ -68,7 +68,7 @@ export default function Hero() {
               start: "top 82%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       }
 
@@ -95,7 +95,7 @@ export default function Hero() {
               start: "top 88%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       }
 
@@ -120,7 +120,7 @@ export default function Hero() {
               start: "top 82%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       }
 
@@ -145,7 +145,7 @@ export default function Hero() {
               start: "top 90%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       }
     });
@@ -154,8 +154,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <main className="relative w-full overflow-hidden bg-[#3b1425] text-white">
-
+    <main className="relative w-full  bg-[#3b1425] text-white">
       {/* ================= SOCIAL MEDIA ICONS ================= */}
       <SocialIcons />
 
@@ -166,7 +165,7 @@ export default function Hero() {
 
       <section
         ref={bannerSectionRef}
-        className="relative h-[220px] w-screen overflow-hidden md:h-[260px]"
+        className="relative h-[220px] w-screen  md:h-[260px]"
       >
         <img
           ref={bannerBgRef}
@@ -179,35 +178,28 @@ export default function Hero() {
         <div className="absolute inset-0 bg-black/25" />
       </section>
 
-
       {/* =========================================================
           CONTENT
           ========================================================= */}
 
       <section className="relative z-10 mx-auto w-full max-w-[1400px] px-6 pb-24 pt-16 md:px-[4%] md:pt-20">
-
         {/* ================= OUR VISION ================= */}
 
-        <div
-          ref={visionRef}
-          className="w-full md:w-[68%]"
-        >
+        <div ref={visionRef} className="w-full md:w-[68%]">
           <h2 className="futura-bold text-[26px] uppercase tracking-[0.06em] text-[#e7ad55] md:text-[30px]">
             Our Vision
           </h2>
 
           <p className="futura-light mt-5 text-[15px] leading-[1.8] tracking-wide text-white/80 md:text-[16px]">
-            Our vision is to be recognised globally by 2028 as an
-            inspirational powerhouse by becoming a living library, a
-            virtual vault where stories are safeguarded, memories are
-            enshrined and the fabric of human existence is curated;
-            thus emerging as a leading and reputed brand that beckons
-            to explore depths of individual&apos;s roots by traversing
-            terrains of history through personal anecdotes and shared
+            Our vision is to be recognised globally by 2028 as an inspirational
+            powerhouse by becoming a living library, a virtual vault where
+            stories are safeguarded, memories are enshrined and the fabric of
+            human existence is curated; thus emerging as a leading and reputed
+            brand that beckons to explore depths of individual&apos;s roots by
+            traversing terrains of history through personal anecdotes and shared
             narratives.
           </p>
         </div>
-
 
         {/* ================= SCRAPBOOK IMAGE ================= */}
 
@@ -222,7 +214,6 @@ export default function Hero() {
           />
         </div>
 
-
         {/* ================= OUR MISSION ================= */}
 
         <div
@@ -234,48 +225,36 @@ export default function Hero() {
           </h2>
 
           <p className="futura-light mt-5 text-[15px] leading-[1.8] tracking-wide text-white/80 md:text-[16px]">
-            Our mission is to create a memory treasure chest that
-            captures the full spectrum of emotions, dig beyond
-            surface-level celebrations, explores the complexities and
-            nuances of human subtleties, embrace vulnerabilities and
-            encourage individuals to recognise and honour unfiltered
-            truth that defines them by preserving their stories,
+            Our mission is to create a memory treasure chest that captures the
+            full spectrum of emotions, dig beyond surface-level celebrations,
+            explores the complexities and nuances of human subtleties, embrace
+            vulnerabilities and encourage individuals to recognise and honour
+            unfiltered truth that defines them by preserving their stories,
             memories and unscripted experiences.
           </p>
 
           <p className="futura-light mt-5 text-[15px] leading-[1.8] tracking-wide text-white/80 md:text-[16px]">
-            It will eventually feed into the collective consciousness,
-            allowing the diversity of perspectives and lived
-            experiences to originate, survive, live and thrive at the
-            familial, organisational, societal and hence
-            civilisational level.
+            It will eventually feed into the collective consciousness, allowing
+            the diversity of perspectives and lived experiences to originate,
+            survive, live and thrive at the familial, organisational, societal
+            and hence civilisational level.
           </p>
         </div>
 
-
         {/* ================= CTA ================= */}
 
-        <div
-          ref={ctaRef}
-          className="mt-16 flex justify-center md:mt-20"
-        >
+        <div ref={ctaRef} className="mt-16 flex justify-center md:mt-20">
           <Link
             href="#"
             className="futura-light group inline-flex w-fit items-center rounded-full border border-white/30 bg-white/[0.08] px-8 py-3 text-[13px] tracking-wide text-white backdrop-blur-md transition-all duration-300 hover:bg-white/[0.15]"
           >
-            Get your Story{" "}
-            <span className="futura-bold ml-1">
-              Scripted
-            </span>
-
+            Get your Story <span className="futura-bold ml-1">Scripted</span>
             <span className="ml-3 transition-transform duration-300 group-hover:translate-x-1">
               &gt;&gt;
             </span>
           </Link>
         </div>
-
       </section>
-
     </main>
   );
 }

@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-} from "react";
+import { useEffect, useRef } from "react";
 
 import gsap from "gsap";
 
@@ -25,135 +22,94 @@ export default function Hero() {
    * homepage <section>.
    */
 
-  const sectionRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const sectionRef = useRef<HTMLDivElement | null>(null);
 
-  const contentRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
-  const logoRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const logoRef = useRef<HTMLDivElement | null>(null);
 
-  const titleRef =
-    useRef<HTMLHeadingElement | null>(
-      null,
-    );
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
 
-  const subtitleRef =
-    useRef<HTMLHeadingElement | null>(
-      null,
-    );
+  const subtitleRef = useRef<HTMLHeadingElement | null>(null);
 
   /* ==========================================================
      HERO ENTRANCE ANIMATION
   ========================================================== */
 
   useEffect(() => {
-    const section =
-      sectionRef.current;
+    const section = sectionRef.current;
 
-    const content =
-      contentRef.current;
+    const content = contentRef.current;
 
-    const logo =
-      logoRef.current;
+    const logo = logoRef.current;
 
-    const title =
-      titleRef.current;
+    const title = titleRef.current;
 
-    const subtitle =
-      subtitleRef.current;
+    const subtitle = subtitleRef.current;
 
-    if (
-      !section ||
-      !content ||
-      !logo ||
-      !title ||
-      !subtitle
-    ) {
+    if (!section || !content || !logo || !title || !subtitle) {
       return;
     }
 
-    const context =
-      gsap.context(
-        () => {
-          /*
-           * Hero is the starting section.
-           *
-           * It does NOT use the ripple system.
-           *
-           * This animation only runs on initial load.
-           */
+    const context = gsap.context(() => {
+      /*
+       * Hero is the starting section.
+       *
+       * It does NOT use the ripple system.
+       *
+       * This animation only runs on initial load.
+       */
 
-          gsap.set(
-            [
-              logo,
-              title,
-              subtitle,
-            ],
-            {
-              opacity: 0,
-              y: 30,
-            },
-          );
+      gsap.set([logo, title, subtitle], {
+        opacity: 0,
+        y: 30,
+      });
 
-          const timeline =
-            gsap.timeline({
-              delay: 0.15,
-            });
+      const timeline = gsap.timeline({
+        delay: 0.15,
+      });
 
-          /* ==================================================
+      /* ==================================================
              LOGO
           ================================================== */
 
-          timeline.to(
-            logo,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.9,
-              ease: "power3.out",
-            },
-          );
+      timeline.to(logo, {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: "power3.out",
+      });
 
-          /* ==================================================
+      /* ==================================================
              TITLE
           ================================================== */
 
-          timeline.to(
-            title,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.85,
-              ease: "power3.out",
-            },
-            "-=0.55",
-          );
+      timeline.to(
+        title,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          ease: "power3.out",
+        },
+        "-=0.55",
+      );
 
-          /* ==================================================
+      /* ==================================================
              SUBTITLE
           ================================================== */
 
-          timeline.to(
-            subtitle,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.85,
-              ease: "power3.out",
-            },
-            "-=0.55",
-          );
+      timeline.to(
+        subtitle,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          ease: "power3.out",
         },
-        section,
+        "-=0.55",
       );
+    }, section);
 
     return () => {
       context.revert();
@@ -172,7 +128,7 @@ export default function Hero() {
         h-full
         min-h-full
         w-full
-        overflow-hidden
+        
       "
     >
       {/* ======================================================
@@ -198,10 +154,7 @@ export default function Hero() {
           object-cover
         "
       >
-        <source
-          src="/assets/homepage/HOME_PAGE_VIDEO.mp4"
-          type="video/mp4"
-        />
+        <source src="/assets/homepage/HOME_PAGE_VIDEO.mp4" type="video/mp4" />
       </video>
 
       {/* ======================================================
@@ -240,10 +193,7 @@ export default function Hero() {
             LOGO
         ================================================== */}
 
-        <div
-          ref={logoRef}
-          className="mb-1"
-        >
+        <div ref={logoRef} className="mb-1">
           <img
             src="/assets/homepage/FS_logo.png"
             alt="Family Script"

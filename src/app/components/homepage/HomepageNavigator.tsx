@@ -236,10 +236,6 @@ export default function HomepageNavigator({
         w-full
         min-h-screen
       "
-      style={{
-        overscrollBehaviorY:
-          "contain",
-      }}
     >
       {children}
     </div>

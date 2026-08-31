@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import Navbar from "./components/layout/Navbar";
+import BodyStyleReset from "./components/layout/BodyStyleReset";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +37,13 @@ export default function RootLayout({
         />
       </head>
 
-      <body className="flex min-h-full flex-col">
+      <body className="flex  flex-col">
+
+        {/* ================= BODY STYLE SAFETY NET =================
+            Resets any body.style.overflow / touchAction left behind
+            by the homepage ripple navigation on every route change.
+        ================================================= */}
+        <BodyStyleReset />
 
         {/* ================= NAVBAR ================= */}
         <Navbar />

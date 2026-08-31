@@ -1,19 +1,11 @@
-
 "use client";
 
-import {
-  useEffect,
-  useRef,
-} from "react";
+import { useEffect, useRef } from "react";
 
 import gsap from "gsap";
-import {
-  ScrollTrigger,
-} from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(
-  ScrollTrigger,
-);
+gsap.registerPlugin(ScrollTrigger);
 
 /* ============================================================
    COMPONENT
@@ -34,90 +26,50 @@ export default function WhatWeDo() {
    * Therefore this component uses a DIV as its root.
    */
 
-  const sectionRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const sectionRef = useRef<HTMLDivElement | null>(null);
 
-  const contentRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
-  const titleRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const titleRef = useRef<HTMLDivElement | null>(null);
 
-  const rightTextRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const rightTextRef = useRef<HTMLDivElement | null>(null);
 
-  const leftTextRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const leftTextRef = useRef<HTMLDivElement | null>(null);
 
-  const buttonRef =
-    useRef<HTMLButtonElement | null>(
-      null,
-    );
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  const topLeftBoxRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const topLeftBoxRef = useRef<HTMLDivElement | null>(null);
 
-  const topRightBoxRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const topRightBoxRef = useRef<HTMLDivElement | null>(null);
 
-  const bottomRightBoxRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const bottomRightBoxRef = useRef<HTMLDivElement | null>(null);
 
-  const bottomLeftBoxRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const bottomLeftBoxRef = useRef<HTMLDivElement | null>(null);
 
   /* ============================================================
      GSAP
   ============================================================ */
 
   useEffect(() => {
-    const section =
-      sectionRef.current;
+    const section = sectionRef.current;
 
-    const content =
-      contentRef.current;
+    const content = contentRef.current;
 
-    const title =
-      titleRef.current;
+    const title = titleRef.current;
 
-    const rightText =
-      rightTextRef.current;
+    const rightText = rightTextRef.current;
 
-    const leftText =
-      leftTextRef.current;
+    const leftText = leftTextRef.current;
 
-    const button =
-      buttonRef.current;
+    const button = buttonRef.current;
 
-    const topLeftBox =
-      topLeftBoxRef.current;
+    const topLeftBox = topLeftBoxRef.current;
 
-    const topRightBox =
-      topRightBoxRef.current;
+    const topRightBox = topRightBoxRef.current;
 
-    const bottomRightBox =
-      bottomRightBoxRef.current;
+    const bottomRightBox = bottomRightBoxRef.current;
 
-    const bottomLeftBox =
-      bottomLeftBoxRef.current;
+    const bottomLeftBox = bottomLeftBoxRef.current;
 
     if (
       !section ||
@@ -134,150 +86,119 @@ export default function WhatWeDo() {
       return;
     }
 
-    const context =
-      gsap.context(
-        () => {
-          /* ==================================================
+    const context = gsap.context(() => {
+      /* ==================================================
              INITIAL CONTENT STATE
           ================================================== */
 
-          gsap.set(
-            [
-              topLeftBox,
-              topRightBox,
-              bottomRightBox,
-              bottomLeftBox,
-            ],
-            {
-              opacity: 0,
-            },
-          );
+      gsap.set([topLeftBox, topRightBox, bottomRightBox, bottomLeftBox], {
+        opacity: 0,
+      });
 
-          gsap.set(
-            title,
-            {
-              opacity: 0,
-              y: 35,
-              scale: 0.96,
-            },
-          );
+      gsap.set(title, {
+        opacity: 0,
+        y: 35,
+        scale: 0.96,
+      });
 
-          gsap.set(
-            rightText,
-            {
-              opacity: 0,
-              x: 40,
-            },
-          );
+      gsap.set(rightText, {
+        opacity: 0,
+        x: 40,
+      });
 
-          gsap.set(
-            leftText,
-            {
-              opacity: 0,
-              x: -40,
-            },
-          );
+      gsap.set(leftText, {
+        opacity: 0,
+        x: -40,
+      });
 
-          gsap.set(
-            button,
-            {
-              opacity: 0,
-              y: 20,
-              scale: 0.96,
-            },
-          );
+      gsap.set(button, {
+        opacity: 0,
+        y: 20,
+        scale: 0.96,
+      });
 
-          /* ==================================================
+      /* ==================================================
              ENTRANCE TIMELINE
           ================================================== */
 
-          const entrance =
-            gsap.timeline({
-              paused: true,
-            });
+      const entrance = gsap.timeline({
+        paused: true,
+      });
 
-          /* --------------------------------------------------
+      /* --------------------------------------------------
              TRANSPARENT COMPOSITION BOXES
           -------------------------------------------------- */
 
-          entrance.to(
-            [
-              topLeftBox,
-              topRightBox,
-              bottomRightBox,
-              bottomLeftBox,
-            ],
-            {
-              opacity: 1,
-              duration: 0.65,
-              ease: "power2.out",
-              stagger: 0.04,
-            },
-          );
+      entrance.to([topLeftBox, topRightBox, bottomRightBox, bottomLeftBox], {
+        opacity: 1,
+        duration: 0.65,
+        ease: "power2.out",
+        stagger: 0.04,
+      });
 
-          /* --------------------------------------------------
+      /* --------------------------------------------------
              WHAT WE DO TITLE
           -------------------------------------------------- */
 
-          entrance.to(
-            title,
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-            "-=0.35",
-          );
+      entrance.to(
+        title,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.35",
+      );
 
-          /* --------------------------------------------------
+      /* --------------------------------------------------
              RIGHT SIDE TEXT
           -------------------------------------------------- */
 
-          entrance.to(
-            rightText,
-            {
-              opacity: 1,
-              x: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-            "-=0.52",
-          );
+      entrance.to(
+        rightText,
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.52",
+      );
 
-          /* --------------------------------------------------
+      /* --------------------------------------------------
              LEFT SIDE TEXT
           -------------------------------------------------- */
 
-          entrance.to(
-            leftText,
-            {
-              opacity: 1,
-              x: 0,
-              duration: 0.8,
-              ease: "power3.out",
-            },
-            "-=0.62",
-          );
+      entrance.to(
+        leftText,
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.62",
+      );
 
-          /* --------------------------------------------------
+      /* --------------------------------------------------
              CTA
           -------------------------------------------------- */
 
-          entrance.to(
-            button,
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.65,
-              ease: "power3.out",
-            },
-            "-=0.45",
-          );
+      entrance.to(
+        button,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.65,
+          ease: "power3.out",
+        },
+        "-=0.45",
+      );
 
-          /* ==================================================
+      /* ==================================================
              SECTION ENTRANCE
              
              This controls ONLY the content animation.
@@ -285,30 +206,30 @@ export default function WhatWeDo() {
              It does NOT animate the background.
           ================================================== */
 
-          ScrollTrigger.create({
-            trigger: section,
+      ScrollTrigger.create({
+        trigger: section,
 
-            start: "top 85%",
+        start: "top 85%",
 
-            onEnter: () => {
-              entrance.restart();
-            },
+        onEnter: () => {
+          entrance.restart();
+        },
 
-            onEnterBack: () => {
-              entrance.restart();
-            },
+        onEnterBack: () => {
+          entrance.restart();
+        },
 
-            /*
-             * IMPORTANT:
-             *
-             * No onLeaveBack reset.
-             *
-             * This avoids fighting with the homepage
-             * ripple navigation.
-             */
-          });
+        /*
+         * IMPORTANT:
+         *
+         * No onLeaveBack reset.
+         *
+         * This avoids fighting with the homepage
+         * ripple navigation.
+         */
+      });
 
-          /* ==================================================
+      /* ==================================================
              NO BACKGROUND PARALLAX
              
              The background intentionally has NO GSAP
@@ -317,13 +238,13 @@ export default function WhatWeDo() {
              It remains completely fixed.
           ================================================== */
 
-          /* ==================================================
+      /* ==================================================
              NO GRADIENT PARALLAX
              
              The colourisation also remains completely fixed.
           ================================================== */
 
-          /* ==================================================
+      /* ==================================================
              NO CONTENT PARALLAX
              
              The entrance animation above is sufficient.
@@ -332,14 +253,10 @@ export default function WhatWeDo() {
              background appear completely still.
           ================================================== */
 
-          requestAnimationFrame(
-            () => {
-              ScrollTrigger.refresh();
-            },
-          );
-        },
-        section,
-      );
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    }, section);
 
     return () => {
       context.revert();
@@ -358,7 +275,7 @@ export default function WhatWeDo() {
         h-full
         min-h-full
         w-full
-        overflow-hidden
+        
       "
     >
       {/* ======================================================
@@ -371,7 +288,7 @@ export default function WhatWeDo() {
           h-screen
           min-h-screen
           w-full
-          overflow-hidden
+          
 
           Therefore this background uses:
 
@@ -391,23 +308,19 @@ export default function WhatWeDo() {
           inset-0
           h-full
           w-full
-          overflow-hidden
+          
           bg-cover
           bg-center
           bg-no-repeat
         "
         style={{
-          backgroundImage:
-            "url('/assets/Homepage/WHAT_WE_DO.jpg')",
+          backgroundImage: "url('/assets/Homepage/WHAT_WE_DO.jpg')",
 
-          backgroundSize:
-            "cover",
+          backgroundSize: "cover",
 
-          backgroundPosition:
-            "center center",
+          backgroundPosition: "center center",
 
-          backgroundRepeat:
-            "no-repeat",
+          backgroundRepeat: "no-repeat",
         }}
         aria-hidden="true"
       />
@@ -481,14 +394,11 @@ export default function WhatWeDo() {
             w-[19%]
           "
           style={{
-            background:
-              "rgba(18, 15, 32, 0.58)",
+            background: "rgba(18, 15, 32, 0.58)",
 
-            backdropFilter:
-              "blur(1px)",
+            backdropFilter: "blur(1px)",
 
-            WebkitBackdropFilter:
-              "blur(1px)",
+            WebkitBackdropFilter: "blur(1px)",
           }}
         />
 
@@ -511,8 +421,7 @@ export default function WhatWeDo() {
             text-center
           "
           style={{
-            background:
-              "rgba(164, 103, 40, 0.70)",
+            background: "rgba(164, 103, 40, 0.70)",
           }}
         >
           <h2
@@ -547,14 +456,11 @@ export default function WhatWeDo() {
             w-[19%]
           "
           style={{
-            background:
-              "rgba(255, 255, 255, 0.42)",
+            background: "rgba(255, 255, 255, 0.42)",
 
-            backdropFilter:
-              "blur(2px)",
+            backdropFilter: "blur(2px)",
 
-            WebkitBackdropFilter:
-              "blur(2px)",
+            WebkitBackdropFilter: "blur(2px)",
           }}
         />
 
@@ -578,8 +484,7 @@ export default function WhatWeDo() {
             text-center
           "
           style={{
-            background:
-              "rgba(174, 111, 32, 0.62)",
+            background: "rgba(174, 111, 32, 0.62)",
           }}
         >
           <p
@@ -619,14 +524,11 @@ export default function WhatWeDo() {
             w-[19%]
           "
           style={{
-            background:
-              "rgba(255, 255, 255, 0.40)",
+            background: "rgba(255, 255, 255, 0.40)",
 
-            backdropFilter:
-              "blur(2px)",
+            backdropFilter: "blur(2px)",
 
-            WebkitBackdropFilter:
-              "blur(2px)",
+            WebkitBackdropFilter: "blur(2px)",
           }}
         />
 
@@ -644,8 +546,7 @@ export default function WhatWeDo() {
             w-[19%]
           "
           style={{
-            background:
-              "rgba(255, 255, 255, 0.12)",
+            background: "rgba(255, 255, 255, 0.12)",
           }}
         />
 
@@ -670,8 +571,7 @@ export default function WhatWeDo() {
             text-center
           "
           style={{
-            background:
-              "rgba(169, 107, 33, 0.57)",
+            background: "rgba(169, 107, 33, 0.57)",
           }}
         >
           <p
@@ -686,11 +586,9 @@ export default function WhatWeDo() {
           >
             We develop forward-looking
             <br />
-            perspectives to create a legacy
-            from
+            perspectives to create a legacy from
             <br />
-            lesser-known histories. Our
-            process is
+            lesser-known histories. Our process is
             <br />
             interactive, collaborative and an
             <br />
@@ -749,14 +647,8 @@ export default function WhatWeDo() {
             md:text-[12px]
           "
         >
-          Get your Story{" "}
-          <span className="futura-bold">
-            Scripted
-          </span>
-
-          <span className="ml-2">
-            &gt;&gt;
-          </span>
+          Get your Story <span className="futura-bold">Scripted</span>
+          <span className="ml-2">&gt;&gt;</span>
         </button>
       </div>
     </div>

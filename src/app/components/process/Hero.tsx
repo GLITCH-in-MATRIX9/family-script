@@ -113,7 +113,7 @@ function buildOmbre(layers: Layer[], base: string = BASE): string {
       const h = l.h ?? 55;
       const fade = l.fade ?? 72;
       return `radial-gradient(ellipse ${w}% ${h}% at ${l.x}% ${l.y}%, rgba(${hexToRgb(
-        l.color
+        l.color,
       )}, ${l.opacity}) 0%, transparent ${fade}%)`;
     })
     .join(",\n      ");
@@ -123,7 +123,10 @@ function buildOmbre(layers: Layer[], base: string = BASE): string {
 // Bump layer opacity slightly for the expanded/active state so the
 // ombré remains legible on the larger surface without becoming a new gradient.
 function intensify(layers: Layer[], boost = 0.12): Layer[] {
-  return layers.map((l) => ({ ...l, opacity: Math.min(l.opacity + boost, 0.95) }));
+  return layers.map((l) => ({
+    ...l,
+    opacity: Math.min(l.opacity + boost, 0.95),
+  }));
 }
 
 // --- Card 1 / Card 6 family: grey top -> antique gold -> brown -> burgundy
@@ -224,17 +227,17 @@ const cardGradients = cardLayerSets.map((layers) => ({
 }));
 
 const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
-const CARD_DURATION = 400;   // was 550
+const CARD_DURATION = 400; // was 550
 const REVEAL_DELAY = CARD_DURATION;
 const REVEAL_DURATION = 200; // was 200
-const HIDE_DURATION = 150;   // was 150
+const HIDE_DURATION = 150; // was 150
 
 export default function Hero() {
   // Nothing is open on first visit. Content appears only after hover/focus.
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#421C2A] text-[#F4F0E9]">
+    <main className="relative min-h-screen w-full  bg-[#421C2A] text-[#F4F0E9]">
       <div className="absolute inset-0 bg-[linear-gradient(180deg,#421C2A_0%,#431D2C_54%,#33232B_100%)]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%] bg-[radial-gradient(ellipse_at_center_bottom,rgba(30,24,30,.48),transparent_72%)]" />
 
@@ -243,11 +246,17 @@ export default function Hero() {
       <section className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-6 pb-16 pt-[150px] md:px-[4%]">
         <div className="flex justify-center text-center">
           <h1 className="flex items-baseline justify-center whitespace-nowrap uppercase leading-none tracking-[0.055em] text-[#F4F0E9]">
-            <span className="futura-light" style={{ fontSize: 52, lineHeight: 1 }}>
-            Our
+            <span
+              className="futura-light"
+              style={{ fontSize: 52, lineHeight: 1 }}
+            >
+              Our
             </span>
-            <span className="futura-medium" style={{ fontSize: 48, lineHeight: 1, marginLeft: 16 }}>
-            Process
+            <span
+              className="futura-medium"
+              style={{ fontSize: 48, lineHeight: 1, marginLeft: 16 }}
+            >
+              Process
             </span>
           </h1>
         </div>
@@ -267,11 +276,15 @@ export default function Hero() {
                 onMouseEnter={() => setActiveIndex(index)}
                 onFocus={() => setActiveIndex(index)}
                 onBlur={(event) => {
-                  if (!event.currentTarget.parentElement?.contains(event.relatedTarget as Node)) {
+                  if (
+                    !event.currentTarget.parentElement?.contains(
+                      event.relatedTarget as Node,
+                    )
+                  ) {
                     setActiveIndex(null);
                   }
                 }}
-                className="group relative min-w-0 cursor-pointer overflow-hidden rounded-[7px] border border-white/[0.14] outline-none shadow-[inset_0_1px_0_rgba(255,255,255,.12),inset_0_-1px_0_rgba(0,0,0,.16),0_10px_30px_rgba(25,15,25,.10)] backdrop-blur-[14px] focus-visible:ring-1 focus-visible:ring-[#CBA356]/70"
+                className="group relative min-w-0 cursor-pointer  rounded-[7px] border border-white/[0.14] outline-none shadow-[inset_0_1px_0_rgba(255,255,255,.12),inset_0_-1px_0_rgba(0,0,0,.16),0_10px_30px_rgba(25,15,25,.10)] backdrop-blur-[14px] focus-visible:ring-1 focus-visible:ring-[#CBA356]/70"
                 style={{
                   flex: isActive ? "0 0 360px" : "0 0 72px",
                   background: isActive

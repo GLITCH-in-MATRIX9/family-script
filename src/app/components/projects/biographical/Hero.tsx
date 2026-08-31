@@ -62,7 +62,6 @@ export default function Hero() {
         relative
         min-h-screen
         w-full
-        overflow-hidden
         bg-[#480424]
         text-white
       "
@@ -297,7 +296,7 @@ export default function Hero() {
                     relative
                     aspect-[1.35/1]
                     w-full
-                    overflow-hidden
+                    
                   "
               >
                 <img

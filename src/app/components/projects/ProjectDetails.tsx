@@ -5,11 +5,7 @@ import type { MouseEvent } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 
-import {
-  FiFacebook,
-  FiInstagram,
-  FiYoutube,
-} from "react-icons/fi";
+import { FiFacebook, FiInstagram, FiYoutube } from "react-icons/fi";
 
 import { projects } from "@/data/projects";
 
@@ -46,7 +42,7 @@ const GalleryImage = ({
         className={`
           relative
           w-full
-          overflow-hidden
+          
           ${className}
         `}
       />
@@ -58,7 +54,7 @@ const GalleryImage = ({
       className={`
         relative
         w-full
-        overflow-hidden
+        
         ${className}
       `}
     >
@@ -80,9 +76,7 @@ const GalleryImage = ({
   );
 };
 
-export default function ProjectDetails({
-  project,
-}: ProjectDetailsProps) {
+export default function ProjectDetails({ project }: ProjectDetailsProps) {
   /* =========================================================
      REFS
   ========================================================= */
@@ -100,24 +94,19 @@ export default function ProjectDetails({
      BOOK — DIRECTIONAL 3D TILT
   ========================================================= */
 
-  const handleBookMouseMove = (
-    event: MouseEvent<HTMLDivElement>
-  ) => {
+  const handleBookMouseMove = (event: MouseEvent<HTMLDivElement>) => {
     const book = bookRef.current;
 
     if (!book) return;
 
-    const rect =
-      event.currentTarget.getBoundingClientRect();
+    const rect = event.currentTarget.getBoundingClientRect();
 
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    const normalizedX =
-      (x / rect.width - 0.5) * 2;
+    const normalizedX = (x / rect.width - 0.5) * 2;
 
-    const normalizedY =
-      (y / rect.height - 0.5) * 2;
+    const normalizedY = (y / rect.height - 0.5) * 2;
 
     gsap.to(book, {
       rotationY: normalizedX * 7,
@@ -155,7 +144,7 @@ export default function ProjectDetails({
       className="
         relative
         w-full
-        overflow-hidden
+        
         bg-[#32141f]
         text-white
       "
@@ -169,14 +158,14 @@ export default function ProjectDetails({
           relative
           min-h-[100svh]
           w-full
-          overflow-hidden
+          
           pt-[80px]
           pb-8
           sm:pt-[90px]
           md:pt-[100px]
           lg:min-h-[100svh]
           lg:h-auto
-          lg:overflow-hidden
+          lg:
           lg:pt-[105px]
           lg:pb-8
         "
@@ -290,9 +279,7 @@ export default function ProjectDetails({
               Home
             </Link>
 
-            <span className="text-[9px] text-white/30">
-              &gt;&gt;
-            </span>
+            <span className="text-[9px] text-white/30">&gt;&gt;</span>
 
             <Link
               href="/projects"
@@ -311,9 +298,7 @@ export default function ProjectDetails({
               Projects
             </Link>
 
-            <span className="text-[9px] text-white/30">
-              &gt;&gt;
-            </span>
+            <span className="text-[9px] text-white/30">&gt;&gt;</span>
 
             <Link
               href="/projects/biographical"
@@ -332,9 +317,7 @@ export default function ProjectDetails({
               Biographical
             </Link>
 
-            <span className="text-[9px] text-white/30">
-              &gt;&gt;
-            </span>
+            <span className="text-[9px] text-white/30">&gt;&gt;</span>
 
             <span
               className="
@@ -463,11 +446,10 @@ export default function ProjectDetails({
                     space-y-0
                   "
                 >
-                  {project.description.map(
-                    (paragraph, index) => (
-                      <p
-                        key={index}
-                        className="
+                  {project.description.map((paragraph, index) => (
+                    <p
+                      key={index}
+                      className="
                           futura-light
                           text-[12px]
                           leading-[1.5]
@@ -477,11 +459,10 @@ export default function ProjectDetails({
                           md:text-[14px]
                           lg:text-[0.9vw]
                         "
-                      >
-                        {paragraph}
-                      </p>
-                    )
-                  )}
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
                 </div>
               </div>
             </div>

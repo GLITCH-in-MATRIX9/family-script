@@ -57,7 +57,7 @@ function ThumbnailCard({
   return (
     <div className="absolute" style={{ top: 306, left, width: 243 }}>
       <div
-        className="overflow-hidden rounded-[4px] transition-[filter] duration-300 ease-out"
+        className=" rounded-[4px] transition-[filter] duration-300 ease-out"
         style={{
           width: 243,
           height: 182,
@@ -90,8 +90,7 @@ export default function Products() {
   const ctaRef = useRef<HTMLDivElement>(null);
 
   const [activeId, setActiveId] = useState(DEFAULT_PRODUCT_ID);
-  const activeProduct =
-    PRODUCTS.find((p) => p.id === activeId) ?? PRODUCTS[0];
+  const activeProduct = PRODUCTS.find((p) => p.id === activeId) ?? PRODUCTS[0];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -140,10 +139,7 @@ export default function Products() {
     <main className="relative w-full overflow-x-hidden bg-[#4E2336]">
       <div className="relative mx-auto" style={{ width: 1440 }}>
         {/* Banner — measured Figma height: ~356px. */}
-        <div
-          className="relative overflow-hidden"
-          style={{ width: 1440, height: 356 }}
-        >
+        <div className="relative " style={{ width: 1440, height: 356 }}>
           <img
             ref={bannerRef}
             src={BANNER_PHOTO}
@@ -206,7 +202,7 @@ export default function Products() {
           {/* Explore detail panel — swaps with the active product. */}
           <div ref={exploreRef}>
             <div
-              className="absolute overflow-hidden rounded-[8px]"
+              className="absolute  rounded-[8px]"
               style={{ top: 729, left: 97, width: 720, height: 539 }}
             >
               <img
@@ -265,8 +261,7 @@ export default function Products() {
               href="#"
               className="futura-light group inline-flex w-fit items-center rounded-full border border-white/30 bg-white/[0.08] px-8 py-3 text-[13px] tracking-wide text-white backdrop-blur-md transition-all duration-300 hover:bg-white/[0.15]"
             >
-              Get your Story{" "}
-              <span className="futura-bold ml-1">Scripted</span>
+              Get your Story <span className="futura-bold ml-1">Scripted</span>
               <span className="ml-3 transition-transform duration-300 group-hover:translate-x-1">
                 &gt;&gt;
               </span>

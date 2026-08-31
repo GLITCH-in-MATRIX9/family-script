@@ -27,7 +27,6 @@ export default function LoadingScreen() {
         clipPath: "inset(0 0 100% 0)",
       });
 
-
       /* ============================================
          LOGO LOADING
 
@@ -41,15 +40,16 @@ export default function LoadingScreen() {
         ease: "power2.inOut",
       });
 
-
       /* ============================================
          SMALL PAUSE
          ============================================ */
 
-      timeline.to({}, {
-        duration: 0.4,
-      });
-
+      timeline.to(
+        {},
+        {
+          duration: 0.4,
+        },
+      );
 
       /* ============================================
          FADE LOADER OUT
@@ -65,7 +65,6 @@ export default function LoadingScreen() {
           loader.style.pointerEvents = "none";
         },
       });
-
     }, loaderRef);
 
     return () => ctx.revert();
@@ -74,24 +73,19 @@ export default function LoadingScreen() {
   return (
     <div
       ref={loaderRef}
-      className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[#3b1425]"
+      className="fixed inset-0 z-[9999] flex items-center justify-center  bg-[#3b1425]"
     >
-
       {/* ============================================
           SINGLE LOGO
           ============================================ */}
 
-      <div
-        ref={logoRef}
-        className="relative"
-      >
+      <div ref={logoRef} className="relative">
         <img
           src="/assets/homepage/FS_logo.png"
           alt="Family Script"
           className="h-[150px] w-[150px] object-contain brightness-0 invert md:h-[190px] md:w-[190px]"
         />
       </div>
-
     </div>
   );
 }

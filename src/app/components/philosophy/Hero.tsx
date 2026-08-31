@@ -143,7 +143,7 @@ function InstagramEmbed({ url }: { url: string }) {
   return (
     <div
       ref={containerRef}
-      className="w-full overflow-hidden rounded-[8px]"
+      className="w-full  rounded-[8px]"
       style={{ minHeight: status === "loading" ? 420 : undefined }}
     >
       <blockquote
@@ -334,7 +334,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#532439] text-white">
+    <main className="relative min-h-screen w-full  bg-[#532439] text-white">
       <SocialIcons />
 
       {/* =========================================================
@@ -385,7 +385,7 @@ export default function Hero() {
               <div
                 className={`
                   absolute top-1/2 h-[100px] w-[100px]
-                  -translate-y-1/2 overflow-hidden
+                  -translate-y-1/2 
                   rounded-[6px]
                   border border-[#E9E7DA]/25
                   shadow-lg

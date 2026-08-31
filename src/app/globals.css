@@ -125,12 +125,12 @@ html {
    * HomepageNavigator uses window.scrollTo()
    * to move between the full-screen sections.
    */
-  overflow-y: auto;
+
 
   /*
    * Prevent browser overscroll/bounce.
    */
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: auto;
 
   /*
    * Hide the browser scrollbar visually.
@@ -171,12 +171,11 @@ body {
    * window.scrollTo() to work.
    */
   overflow-x: hidden;
-  overflow-y: auto;
 
   /*
    * Prevent overscroll/bounce at the top and bottom.
    */
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: auto;
 
   /*
    * Hide scrollbar while keeping scrolling enabled.

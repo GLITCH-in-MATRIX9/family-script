@@ -1,5 +1,3 @@
-// components/homepage/ripple/useRippleNavigation.ts
-
 "use client";
 
 import {
@@ -8,9 +6,7 @@ import {
   useRef,
 } from "react";
 
-import {
-  useRipple,
-} from "./RippleProvider";
+import { useRipple } from "./RippleProvider";
 
 import {
   getRippleOrigin,
@@ -30,9 +26,7 @@ export interface RippleNavigationOptions {
 
   currentIndex: number;
 
-  onIndexChange: (
-    index: number,
-  ) => void;
+  onIndexChange: (index: number) => void;
 }
 
 /* ============================================================
@@ -82,20 +76,9 @@ export function useRippleNavigation({
   const cooldownRef =
     useRef<number | null>(null);
 
-  /*
-   * TRUE only while the user is physically
-   * inside the final Contact section.
-   *
-   * FALSE means ripple navigation controls
-   * the full-screen sections.
-   */
   const normalScrollModeRef =
     useRef(false);
 
-  /*
-   * Prevent the scroll listener from interpreting
-   * our intentional scrollTo() as user navigation.
-   */
   const programmaticScrollRef =
     useRef(false);
 
@@ -111,25 +94,18 @@ export function useRippleNavigation({
   ]);
 
   /* ==========================================================
+     HOMEPAGE CHECK
+  ========================================================== */
+
+  const hasSections =
+    sections.length > 0;
+
+  /* ==========================================================
      PREPARE SECTION HEIGHTS
-     
-     IMPORTANT:
-     
-     Every section EXCEPT the final section is
-     exactly one viewport.
-     
-     The final section is:
-     
-       min-height: 100svh
-       height: auto
-     
-     This allows Contact + Footer to extend naturally.
   ========================================================== */
 
   useEffect(() => {
-    if (
-      sections.length === 0
-    ) {
+    if (!hasSections) {
       return;
     }
 
@@ -145,15 +121,7 @@ export function useRippleNavigation({
         section.style.width =
           "100%";
 
-        if (
-          isFinalSection
-        ) {
-          /*
-           * Contact:
-           *
-           * At least one viewport tall,
-           * but allowed to grow beyond it.
-           */
+        if (isFinalSection) {
           section.style.minHeight =
             "100svh";
 
@@ -163,9 +131,6 @@ export function useRippleNavigation({
           return;
         }
 
-        /*
-         * All normal ripple sections.
-         */
         section.style.minHeight =
           "100svh";
 
@@ -175,6 +140,7 @@ export function useRippleNavigation({
     );
   }, [
     sections,
+    hasSections,
   ]);
 
   /* ==========================================================
@@ -226,12 +192,14 @@ export function useRippleNavigation({
     );
 
   /* ==========================================================
-     IS FINAL SECTION
+     FINAL SECTION
   ========================================================== */
 
   const isFinalSection =
     useCallback(
-      (index: number) => {
+      (
+        index: number,
+      ) => {
         return (
           sections.length > 0 &&
           index ===
@@ -244,17 +212,14 @@ export function useRippleNavigation({
     );
 
   /* ==========================================================
-     IS TESTIMONIALS SECTION
-
-     Testimonials is always the section immediately BEFORE
-     the final (Contact) section — same "derived, not
-     hardcoded" style as isFinalSection, so this keeps
-     working if the section count changes again later.
+     TESTIMONIALS SECTION
   ========================================================== */
 
   const isTestimonialsSection =
     useCallback(
-      (index: number) => {
+      (
+        index: number,
+      ) => {
         return (
           sections.length > 1 &&
           index ===
@@ -267,55 +232,46 @@ export function useRippleNavigation({
     );
 
   /* ==========================================================
-     IS AT TOP OF FINAL SECTION
+     FINAL SECTION TOP
   ========================================================== */
 
   const isAtFinalSectionTop =
-    useCallback(() => {
-      if (
-        sections.length === 0
-      ) {
-        return false;
-      }
+    useCallback(
+      () => {
+        if (
+          sections.length === 0
+        ) {
+          return false;
+        }
 
-      const finalSection =
-        sections[
-          sections.length - 1
-        ];
+        const finalSection =
+          sections[
+            sections.length - 1
+          ];
 
-      if (!finalSection) {
-        return false;
-      }
+        if (!finalSection) {
+          return false;
+        }
 
-      const finalTop =
-        getSectionTop(
-          finalSection,
+        const finalTop =
+          getSectionTop(
+            finalSection,
+          );
+
+        return (
+          window.scrollY <=
+          finalTop +
+            SECTION_TOLERANCE
         );
-
-      return (
-        window.scrollY <=
-        finalTop +
-          SECTION_TOLERANCE
-      );
-    }, [
-      sections,
-      getSectionTop,
-    ]);
+      },
+      [
+        sections,
+        getSectionTop,
+      ],
+    );
 
   /* ==========================================================
      NAVIGATE
-     
-     Normal sections:
-       wheel/touch/keyboard
-         ↓
-       ripple
-         ↓
-       target section
-     
-     Final section:
-       ripple into Contact
-         ↓
-       native document scrolling
   ========================================================== */
 
   const navigate =
@@ -323,6 +279,10 @@ export function useRippleNavigation({
       async (
         direction: 1 | -1,
       ) => {
+        if (!hasSections) {
+          return;
+        }
+
         if (
           animatingRef.current
         ) {
@@ -354,11 +314,6 @@ export function useRippleNavigation({
 
         /* ====================================================
            FINAL SECTION
-           
-           Once Contact is active:
-           
-           - scrolling down = native
-           - scrolling up from Contact top = ripple
         ==================================================== */
 
         if (
@@ -366,26 +321,12 @@ export function useRippleNavigation({
             fromIndex,
           )
         ) {
-          /*
-           * If we are anywhere inside Contact,
-           * native scrolling owns the page.
-           */
           if (
             normalScrollModeRef.current
           ) {
             return;
           }
 
-          /*
-           * At the very top of Contact:
-           *
-           * DOWN:
-           * allow native browser scrolling.
-           *
-           * UP:
-           * navigate back to Our Journey
-           * using ripple.
-           */
           if (
             direction === 1
           ) {
@@ -394,12 +335,6 @@ export function useRippleNavigation({
 
             return;
           }
-
-          /*
-           * direction === -1
-           *
-           * Go back to previous ripple section.
-           */
         }
 
         /* ====================================================
@@ -412,10 +347,6 @@ export function useRippleNavigation({
         ) {
           return;
         }
-
-        /* ====================================================
-           GET SECTIONS
-        ==================================================== */
 
         const currentSection =
           sections[
@@ -457,7 +388,7 @@ export function useRippleNavigation({
 
         try {
           /* ==================================================
-             PREPARE TARGET
+             PREPARE
           ================================================== */
 
           await prepareRippleSection(
@@ -471,7 +402,7 @@ export function useRippleNavigation({
           }
 
           /* ==================================================
-             RIPPLE ORIGIN
+             ORIGIN
           ================================================== */
 
           const {
@@ -483,7 +414,7 @@ export function useRippleNavigation({
             );
 
           /* ==================================================
-             PLAY RIPPLE
+             RIPPLE
           ================================================== */
 
           await playTransition({
@@ -493,11 +424,14 @@ export function useRippleNavigation({
             afterElement:
               nextSection,
 
-            originX: x,
+            originX:
+              x,
 
-            originY: y,
+            originY:
+              y,
 
-            strength: 1.05,
+            strength:
+              1.05,
 
             duration:
               TRANSITION_DURATION,
@@ -511,11 +445,6 @@ export function useRippleNavigation({
 
           /* ==================================================
              MOVE DOCUMENT
-             
-             This is especially important for Contact.
-             
-             We move to Contact's REAL DOM position,
-             rather than assuming it is one viewport away.
           ================================================== */
 
           moveToSection(
@@ -533,11 +462,10 @@ export function useRippleNavigation({
             targetIndex,
           );
 
-          /*
-           * Landing on Testimonials: resume on the last pair
-           * when arriving from Contact (direction -1),
-           * otherwise start fresh on the first pair.
-           */
+          /* ==================================================
+             TESTIMONIALS
+          ================================================== */
+
           if (
             isTestimonialsSection(
               targetIndex,
@@ -552,9 +480,10 @@ export function useRippleNavigation({
             }
           }
 
-          /*
-           * Contact is now native-scroll territory.
-           */
+          /* ==================================================
+             CONTACT
+          ================================================== */
+
           if (
             isFinalSection(
               targetIndex,
@@ -572,10 +501,6 @@ export function useRippleNavigation({
             error,
           );
 
-          /*
-           * Fallback:
-           * still move to the actual DOM section.
-           */
           if (
             mountedRef.current
           ) {
@@ -596,6 +521,9 @@ export function useRippleNavigation({
               );
           }
         } finally {
+          /*
+           * ALWAYS restore body scrolling.
+           */
           document.body.style.overflow =
             previousOverflow;
 
@@ -626,6 +554,7 @@ export function useRippleNavigation({
         }
       },
       [
+        hasSections,
         sections,
         playTransition,
         getRippleOrigin,
@@ -641,31 +570,48 @@ export function useRippleNavigation({
   ========================================================== */
 
   const next =
-    useCallback(() => {
-      void navigate(1);
-    }, [
-      navigate,
-    ]);
+    useCallback(
+      () => {
+        if (!hasSections) {
+          return;
+        }
+
+        void navigate(1);
+      },
+      [
+        hasSections,
+        navigate,
+      ],
+    );
 
   /* ==========================================================
      PREVIOUS
   ========================================================== */
 
   const previous =
-    useCallback(() => {
-      void navigate(-1);
-    }, [
-      navigate,
-    ]);
+    useCallback(
+      () => {
+        if (!hasSections) {
+          return;
+        }
+
+        void navigate(-1);
+      },
+      [
+        hasSections,
+        navigate,
+      ],
+    );
 
   /* ==========================================================
-     DETECT NATIVE CONTACT MODE
-     
-     Contact is native once the browser has moved
-     below the top of the final section.
+     CONTACT NATIVE SCROLL MODE
   ========================================================== */
 
   useEffect(() => {
+    if (!hasSections) {
+      return;
+    }
+
     if (
       sections.length === 0
     ) {
@@ -692,15 +638,6 @@ export function useRippleNavigation({
           return;
         }
 
-        /*
-         * Contact is the final section.
-         *
-         * At its top we keep ripple navigation
-         * available for scrolling back upward.
-         *
-         * Once the user moves into it,
-         * native document scrolling takes over.
-         */
         normalScrollModeRef.current =
           !isAtFinalSectionTop();
       };
@@ -722,6 +659,7 @@ export function useRippleNavigation({
       );
     };
   }, [
+    hasSections,
     sections,
     isFinalSection,
     isAtFinalSectionTop,
@@ -732,24 +670,26 @@ export function useRippleNavigation({
   ========================================================== */
 
   useEffect(() => {
+    if (!hasSections) {
+      return;
+    }
+
+    if (
+      sections.length === 0
+    ) {
+      return;
+    }
+
     const handleWheel =
       (
         event: WheelEvent,
       ) => {
-        /* ====================================================
-           HORIZONTAL
-        ==================================================== */
-
         if (
           Math.abs(event.deltaX) >
           Math.abs(event.deltaY)
         ) {
           return;
         }
-
-        /* ====================================================
-           TINY MOVEMENT
-        ==================================================== */
 
         if (
           Math.abs(event.deltaY) <
@@ -774,17 +714,12 @@ export function useRippleNavigation({
           index === lastIndex;
 
         /* ====================================================
-           FINAL CONTACT SECTION
+           FINAL CONTACT
         ==================================================== */
 
         if (
           onFinalSection
         ) {
-          /*
-           * Scrolling DOWN inside Contact:
-           *
-           * Always let the browser scroll naturally.
-           */
           if (
             scrollingDown
           ) {
@@ -794,12 +729,6 @@ export function useRippleNavigation({
             return;
           }
 
-          /*
-           * Scrolling UP inside Contact:
-           *
-           * If we're not at the top yet,
-           * let native scrolling continue.
-           */
           if (
             scrollingUp &&
             !isAtFinalSectionTop()
@@ -810,12 +739,6 @@ export function useRippleNavigation({
             return;
           }
 
-          /*
-           * We're at the top of Contact
-           * and the user wants to go back.
-           *
-           * Ripple back to Our Journey.
-           */
           if (
             scrollingUp &&
             isAtFinalSectionTop()
@@ -838,12 +761,7 @@ export function useRippleNavigation({
         }
 
         /* ====================================================
-           TESTIMONIALS SECTION
-
-           One wheel tick steps one testimonial pair while
-           inside this section; only at the first/last pair
-           does a wheel tick hand off to normal ripple
-           navigation (into Our Journey / Contact).
+           TESTIMONIALS
         ==================================================== */
 
         if (
@@ -854,9 +772,7 @@ export function useRippleNavigation({
           const controller =
             testimonialsStepRef.current;
 
-          if (
-            controller
-          ) {
+          if (controller) {
             if (
               event.cancelable
             ) {
@@ -907,16 +823,10 @@ export function useRippleNavigation({
 
             return;
           }
-
-          /*
-           * Controller not yet mounted — fall through to
-           * normal section-jump behavior below so the user
-           * isn't stranded.
-           */
         }
 
         /* ====================================================
-           NORMAL RIPPLE SECTIONS
+           NORMAL RIPPLE SECTION
         ==================================================== */
 
         if (
@@ -961,6 +871,7 @@ export function useRippleNavigation({
       );
     };
   }, [
+    hasSections,
     sections.length,
     next,
     previous,
@@ -969,10 +880,28 @@ export function useRippleNavigation({
   ]);
 
   /* ==========================================================
-     TOUCH
+     TOUCH SWIPE
+     
+     THIS IS THE CHANGED SECTION.
+     
+     Swipe UP   → next
+     Swipe DOWN → previous
+     
+     We only listen to touchstart + touchend.
+     No touchmove / preventDefault is needed.
   ========================================================== */
 
   useEffect(() => {
+    if (!hasSections) {
+      return;
+    }
+
+    if (
+      sections.length === 0
+    ) {
+      return;
+    }
+
     const handleTouchStart =
       (
         event: TouchEvent,
@@ -991,32 +920,6 @@ export function useRippleNavigation({
             .clientY;
       };
 
-    const handleTouchMove =
-      (
-        event: TouchEvent,
-      ) => {
-        /*
-         * Never prevent native Contact scrolling.
-         */
-        if (
-          currentIndexRef.current ===
-          sections.length - 1
-        ) {
-          return;
-        }
-
-        /*
-         * Only stop native movement during
-         * an active ripple.
-         */
-        if (
-          animatingRef.current &&
-          event.cancelable
-        ) {
-          event.preventDefault();
-        }
-      };
-
     const handleTouchEnd =
       (
         event: TouchEvent,
@@ -1033,22 +936,36 @@ export function useRippleNavigation({
           return;
         }
 
-        const endY =
-          event.changedTouches[0]
-            ?.clientY;
-
         if (
-          endY === undefined
+          event.changedTouches.length !==
+          1
         ) {
           return;
         }
 
-        const delta =
+        const endY =
+          event.changedTouches[0]
+            .clientY;
+
+        const deltaY =
           startY - endY;
 
+        /*
+         * Ignore small finger movements.
+         */
         if (
-          Math.abs(delta) <
+          Math.abs(deltaY) <
           TOUCH_THRESHOLD
+        ) {
+          return;
+        }
+
+        /*
+         * Don't start another transition
+         * while the current one is running.
+         */
+        if (
+          animatingRef.current
         ) {
           return;
         }
@@ -1059,74 +976,95 @@ export function useRippleNavigation({
         const lastIndex =
           sections.length - 1;
 
-        const onFinalSection =
-          index === lastIndex;
-
         const swipingUp =
-          delta > 0;
+          deltaY > 0;
 
         const swipingDown =
-          delta < 0;
+          deltaY < 0;
 
         /* ====================================================
-           CONTACT
+           FINAL / CONTACT SECTION
         ==================================================== */
 
         if (
-          onFinalSection
+          index === lastIndex
         ) {
           /*
-           * Swiping upward while not at the top:
-           * browser owns it.
+           * Contact + Footer uses native scrolling.
+           *
+           * Only a downward swipe at the very top of Contact
+           * goes back to Testimonials.
            */
           if (
-            swipingUp &&
-            !isAtFinalSectionTop()
-          ) {
-            return;
-          }
-
-          /*
-           * Swiping down:
-           * native browser scrolling.
-           */
-          if (
-            swipingDown
-          ) {
-            normalScrollModeRef.current =
-              true;
-
-            return;
-          }
-
-          /*
-           * At Contact top + swipe up:
-           * ripple back.
-           */
-          if (
-            swipingUp &&
+            swipingDown &&
             isAtFinalSectionTop()
           ) {
-            normalScrollModeRef.current =
-              false;
-
             previous();
-
-            return;
           }
 
           return;
         }
 
         /* ====================================================
-           NORMAL RIPPLE SECTIONS
+           TESTIMONIALS
         ==================================================== */
 
         if (
-          animatingRef.current
+          isTestimonialsSection(
+            index,
+          )
         ) {
-          return;
+          const controller =
+            testimonialsStepRef.current;
+
+          if (controller) {
+            if (
+              swipingUp
+            ) {
+              /*
+               * Advance testimonial pair.
+               */
+              if (
+                controller.getPairIndex() <
+                controller.getPairCount() - 1
+              ) {
+                controller.stepForward();
+              } else {
+                /*
+                 * Last testimonial pair → next section.
+                 */
+                next();
+              }
+
+              return;
+            }
+
+            if (
+              swipingDown
+            ) {
+              /*
+               * Previous testimonial pair.
+               */
+              if (
+                controller.getPairIndex() >
+                0
+              ) {
+                controller.stepBackward();
+              } else {
+                /*
+                 * First testimonial pair → previous section.
+                 */
+                previous();
+              }
+
+              return;
+            }
+          }
         }
+
+        /* ====================================================
+           NORMAL HOMEPAGE SECTIONS
+        ==================================================== */
 
         if (
           swipingUp
@@ -1143,19 +1081,17 @@ export function useRippleNavigation({
         }
       };
 
+    /*
+     * Passive listeners are intentional.
+     *
+     * We are detecting a completed swipe rather than trying
+     * to cancel the browser's touch scrolling during touchmove.
+     */
     window.addEventListener(
       "touchstart",
       handleTouchStart,
       {
         passive: true,
-      },
-    );
-
-    window.addEventListener(
-      "touchmove",
-      handleTouchMove,
-      {
-        passive: false,
       },
     );
 
@@ -1174,20 +1110,17 @@ export function useRippleNavigation({
       );
 
       window.removeEventListener(
-        "touchmove",
-        handleTouchMove,
-      );
-
-      window.removeEventListener(
         "touchend",
         handleTouchEnd,
       );
     };
   }, [
+    hasSections,
     sections.length,
     next,
     previous,
     isAtFinalSectionTop,
+    isTestimonialsSection,
   ]);
 
   /* ==========================================================
@@ -1195,6 +1128,16 @@ export function useRippleNavigation({
   ========================================================== */
 
   useEffect(() => {
+    if (!hasSections) {
+      return;
+    }
+
+    if (
+      sections.length === 0
+    ) {
+      return;
+    }
+
     const handleKeyDown =
       (
         event: KeyboardEvent,
@@ -1202,9 +1145,6 @@ export function useRippleNavigation({
         const target =
           event.target as HTMLElement | null;
 
-        /*
-         * Never hijack form fields.
-         */
         if (
           target?.tagName ===
             "INPUT" ||
@@ -1233,11 +1173,6 @@ export function useRippleNavigation({
         if (
           onFinalSection
         ) {
-          /*
-           * ArrowDown/PageDown:
-           *
-           * Let native scrolling handle Contact + Footer.
-           */
           if (
             event.key ===
               "ArrowDown" ||
@@ -1247,12 +1182,6 @@ export function useRippleNavigation({
             return;
           }
 
-          /*
-           * ArrowUp/PageUp:
-           *
-           * If we're still inside Contact,
-           * let the browser scroll upward.
-           */
           if (
             (
               event.key ===
@@ -1265,10 +1194,6 @@ export function useRippleNavigation({
             return;
           }
 
-          /*
-           * At Contact's top:
-           * ripple back to Our Journey.
-           */
           if (
             (
               event.key ===
@@ -1337,6 +1262,7 @@ export function useRippleNavigation({
       );
     };
   }, [
+    hasSections,
     sections.length,
     next,
     previous,
@@ -1376,6 +1302,10 @@ export function useRippleNavigation({
         );
       }
 
+      /*
+       * Make absolutely sure the homepage ripple cannot leave
+       * the document locked when navigating away.
+       */
       document.body.style.overflow =
         "";
 
@@ -1394,11 +1324,8 @@ export function useRippleNavigation({
 
   return {
     next,
-
     previous,
-
     navigate,
-
     isAnimating:
       animatingRef,
   };

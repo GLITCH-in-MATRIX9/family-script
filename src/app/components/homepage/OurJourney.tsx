@@ -2,20 +2,12 @@
 
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
 import gsap from "gsap";
-import {
-  ScrollTrigger,
-} from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(
-  ScrollTrigger,
-);
+gsap.registerPlugin(ScrollTrigger);
 
 /* ============================================================
    TYPES
@@ -84,44 +76,32 @@ export default function OurJourney() {
      REFS
   ========================================================== */
 
-  const sectionRef =
-    useRef<HTMLDivElement | null>(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
 
-  const headingRef =
-    useRef<HTMLDivElement | null>(null);
+  const headingRef = useRef<HTMLDivElement | null>(null);
 
-  const contentRef =
-    useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
-  const timelineRef =
-    useRef<HTMLDivElement | null>(null);
+  const timelineRef = useRef<HTMLDivElement | null>(null);
 
   /* ==========================================================
      STATE
   ========================================================== */
 
-  const [
-    activeIndex,
-    setActiveIndex,
-  ] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   /* ==========================================================
      ACTIVE ITEM
   ========================================================== */
 
-  const activeJourney =
-    JOURNEY_STOPS[activeIndex];
+  const activeJourney = JOURNEY_STOPS[activeIndex];
 
   /* ==========================================================
      CHANGE TIMELINE ITEM
   ========================================================== */
 
-  const handleDotClick = (
-    index: number,
-  ) => {
-    if (
-      index === activeIndex
-    ) {
+  const handleDotClick = (index: number) => {
+    if (index === activeIndex) {
       return;
     }
 
@@ -133,8 +113,7 @@ export default function OurJourney() {
   ========================================================== */
 
   useEffect(() => {
-    const content =
-      contentRef.current;
+    const content = contentRef.current;
 
     if (!content) {
       return;
@@ -153,141 +132,119 @@ export default function OurJourney() {
         ease: "power3.out",
       },
     );
-  }, [
-    activeIndex,
-  ]);
+  }, [activeIndex]);
 
   /* ==========================================================
      ENTRANCE ANIMATION
   ========================================================== */
 
   useEffect(() => {
-    const section =
-      sectionRef.current;
+    const section = sectionRef.current;
 
-    const heading =
-      headingRef.current;
+    const heading = headingRef.current;
 
-    const content =
-      contentRef.current;
+    const content = contentRef.current;
 
-    const timeline =
-      timelineRef.current;
+    const timeline = timelineRef.current;
 
-    if (
-      !section ||
-      !heading ||
-      !content ||
-      !timeline
-    ) {
+    if (!section || !heading || !content || !timeline) {
       return;
     }
 
-    const ctx =
-      gsap.context(() => {
-        /* ----------------------------------------------------
+    const ctx = gsap.context(() => {
+      /* ----------------------------------------------------
            INITIAL STATE
         ---------------------------------------------------- */
 
-        gsap.set(
-          heading,
-          {
-            opacity: 1,
-            y: 0,
-          },
-        );
+      gsap.set(heading, {
+        opacity: 1,
+        y: 0,
+      });
 
-        gsap.set(
-          content,
-          {
-            opacity: 1,
-            y: 0,
-          },
-        );
+      gsap.set(content, {
+        opacity: 1,
+        y: 0,
+      });
 
-        gsap.set(
-          timeline,
-          {
-            opacity: 1,
-            y: 0,
-          },
-        );
+      gsap.set(timeline, {
+        opacity: 1,
+        y: 0,
+      });
 
-        /* ----------------------------------------------------
+      /* ----------------------------------------------------
            ENTRANCE TIMELINE
         ---------------------------------------------------- */
 
-        const entrance =
-          gsap.timeline({
-            paused: true,
-          });
+      const entrance = gsap.timeline({
+        paused: true,
+      });
 
-        entrance.fromTo(
-          heading,
-          {
-            opacity: 0,
-            y: 30,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: "power3.out",
-          },
-        );
+      entrance.fromTo(
+        heading,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+        },
+      );
 
-        entrance.fromTo(
-          content,
-          {
-            opacity: 0,
-            y: 20,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power3.out",
-          },
-          "-=0.35",
-        );
+      entrance.fromTo(
+        content,
+        {
+          opacity: 0,
+          y: 20,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out",
+        },
+        "-=0.35",
+      );
 
-        entrance.fromTo(
-          timeline,
-          {
-            opacity: 0,
-            y: 20,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.65,
-            ease: "power3.out",
-          },
-          "-=0.3",
-        );
+      entrance.fromTo(
+        timeline,
+        {
+          opacity: 0,
+          y: 20,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          ease: "power3.out",
+        },
+        "-=0.3",
+      );
 
-        /* ----------------------------------------------------
+      /* ----------------------------------------------------
            SCROLL TRIGGER
         ---------------------------------------------------- */
 
-        ScrollTrigger.create({
-          trigger: section,
+      ScrollTrigger.create({
+        trigger: section,
 
-          start: "top 85%",
+        start: "top 85%",
 
-          onEnter: () => {
-            entrance.restart();
-          },
+        onEnter: () => {
+          entrance.restart();
+        },
 
-          onEnterBack: () => {
-            entrance.restart();
-          },
-        });
+        onEnterBack: () => {
+          entrance.restart();
+        },
+      });
 
-        requestAnimationFrame(() => {
-          ScrollTrigger.refresh();
-        });
-      }, section);
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    }, section);
 
     return () => {
       ctx.revert();
@@ -306,7 +263,7 @@ export default function OurJourney() {
         h-full
         min-h-full
         w-full
-        overflow-hidden
+        
         px-6
         py-10
         md:px-10
@@ -453,8 +410,7 @@ export default function OurJourney() {
               md:text-[12px]
             "
             style={{
-              color:
-                CAPTION_COLOR,
+              color: CAPTION_COLOR,
             }}
           >
             Click a point on the timeline
@@ -508,29 +464,17 @@ export default function OurJourney() {
               justify-between
             "
           >
-            {JOURNEY_STOPS.map(
-              (
-                stop,
-                index,
-              ) => {
-                const isActive =
-                  index ===
-                  activeIndex;
+            {JOURNEY_STOPS.map((stop, index) => {
+              const isActive = index === activeIndex;
 
-                return (
-                  <button
-                    key={`${stop.year}-${index}`}
-                    type="button"
-                    onClick={() =>
-                      handleDotClick(
-                        index,
-                      )
-                    }
-                    aria-label={`Show ${stop.year}`}
-                    aria-pressed={
-                      isActive
-                    }
-                    className="
+              return (
+                <button
+                  key={`${stop.year}-${index}`}
+                  type="button"
+                  onClick={() => handleDotClick(index)}
+                  aria-label={`Show ${stop.year}`}
+                  aria-pressed={isActive}
+                  className="
                       group
                       relative
                       z-10
@@ -542,13 +486,13 @@ export default function OurJourney() {
                       rounded-full
                       focus:outline-none
                     "
-                  >
-                    {/* ======================================
+                >
+                  {/* ======================================
                         HOVER / ACTIVE CIRCLE
                     ====================================== */}
 
-                    <span
-                      className={`
+                  <span
+                    className={`
                         pointer-events-none
                         absolute
                         inset-0
@@ -563,14 +507,14 @@ export default function OurJourney() {
                             : "scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100"
                         }
                       `}
-                    />
+                  />
 
-                    {/* ======================================
+                  {/* ======================================
                         DOT
                     ====================================== */}
 
-                    <span
-                      className={`
+                  <span
+                    className={`
                         relative
                         block
                         rounded-full
@@ -582,14 +526,14 @@ export default function OurJourney() {
                             : "h-2 w-2 bg-white/70 group-hover:h-2.5 group-hover:w-2.5 group-hover:bg-white"
                         }
                       `}
-                    />
+                  />
 
-                    {/* ======================================
+                  {/* ======================================
                         YEAR LABEL
                     ====================================== */}
 
-                    <span
-                      className={`
+                  <span
+                    className={`
                         futura-light
                         pointer-events-none
                         absolute
@@ -606,13 +550,12 @@ export default function OurJourney() {
                             : "text-white/45 group-hover:text-white/80"
                         }
                       `}
-                    >
-                      {stop.year}
-                    </span>
-                  </button>
-                );
-              },
-            )}
+                  >
+                    {stop.year}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -660,29 +603,17 @@ export default function OurJourney() {
               px-[3%]
             "
           >
-            {JOURNEY_STOPS.map(
-              (
-                stop,
-                index,
-              ) => {
-                const isActive =
-                  index ===
-                  activeIndex;
+            {JOURNEY_STOPS.map((stop, index) => {
+              const isActive = index === activeIndex;
 
-                return (
-                  <button
-                    key={`mobile-${stop.year}-${index}`}
-                    type="button"
-                    onClick={() =>
-                      handleDotClick(
-                        index,
-                      )
-                    }
-                    aria-label={`Show ${stop.year}`}
-                    aria-pressed={
-                      isActive
-                    }
-                    className="
+              return (
+                <button
+                  key={`mobile-${stop.year}-${index}`}
+                  type="button"
+                  onClick={() => handleDotClick(index)}
+                  aria-label={`Show ${stop.year}`}
+                  aria-pressed={isActive}
+                  className="
                       group
                       relative
                       z-10
@@ -693,13 +624,13 @@ export default function OurJourney() {
                       justify-center
                       rounded-full
                     "
-                  >
-                    {/* ======================================
+                >
+                  {/* ======================================
                         HOVER / ACTIVE RING
                     ====================================== */}
 
-                    <span
-                      className={`
+                  <span
+                    className={`
                         pointer-events-none
                         absolute
                         inset-0
@@ -714,14 +645,14 @@ export default function OurJourney() {
                             : "scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100"
                         }
                       `}
-                    />
+                  />
 
-                    {/* ======================================
+                  {/* ======================================
                         DOT
                     ====================================== */}
 
-                    <span
-                      className={`
+                  <span
+                    className={`
                         relative
                         rounded-full
                         transition-all
@@ -732,11 +663,10 @@ export default function OurJourney() {
                             : "h-2 w-2 bg-white/70 group-hover:bg-white"
                         }
                       `}
-                    />
-                  </button>
-                );
-              },
-            )}
+                  />
+                </button>
+              );
+            })}
           </div>
 
           {/* ==================================================

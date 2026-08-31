@@ -46,6 +46,43 @@ const RippleContext =
   );
 
 /* ============================================================
+   RESTORE DOCUMENT SCROLL
+============================================================ */
+
+/*
+ * Ripple navigation temporarily locks scrolling while the
+ * ripple animation is running.
+ *
+ * This function is intentionally defensive.
+ *
+ * If the user navigates away from the homepage while a ripple
+ * is running, we NEVER want the scroll lock to leak into the
+ * next page.
+ */
+
+function restoreDocumentScroll() {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  document.body.style.removeProperty(
+    "overflow",
+  );
+
+  document.body.style.removeProperty(
+    "touch-action",
+  );
+
+  document.documentElement.style.removeProperty(
+    "overflow",
+  );
+
+  document.documentElement.style.removeProperty(
+    "touch-action",
+  );
+}
+
+/* ============================================================
    PROVIDER
 ============================================================ */
 
@@ -58,7 +95,7 @@ export function RippleProvider({
     );
 
   const mountedRef =
-    useRef(true);
+    useRef(false);
 
   const transitionIdRef =
     useRef(0);
@@ -69,7 +106,7 @@ export function RippleProvider({
   ] = useState(false);
 
   /* ==========================================================
-     PLAY
+     PLAY TRANSITION
   ========================================================== */
 
   const playTransition =
@@ -77,6 +114,14 @@ export function RippleProvider({
       async (
         options: RippleTransitionOptions,
       ) => {
+        /*
+         * Don't start a transition after the provider
+         * has already been unmounted.
+         */
+        if (!mountedRef.current) {
+          return;
+        }
+
         const canvas =
           canvasRef.current;
 
@@ -88,14 +133,18 @@ export function RippleProvider({
           return;
         }
 
+        /*
+         * Every transition receives a unique ID.
+         *
+         * If another transition starts or the provider
+         * unmounts, the old transition becomes invalid.
+         */
         transitionIdRef.current += 1;
 
-        const id =
+        const transitionId =
           transitionIdRef.current;
 
-        setIsTransitioning(
-          true,
-        );
+        setIsTransitioning(true);
 
         try {
           await runRippleTransition(
@@ -103,14 +152,32 @@ export function RippleProvider({
             options,
           );
         } catch (error) {
+          /*
+           * A cancelled transition can throw depending on
+           * the implementation of RippleTransition.
+           *
+           * We don't want that to break page navigation.
+           */
           console.error(
             "Ripple transition failed:",
             error,
           );
         } finally {
+          /*
+           * IMPORTANT:
+           *
+           * Always restore scrolling when the transition
+           * finishes.
+           */
+          restoreDocumentScroll();
+
+          /*
+           * Only update React state if this is still the
+           * current mounted provider.
+           */
           if (
             mountedRef.current &&
-            id ===
+            transitionId ===
               transitionIdRef.current
           ) {
             setIsTransitioning(
@@ -123,46 +190,106 @@ export function RippleProvider({
     );
 
   /* ==========================================================
-     CANCEL
+     CANCEL TRANSITION
   ========================================================== */
 
   const cancelTransition =
     useCallback(() => {
+      /*
+       * Invalidate the currently running transition.
+       */
       transitionIdRef.current += 1;
 
+      /*
+       * Cancel the canvas animation.
+       */
       canvasRef.current?.cancelTransition();
 
-      setIsTransitioning(
-        false,
-      );
+      /*
+       * Immediately restore normal document scrolling.
+       */
+      restoreDocumentScroll();
+
+      /*
+       * Update transition state.
+       */
+      if (mountedRef.current) {
+        setIsTransitioning(
+          false,
+        );
+      }
     }, []);
 
   /* ==========================================================
-     CLEANUP
+     MOUNT / UNMOUNT
   ========================================================== */
 
   useEffect(() => {
     mountedRef.current = true;
 
+    /*
+     * Defensive cleanup when the provider mounts.
+     *
+     * This handles the case where another transition left a
+     * stale inline style behind during development/HMR.
+     */
+    restoreDocumentScroll();
+
     return () => {
+      /*
+       * Mark provider as unmounted FIRST.
+       */
       mountedRef.current = false;
 
+      /*
+       * Invalidate all currently running transitions.
+       */
       transitionIdRef.current += 1;
 
+      /*
+       * Stop the ripple canvas.
+       */
       canvasRef.current?.cancelTransition();
+
+      /*
+       * CRITICAL:
+       *
+       * Never allow ripple navigation to leave the document
+       * locked when leaving the homepage.
+       */
+      restoreDocumentScroll();
     };
   }, []);
 
+  /* ==========================================================
+     CONTEXT VALUE
+  ========================================================== */
+
+  const contextValue: RippleContextValue = {
+    playTransition,
+    cancelTransition,
+    isTransitioning,
+  };
+
+  /* ==========================================================
+     RENDER
+  ========================================================== */
+
   return (
     <RippleContext.Provider
-      value={{
-        playTransition,
-        cancelTransition,
-        isTransitioning,
-      }}
+      value={contextValue}
     >
       {children}
 
+      {/*
+       * The canvas is an overlay only.
+       *
+       * RippleCanvas itself should have:
+       *
+       * pointer-events-none
+       *
+       * so it never blocks normal page interaction.
+       */}
       <RippleCanvas
         ref={canvasRef}
       />
@@ -188,5 +315,9 @@ export function useRipple() {
 
   return context;
 }
+
+/* ============================================================
+   DEFAULT EXPORT
+============================================================ */
 
 export default RippleProvider;

@@ -23,7 +23,7 @@ const projects = [
 
 export default function ProjectsPage() {
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#32141f] text-white">
+    <main className="relative min-h-screen w-full  bg-[#32141f] text-white">
       {/* =========================================================
           BACKGROUND
           ========================================================= */}
@@ -117,7 +117,7 @@ export default function ProjectsPage() {
               className="group block"
             >
               {/* IMAGE */}
-              <div className="relative aspect-[1.35/1] w-full overflow-hidden">
+              <div className="relative aspect-[1.35/1] w-full ">
                 <img
                   src={project.image}
                   alt={project.title}
