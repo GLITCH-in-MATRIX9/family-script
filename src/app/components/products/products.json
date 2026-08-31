@@ -1,0 +1,114 @@
+[
+  {
+    "id": "cherish",
+    "name": "Cherish: A Memory Journal",
+    "image": "/assets/Products/cherish.png",
+    "description": "CHERISH is a memory journal that contains sections to record all your precious moments, serving as living archives of your memories. It allows the past to unfold like an old photograph or letter—capturing the essence of where you've been and who you've become. With its thoughtful features, it makes for an exceptional family heirloom and a meaningful gift for generations to come.",
+    "segments": [
+      {
+        "title": "75 Unique Prompt Stickers",
+        "description": "Inspiring questions to spark your memories and reflections. Personalize your journal with peel-and-stick prompts designed for maximum flexibility."
+      },
+      {
+        "title": "Recipe Spreads",
+        "description": "A dedicated space to record family recipes or your own culinary adventures."
+      },
+      {
+        "title": "Timeline Charts",
+        "description": "Organize milestones and memories visually with flexible and easy-to-use charts."
+      },
+      {
+        "title": "Travel Maps",
+        "description": "Relive your travels and plan future adventures."
+      },
+      {
+        "title": "Ruled & Blank Pages",
+        "description": "A set of ruled and blank pages to allow you to both script and draw with ease."
+      }
+    ]
+  },
+  {
+    "id": "celebrate",
+    "name": "Celebrate: Day to Day Journal",
+    "image": "/assets/Products/celebrate.png",
+    "description": "The Celebrate Journal is a unique and versatile blank canvas that invites you to savor life's simple pleasures and celebrate the mundane moments that often go unnoticed. All pages are thoughtfully dotted, offering you the freedom to transform this journal into whatever inspires you—a scrapbook, a photography journal, or simply a place to put your thoughts on paper.",
+    "segments": [
+      {
+        "title": "Premium Hardcover Binding",
+        "description": "Premium quality hardcover binding in matte finish."
+      },
+      {
+        "title": "Luxurious Paper",
+        "description": "High-quality 100gsm acid-free paper for a luxurious writing experience."
+      },
+      {
+        "title": "Smyth-Sewn Binding",
+        "description": "Smyth-sewn binding for durability and lay-flat convenience."
+      }
+    ]
+  },
+  {
+    "id": "create",
+    "name": "Create",
+    "image": "/assets/Products/create.png",
+    "description": "In a world full of dreams, aspirations, and daily demands, the \"Create\" Planner stands as your trusted ally. It's a versatile tool designed to empower individuals from various walks of life—entrepreneurs with grand visions, students striving for academic excellence, or anyone on a journey of self-discovery.",
+    "segments": [
+      {
+        "title": "Monthly Planner",
+        "description": "Strategically plan each month with adaptable pages."
+      },
+      {
+        "title": "Weekly Planner",
+        "description": "Break down goals efficiently with a meticulously designed layout."
+      },
+      {
+        "title": "Goal Setting",
+        "description": "Transform dreams into actionable objectives."
+      },
+      {
+        "title": "To-Do Lists",
+        "description": "Stay organized and maximize productivity."
+      },
+      {
+        "title": "Brain Dump",
+        "description": "Capture ideas and enhance focus."
+      },
+      {
+        "title": "Habit Trackers",
+        "description": "Cultivate positive routines and monitor progress."
+      }
+    ]
+  },
+  {
+    "id": "indigo-chronicles",
+    "name": "Indigo Chronicles: Set of 3 Journals",
+    "image": "/assets/Products/set.png",
+    "description": "The Indigo Chronicles is a collection of three unique journals—Create, Cherish and Celebrate—crafted to cultivate personal growth and introspection. Perfect as a curated gift set, the Indigo Chronicles journals are a heartfelt present for loved ones, and invaluable tools for self-expression, reflection and recording memories.",
+    "segments": [
+      {
+        "title": "Create",
+        "description": "A personal planner."
+      },
+      {
+        "title": "Cherish",
+        "description": "A memory journal."
+      },
+      {
+        "title": "Celebrate",
+        "description": "A versatile diary."
+      },
+      {
+        "title": "User Manual",
+        "description": "A guide with pro tips to help you make the most of your journals."
+      },
+      {
+        "title": "Welcome & Concept Notes",
+        "description": "A custom welcome note and concept note included with the set."
+      },
+      {
+        "title": "Postcards, Bookmarks & Memo Pad",
+        "description": "A set of postcards, bookmarks, and a memo pad included within the journals."
+      }
+    ]
+  }
+]
