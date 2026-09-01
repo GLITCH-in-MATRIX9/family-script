@@ -500,18 +500,17 @@ export default function ProjectDetails({
               {/* =================================================
                   DESKTOP GALLERY
               ================================================= */}
-
-              <div
-                className="
-                  hidden
-                  w-full
-                  grid-cols-3
-                  grid-rows-[120px_130px_130px_150px]
-                  gap-4
-                  gap-y-2
-                  lg:grid
-                "
-              >
+<div
+  className="
+    hidden
+    w-full
+    lg:grid
+    lg:grid-cols-3
+    lg:grid-rows-[130px_155px_155px_120px]
+    lg:gap-x-4
+    lg:gap-y-4
+  "
+>
                 {/* PHOTO 1 */}
 
                 <GalleryImage
