@@ -1,5 +1,5 @@
 
-import { TreeType, TreeVisibility, TreeMemberRole } from "@prisma/client";
+import { RelationshipType, TreeType, TreeVisibility, TreeMemberRole } from "@prisma/client";
 
 /**
  * Default values
@@ -42,3 +42,20 @@ export const ALLOWED_COVER_IMAGE_TYPES = [
 ] as const;
 
 export const MAX_COVER_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
+
+export const RELATIONSHIP_TYPES_BY_TREE_TYPE: Record<TreeType, RelationshipType[]> = {
+  [TreeType.FAMILY]: [
+    RelationshipType.PARENT,
+    RelationshipType.SPOUSE,
+    RelationshipType.PARTNER,
+    RelationshipType.SIBLING,
+    RelationshipType.GUARDIAN,
+  ],
+  [TreeType.ORGANIZATION]: [
+    RelationshipType.MANAGER,
+  ],
+  [TreeType.TRIBE]: [
+    RelationshipType.FRIEND,
+  ],
+};
+ 

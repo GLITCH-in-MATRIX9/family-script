@@ -6,3 +6,5 @@ export * from "./tree.repository";
 export * from "./tree.service";
 export * from "./tree.types";
 export * from "./tree.validator";
+export * from "./relationship-deriver";
+export * from "./tree.import-export.service";

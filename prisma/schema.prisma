@@ -133,10 +133,8 @@ model Account {
 
   userId String
 
-  // Provider identity is kept as a compound unique pair so the same external
-  // account cannot be linked to multiple users.
-  provider          String
-  providerAccountId String
+  providerId String
+  accountId  String
 
   accessToken  String?
   refreshToken String?
@@ -149,7 +147,7 @@ model Account {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+  @@unique([providerId, accountId])
   @@index([userId])
   @@map("accounts")
 }
@@ -381,6 +379,7 @@ model TreeMember {
 // =====================================================
 
 model TreeNode {
+  
   id String @id @default(cuid())
 
   treeId String
@@ -410,6 +409,10 @@ model TreeNode {
   // Additional information
   bio       String? @db.Text
   avatarUrl String? @db.Text
+
+  occupation String? @db.VarChar(255)
+  bloodGroup String? @db.VarChar(10)
+
   metadata  Json?
 
   // Graph edges
@@ -422,6 +425,10 @@ model TreeNode {
   deletedAt DateTime?
 
   stories Story[]
+
+  familyProfile FamilyProfile?
+  organizationProfile OrganizationProfile?
+  tribeProfile         TribeProfile?
 
   @@index([treeId])
   @@index([linkedUserId])
@@ -988,4 +995,55 @@ model Report {
   @@index([entityType])
   @@index([entityId])
   @@index([status])
+}
+
+model FamilyProfile {
+  id     String   @id @default(cuid())
+
+  nodeId String   @unique
+  node   TreeNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+
+  occupation          String?
+  bloodGroup          String?   @db.VarChar(10)
+  currentLocation     String?
+  nativePlace         String?
+  marriageDate        DateTime?
+  hereditaryDisorders String[]  @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("family_profiles")
+}
+
+model OrganizationProfile {
+  id     String   @id @default(cuid())
+
+  nodeId String   @unique
+  node   TreeNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+
+  designation    String?
+  joiningDate    DateTime?
+  retirementDate DateTime?
+  accolades      String[]  @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("organization_profiles")
+}
+
+model TribeProfile {
+  id     String   @id @default(cuid())
+
+  nodeId String   @unique
+  node   TreeNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+
+  interests      String[]  @default([])
+  friendshipDate DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("tribe_profiles")
 }
