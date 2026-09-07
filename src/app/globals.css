@@ -107,7 +107,6 @@
  * - animations
  * - GSAP transforms
  * - oversized text
- * - ripple canvas
  * - absolutely positioned elements
  */
 
@@ -116,16 +115,6 @@ html {
   min-height: 100%;
 
   overflow-x: hidden;
-
-  /*
-   * IMPORTANT:
-   *
-   * Keep vertical scrolling ENABLED.
-   *
-   * HomepageNavigator uses window.scrollTo()
-   * to move between the full-screen sections.
-   */
-
 
   /*
    * Prevent browser overscroll/bounce.
@@ -160,16 +149,6 @@ body {
   font-family: "Futura", sans-serif;
   font-weight: 300;
 
-  /*
-   * Keep vertical scrolling enabled.
-   *
-   * DO NOT use:
-   *
-   * overflow: hidden;
-   *
-   * because HomepageNavigator needs
-   * window.scrollTo() to work.
-   */
   overflow-x: hidden;
 
   /*
@@ -203,10 +182,7 @@ body::-webkit-scrollbar {
 
 /*
  * Do NOT set overflow: hidden on the root application
- * container.
- *
- * The page contains multiple h-screen sections and
- * HomepageNavigator moves between them with window.scrollTo().
+ * container — it would break normal page scrolling.
  */
 
 #__next {
@@ -252,68 +228,6 @@ select {
 a {
   color: inherit;
   text-decoration: none;
-}
-
-/* ============================================================
-   HOMEPAGE SECTION SAFETY
-============================================================ */
-
-/*
- * Sections 0–5 are full-screen ripple sections.
- *
- * Contact (section 6) is different:
- *
- * - the Contact visual is one viewport tall
- * - the Footer lives INSIDE the Contact section
- * - the Contact section itself must be allowed to grow
- * - the Footer must remain in normal document flow
- */
-
-/* ============================================================
-   RIPPLE SECTIONS — 0 TO 5
-============================================================ */
-
-[data-home-section="0"],
-[data-home-section="1"],
-[data-home-section="2"],
-[data-home-section="3"],
-[data-home-section="4"],
-[data-home-section="5"] {
-  position: relative;
-  width: 100%;
-  height: 100svh;
-  min-height: 100svh;
-  overflow: hidden;
-}
-
-/* ============================================================
-   CONTACT — SECTION 6
-============================================================ */
-
-[data-home-section="6"] {
-  position: relative;
-  width: 100%;
-
-  /*
-   * Contact + Footer must be allowed
-   * to determine their own total height.
-   */
-  height: auto !important;
-  min-height: 100svh;
-
-  /*
-   * NEVER clip the Footer.
-   */
-  overflow-x: hidden;
-  overflow-y: visible !important;
-} 
-
-/* ============================================================
-   RIPPLE CANVAS SAFETY
-============================================================ */
-
-canvas {
-  max-width: 100%;
 }
 
 /* ============================================================

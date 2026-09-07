@@ -19,7 +19,7 @@ export default function WhatWeDo() {
   /*
    * page.tsx owns the actual homepage section:
    *
-   * <section data-home-section="2">
+   * <section>
    *   <WhatWeDo />
    * </section>
    *
@@ -222,10 +222,9 @@ export default function WhatWeDo() {
         /*
          * IMPORTANT:
          *
-         * No onLeaveBack reset.
-         *
-         * This avoids fighting with the homepage
-         * ripple navigation.
+         * No onLeaveBack reset — restart() already replays
+         * the entrance cleanly from either direction, so a
+         * separate reset step isn't needed.
          */
       });
 
@@ -367,8 +366,6 @@ export default function WhatWeDo() {
       {/* ======================================================
           MAIN COMPOSITION
 
-          Ripple transition reveals these elements.
-
           Background remains independent and static.
       ====================================================== */}
 
@@ -408,7 +405,6 @@ export default function WhatWeDo() {
 
         <div
           ref={titleRef}
-          data-ripple-element
           className="
             absolute
             left-[25.2%]
@@ -470,7 +466,6 @@ export default function WhatWeDo() {
 
         <div
           ref={rightTextRef}
-          data-ripple-element
           className="
             absolute
             right-[12.7%]
@@ -556,7 +551,6 @@ export default function WhatWeDo() {
 
         <div
           ref={leftTextRef}
-          data-ripple-element
           className="
             absolute
             bottom-0
@@ -621,7 +615,6 @@ export default function WhatWeDo() {
 
         <button
           ref={buttonRef}
-          data-ripple-element
           type="button"
           className="
             futura-light
