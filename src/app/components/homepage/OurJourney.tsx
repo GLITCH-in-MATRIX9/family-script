@@ -315,7 +315,6 @@ export default function OurJourney() {
 
         <div
           ref={headingRef}
-          data-ripple-element
           className="
             futura-light
             flex
@@ -356,7 +355,6 @@ export default function OurJourney() {
 
         <div
           ref={contentRef}
-          data-ripple-element
           className="
             mt-8
             flex
@@ -423,7 +421,6 @@ export default function OurJourney() {
 
         <div
           ref={timelineRef}
-          data-ripple-element
           className="
             relative
             mx-auto

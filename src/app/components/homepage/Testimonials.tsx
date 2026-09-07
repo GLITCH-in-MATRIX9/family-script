@@ -1,20 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { testimonialsStepRef } from "./ripple/testimonialsStepBridge";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const BACKDROP_PHOTO = "/assets/testimonials/testimonials-bg.png";
-
-const fontBook = {
-  fontFamily: "Futura",
-  fontWeight: 400,
-} as const;
-
-const fontLight = {
-  fontFamily: "Futura",
-  fontWeight: 300,
-} as const;
 
 type Testimonial = {
   quote: string;
@@ -61,13 +53,6 @@ const TESTIMONIALS: Testimonial[] = [
   },
 ];
 
-type Slot = "upper" | "lower";
-
-const SLOT_TOP: Record<Slot, number> = {
-  upper: 0,
-  lower: 238,
-};
-
 type SidePreset = {
   boxLeft: number;
   photoLeft: number;
@@ -95,89 +80,47 @@ const RIGHT_PRESET: SidePreset = {
   nameAlign: "left",
 };
 
-type PairSlot = {
-  testimonial: Testimonial;
-  preset: SidePreset;
-};
-
-type Pair = {
-  upper: PairSlot;
-  lower: PairSlot;
-};
-
-function buildPairs(items: Testimonial[]): Pair[] {
-  const pairs: Pair[] = [];
-
-  for (let i = 0; i < items.length; i += 2) {
-    const lower = items[i + 1] ?? items[i];
-
-    pairs.push({
-      upper: {
-        testimonial: items[i],
-        preset: LEFT_PRESET,
-      },
-      lower: {
-        testimonial: lower,
-        preset: RIGHT_PRESET,
-      },
-    });
-  }
-
-  return pairs;
-}
-
-const PAIRS = buildPairs(TESTIMONIALS);
-
 const MIN_BOX_HEIGHT = 208;
-const SLOT_GAP = 30;
-const PAIR_GAP = 60;
 
-/*
- * This is the visible testimonial area.
- * It remains fixed and does not resize.
- */
-const VIEWPORT_HEIGHT = 446;
+// Gap between every testimonial in the normal-flow list — kept generous
+// (matches the old "pause between pairs" breathing room) now that there's
+// no viewport/pair concept left to distinguish "within" vs "between" gaps.
+const TESTIMONIAL_GAP = 60;
+
+// Testimonial list starts here, matching the original Figma-measured
+// position (298px below the canvas top) — everything below is normal
+// document flow, so it grows naturally to fit however tall the real
+// content is instead of being clipped to one fixed viewport.
+const LIST_TOP = 298;
 
 function TestimonialBox({
   testimonial,
   preset,
-  onHeightChange,
 }: {
   testimonial: Testimonial;
   preset: SidePreset;
-  onHeightChange: (height: number) => void;
 }) {
   const quoteMeasureRef = useRef<HTMLParagraphElement>(null);
-
   const [boxHeight, setBoxHeight] = useState(MIN_BOX_HEIGHT);
 
   const quoteWidth = 654;
   const quoteTop = 45;
-
   const nameTop = 162;
   const nameWidth = 217;
 
   useEffect(() => {
     const measure = () => {
-      if (!quoteMeasureRef.current) {
-        return;
-      }
+      if (!quoteMeasureRef.current) return;
 
       const textHeight = quoteMeasureRef.current.scrollHeight;
-
-      const requiredHeight = Math.max(
-        MIN_BOX_HEIGHT,
-        quoteTop + textHeight + 20,
-      );
+      const requiredHeight = Math.max(MIN_BOX_HEIGHT, quoteTop + textHeight + 20);
 
       setBoxHeight(requiredHeight);
-      onHeightChange(requiredHeight);
     };
 
     measure();
 
     const resizeObserver = new ResizeObserver(measure);
-
     if (quoteMeasureRef.current) {
       resizeObserver.observe(quoteMeasureRef.current);
     }
@@ -186,26 +129,18 @@ function TestimonialBox({
 
     return () => {
       resizeObserver.disconnect();
-
       window.removeEventListener("resize", measure);
     };
-  }, [testimonial.quote, onHeightChange]);
+  }, [testimonial.quote]);
 
   return (
-    <div
-      className="relative"
-      style={{
-        width: 1440,
-        height: boxHeight,
-      }}
-    >
+    <div className="relative" style={{ width: 1440, height: boxHeight }}>
       {/* Hidden measuring text */}
       <p
         ref={quoteMeasureRef}
         aria-hidden="true"
-        className="pointer-events-none absolute whitespace-pre-line text-[20px] leading-[30px] tracking-[0.05em]"
+        className="futura-medium pointer-events-none absolute whitespace-pre-line text-[20px] leading-[30px] tracking-[0.05em]"
         style={{
-          ...fontBook,
           width: quoteWidth,
           height: "auto",
           top: quoteTop,
@@ -231,9 +166,8 @@ function TestimonialBox({
 
       {/* Quote */}
       <p
-        className="absolute whitespace-pre-line text-[20px] leading-[30px] tracking-[0.05em]"
+        className="futura-medium absolute whitespace-pre-line text-[20px] leading-[30px] tracking-[0.05em]"
         style={{
-          ...fontBook,
           width: quoteWidth,
           height: "auto",
           top: quoteTop,
@@ -248,9 +182,8 @@ function TestimonialBox({
 
       {/* Name */}
       <p
-        className="absolute text-[12px] leading-[20px] tracking-normal"
+        className="futura-medium absolute text-[12px] leading-[20px] tracking-normal"
         style={{
-          ...fontBook,
           width: nameWidth,
           height: 20,
           top: nameTop,
@@ -265,9 +198,8 @@ function TestimonialBox({
 
       {/* Project */}
       <p
-        className="absolute text-[12px] leading-[20px] tracking-normal"
+        className="futura-light absolute text-[12px] leading-[20px] tracking-normal"
         style={{
-          ...fontLight,
           width: nameWidth,
           height: 20,
           top: nameTop + 20,
@@ -282,7 +214,7 @@ function TestimonialBox({
 
       {/* Photo */}
       <div
-        className="absolute  rounded-[15px]"
+        className="absolute rounded-[15px]"
         style={{
           width: 158,
           height: 183,
@@ -299,183 +231,69 @@ function TestimonialBox({
 }
 
 export default function Testimonials() {
-  const canvasRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const boxRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  const testimonialIndexRef = useRef(0);
-
-  const tweenAnimatingRef = useRef(false);
-
-  const [testimonialHeights, setTestimonialHeights] = useState<number[]>(() =>
-    TESTIMONIALS.map(() => MIN_BOX_HEIGHT),
-  );
-
-  const updateTestimonialHeight = useCallback(
-    (index: number, height: number) => {
-      setTestimonialHeights((current) => {
-        if (current[index] === height) {
-          return current;
-        }
-
-        const next = [...current];
-
-        next[index] = height;
-
-        return next;
-      });
-    },
-    [],
-  );
-
-  /*
-   * Calculate the position of every
-   * testimonial from the actual height
-   * of the testimonials before it.
-   */
-  const testimonialOffsets: number[] = [];
-
-  let runningOffset = 0;
-
-  for (let i = 0; i < TESTIMONIALS.length; i++) {
-    testimonialOffsets.push(runningOffset);
-
-    const height = testimonialHeights[i] ?? MIN_BOX_HEIGHT;
-
-    runningOffset += height + SLOT_GAP;
-
-    /*
-     * Keep the original 60px pause
-     * after every second testimonial.
-     */
-    if (i % 2 === 1) {
-      runningOffset += PAIR_GAP;
-    }
-  }
-
-  const getTestimonialOffset = (index: number) => {
-    return testimonialOffsets[index] ?? 0;
-  };
-
-  /*
-   * Snap to a testimonial without animation.
-   */
-  const snapTo = useCallback(
-    (index: number) => {
-      if (!trackRef.current) {
-        return;
-      }
-
-      const safeIndex = Math.max(0, Math.min(index, TESTIMONIALS.length - 1));
-
-      testimonialIndexRef.current = safeIndex;
-
-      const offset = getTestimonialOffset(safeIndex);
-
-      gsap.set(trackRef.current, {
-        y: -offset,
-      });
-    },
-    [testimonialHeights],
-  );
-
-  /*
-   * Move ONE testimonial at a time.
-   */
-  const goToTestimonial = useCallback(
-    (nextIndex: number) => {
-      if (!trackRef.current) {
-        return;
-      }
-
-      if (nextIndex < 0 || nextIndex >= TESTIMONIALS.length) {
-        return;
-      }
-
-      if (tweenAnimatingRef.current) {
-        return;
-      }
-
-      tweenAnimatingRef.current = true;
-
-      testimonialIndexRef.current = nextIndex;
-
-      const offset = getTestimonialOffset(nextIndex);
-
-      gsap.to(trackRef.current, {
-        y: -offset,
-        duration: 0.6,
-        ease: "power2.inOut",
-
-        onComplete: () => {
-          tweenAnimatingRef.current = false;
-        },
-      });
-    },
-    [testimonialHeights],
-  );
-
-  /*
-   * Re-align the track when text measurement
-   * changes, without changing the background.
-   */
   useEffect(() => {
-    if (!trackRef.current) {
-      return;
-    }
+    const ctx = gsap.context(() => {
+      [headingRef.current, descriptionRef.current].forEach((el) => {
+        if (!el) return;
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        );
+      });
 
-    const currentIndex = testimonialIndexRef.current;
+      boxRefs.current.forEach((el) => {
+        if (!el) return;
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 88%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        );
+      });
 
-    const offset = getTestimonialOffset(currentIndex);
-
-    gsap.set(trackRef.current, {
-      y: -offset,
+      requestAnimationFrame(() => ScrollTrigger.refresh());
     });
-  }, [testimonialHeights]);
 
-  /*
-   * Ripple bridge.
-   */
-  useEffect(() => {
-    testimonialsStepRef.current = {
-      getPairIndex: () => testimonialIndexRef.current,
-
-      getPairCount: () => TESTIMONIALS.length,
-
-      isAnimating: () => tweenAnimatingRef.current,
-
-      stepForward: () => goToTestimonial(testimonialIndexRef.current + 1),
-
-      stepBackward: () => goToTestimonial(testimonialIndexRef.current - 1),
-
-      enterFromStart: () => snapTo(0),
-
-      enterFromEnd: () => snapTo(TESTIMONIALS.length - 1),
-    };
-
-    return () => {
-      testimonialsStepRef.current = null;
-    };
-  }, [goToTestimonial, snapTo]);
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="relative w-full  bg-[#460A26]">
+    <section className="relative w-full bg-[#460A26]">
       {/* =====================================================
-          FIXED FULL-WIDTH BACKGROUND
-          
-          This background NEVER moves with the testimonial
-          ripple.
+          FIXED-HEIGHT BACKDROP BAND
 
-          It always occupies the complete width of the
-          section and remains exactly 823px tall.
+          Stays exactly 823px tall behind the heading/description,
+          matching the original Figma artwork. The testimonial list
+          below flows naturally past this band as needed — it is no
+          longer clipped to a single viewport.
           ===================================================== */}
       <div
-        className="absolute inset-x-0 top-0  pointer-events-none"
-        style={{
-          width: "100%",
-          height: 823,
-          zIndex: 0,
-        }}
+        className="absolute inset-x-0 top-0 pointer-events-none"
+        style={{ width: "100%", height: 823, zIndex: 0 }}
       >
         <img
           src={BACKDROP_PHOTO}
@@ -491,36 +309,11 @@ export default function Testimonials() {
 
         {/* Group 41 */}
         {[
-          {
-            width: 1455.93,
-            height: 834,
-            top: -13,
-            left: 2.02,
-          },
-          {
-            width: 1456.94,
-            height: 830.85,
-            top: -9.85,
-            left: 1.01,
-          },
-          {
-            width: 1455.93,
-            height: 834,
-            top: -13,
-            left: 2.02,
-          },
-          {
-            width: 1459.97,
-            height: 394.45,
-            top: 426.55,
-            left: 2.02,
-          },
-          {
-            width: 1457.95,
-            height: 830.85,
-            top: -9.85,
-            left: 2.02,
-          },
+          { width: 1455.93, height: 834, top: -13, left: 2.02 },
+          { width: 1456.94, height: 830.85, top: -9.85, left: 1.01 },
+          { width: 1455.93, height: 834, top: -13, left: 2.02 },
+          { width: 1459.97, height: 394.45, top: 426.55, left: 2.02 },
+          { width: 1457.95, height: 830.85, top: -9.85, left: 2.02 },
         ].map((rect, i) => (
           <div
             key={`group41-${i}`}
@@ -536,36 +329,11 @@ export default function Testimonials() {
 
         {/* Gradient layers */}
         {[
-          {
-            width: 1436,
-            height: 813,
-            top: 8,
-            left: 1,
-          },
-          {
-            width: 1436,
-            height: 813,
-            top: 8,
-            left: 1,
-          },
-          {
-            width: 1436,
-            height: 813,
-            top: 8,
-            left: 1,
-          },
-          {
-            width: 1436,
-            height: 384,
-            top: 437,
-            left: 1,
-          },
-          {
-            width: 1436,
-            height: 384,
-            top: 437,
-            left: 1,
-          },
+          { width: 1436, height: 813, top: 8, left: 1 },
+          { width: 1436, height: 813, top: 8, left: 1 },
+          { width: 1436, height: 813, top: 8, left: 1 },
+          { width: 1436, height: 384, top: 437, left: 1 },
+          { width: 1436, height: 384, top: 437, left: 1 },
         ].map((rect, i) => (
           <div
             key={`gradient-${i}`}
@@ -582,37 +350,25 @@ export default function Testimonials() {
 
       {/* =====================================================
           CONTENT CANVAS
-          
-          The testimonial layout retains the original
-          1440px coordinate system.
+
+          Retains the original 1440px coordinate system for the
+          heading/description; grows naturally in height (no fixed
+          823 clip) so the normal-flow testimonial list below can
+          extend past the backdrop band.
           ===================================================== */}
       <div
-        ref={canvasRef}
         className="relative mx-auto"
-        style={{
-          width: 1440,
-          height: 823,
-          zIndex: 1,
-        }}
+        style={{ width: 1440, zIndex: 1, paddingTop: LIST_TOP }}
       >
         {/* Heading */}
         <div
-          data-ripple-element
+          ref={headingRef}
           className="absolute"
-          style={{
-            width: 624,
-            height: 147,
-            top: 75,
-            left: 411,
-            opacity: 1,
-          }}
+          style={{ width: 624, height: 147, top: 75, left: 411, opacity: 1 }}
         >
           <h2
-            className="w-full text-[50px] leading-[75px] tracking-[0.05em] text-white"
-            style={{
-              ...fontBook,
-              textAlign: "center",
-            }}
+            className="futura-medium w-full text-[50px] leading-[75px] tracking-[0.05em] text-white"
+            style={{ textAlign: "center" }}
           >
             TESTIMONIALS
           </h2>
@@ -620,10 +376,9 @@ export default function Testimonials() {
 
         {/* Description */}
         <p
-          data-ripple-element
-          className="absolute text-center text-[15px] leading-[20px] tracking-[0.05em] text-white"
+          ref={descriptionRef}
+          className="futura-light absolute text-center text-[15px] leading-[20px] tracking-[0.05em] text-white"
           style={{
-            ...fontLight,
             width: 737.5399169921875,
             height: 60.22304916381836,
             top: 162,
@@ -636,84 +391,23 @@ export default function Testimonials() {
           others who have also played pivotal roles in our endeavors.
         </p>
 
-        {/* ===================================================
-            TESTIMONIAL VIEWPORT
-
-            Fixed dimensions.
-            Only the track inside moves.
-            =================================================== */}
-        <div
-          data-ripple-element
-          className="absolute "
-          style={{
-            top: 298,
-            left: 0,
-            width: 1440,
-            height: VIEWPORT_HEIGHT,
-          }}
-        >
-          <div
-            ref={trackRef}
-            className="absolute left-0 top-0"
-            style={{
-              width: 1440,
-              willChange: "transform",
-            }}
-          >
-            {PAIRS.map((pair, pairIndex) => {
-              const upperIndex = pairIndex * 2;
-
-              const lowerIndex = pairIndex * 2 + 1;
-
-              const upperHeight =
-                testimonialHeights[upperIndex] ?? MIN_BOX_HEIGHT;
-
-              const lowerHeight =
-                testimonialHeights[lowerIndex] ?? MIN_BOX_HEIGHT;
-
-              const pairTop = testimonialOffsets[upperIndex] ?? 0;
-
-              const pairHeight = upperHeight + SLOT_GAP + lowerHeight;
-
-              return (
-                <div
-                  key={pairIndex}
-                  className="absolute left-0"
-                  style={{
-                    top: pairTop,
-                    width: 1440,
-                    height: pairHeight,
-                  }}
-                >
-                  {/* Upper testimonial */}
-                  <TestimonialBox
-                    testimonial={pair.upper.testimonial}
-                    preset={pair.upper.preset}
-                    onHeightChange={(height) =>
-                      updateTestimonialHeight(upperIndex, height)
-                    }
-                  />
-
-                  {/* Lower testimonial */}
-                  <div
-                    className="absolute left-0"
-                    style={{
-                      top: upperHeight + SLOT_GAP,
-                      width: 1440,
-                    }}
-                  >
-                    <TestimonialBox
-                      testimonial={pair.lower.testimonial}
-                      preset={pair.lower.preset}
-                      onHeightChange={(height) =>
-                        updateTestimonialHeight(lowerIndex, height)
-                      }
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+        {/* Testimonial list — normal document flow, alternating
+            photo-left/photo-right styling by index. */}
+        <div>
+          {TESTIMONIALS.map((testimonial, i) => (
+            <div
+              key={testimonial.name}
+              ref={(el) => {
+                boxRefs.current[i] = el;
+              }}
+              style={{ marginBottom: i === TESTIMONIALS.length - 1 ? 0 : TESTIMONIAL_GAP }}
+            >
+              <TestimonialBox
+                testimonial={testimonial}
+                preset={i % 2 === 0 ? LEFT_PRESET : RIGHT_PRESET}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </section>

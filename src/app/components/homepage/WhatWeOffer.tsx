@@ -22,13 +22,12 @@ export default function WhatWeOffer() {
    *
    * page.tsx owns the actual homepage section:
    *
-   * <section data-home-section="3">
+   * <section>
    *   <WhatWeOffer />
    * </section>
    *
    * Therefore this component uses a DIV as its root.
    *
-   * DO NOT add data-home-section here.
    */
 
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -220,10 +219,8 @@ export default function WhatWeOffer() {
          * IMPORTANT:
          *
          * Don't reset everything to the invisible
-         * starting state when navigating backwards.
-         *
-         * Ripple navigation can bring this section
-         * into view without a normal browser scroll.
+         * starting state when navigating backwards —
+         * restart() already replays the entrance cleanly.
          */
       });
 
@@ -280,7 +277,6 @@ export default function WhatWeOffer() {
 
       <div
         ref={backgroundRef}
-        data-ripple-background
         className="
           pointer-events-none
           absolute
@@ -324,7 +320,7 @@ export default function WhatWeOffer() {
         "
         style={{
           background:
-            "linear-gradient(to bottom, rgba(83, 36, 57, 0.78) 0%, rgba(83, 36, 57, 0.80) 35%, rgba(83, 36, 57, 0.10) 70%, rgba(83, 36, 57, 0.10) 100%)",
+            "linear-gradient(to bottom, rgba(83, 36, 57, 0.90) 0%, rgba(83, 36, 57, 0.80) 30%, rgba(83, 36, 57, 0.20) 65%, rgba(83, 36, 57, 0.10) 100%)",
         }}
         aria-hidden="true"
       />
@@ -347,14 +343,10 @@ export default function WhatWeOffer() {
 
       {/* ======================================================
           MAIN CONTENT
-          
-          data-ripple-element allows the ripple transition
-          to reveal the actual content.
       ====================================================== */}
 
       <div
         ref={contentRef}
-        data-ripple-element
         className="
           relative
           z-10

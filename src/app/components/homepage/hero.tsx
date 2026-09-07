@@ -14,7 +14,7 @@ export default function Hero() {
    *
    * page.tsx owns:
    *
-   * <section data-home-section="0">
+   * <section>
    *   <Hero />
    * </section>
    *
@@ -54,8 +54,6 @@ export default function Hero() {
     const context = gsap.context(() => {
       /*
        * Hero is the starting section.
-       *
-       * It does NOT use the ripple system.
        *
        * This animation only runs on initial load.
        */
@@ -133,10 +131,6 @@ export default function Hero() {
     >
       {/* ======================================================
           BACKGROUND VIDEO
-
-          Hero is the initial section.
-
-          No ripple background attribute is needed here.
       ====================================================== */}
 
       <video
@@ -145,7 +139,6 @@ export default function Hero() {
         loop
         playsInline
         crossOrigin="anonymous"
-        data-ripple-video="/assets/homepage/HOME_PAGE_VIDEO.mp4"
         className="
           absolute
           inset-0
