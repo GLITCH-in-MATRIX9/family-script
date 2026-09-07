@@ -1,10 +1,5 @@
 import Hero from "../../components/projects/institutional/Hero";
 
-export default function BiographicalPage() {
-  return (
-    <main>
-      <Hero />
-    </main>
-  );
+export default function InstitutionalPage() {
+  return <Hero />;
 }
-
