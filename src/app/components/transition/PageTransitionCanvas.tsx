@@ -61,7 +61,12 @@ export interface PageTransitionCanvasProps {
 
 const DEFAULT_DURATION = 1250;
 
-const MAX_PIXEL_RATIO = 2;
+// Exported so PageTransitionCapture.ts can capture screenshots at the
+// same resolution this canvas's own drawing buffer uses — otherwise
+// a high-DPI canvas ends up displaying a lower-resolution texture,
+// which the GPU has to upscale (visibly blurry, especially once the
+// ripple shader starts resampling it at shifting UV offsets).
+export const MAX_PIXEL_RATIO = 2;
 
 /* ============================================================
    EASING

@@ -3,6 +3,11 @@
 "use client";
 
 import { domToCanvas } from "modern-screenshot";
+import { MAX_PIXEL_RATIO } from "./PageTransitionCanvas";
+
+function getCapturePixelRatio(): number {
+  return Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
+}
 
 /* ============================================================
    TYPES
@@ -10,6 +15,11 @@ import { domToCanvas } from "modern-screenshot";
 
 export interface TransitionFrame {
   canvas: HTMLCanvasElement;
+  // Buffer pixel size (DPR-scaled, matching canvas.width/height) —
+  // NOT CSS pixels. A caller that needs a CSS-pixel box (e.g. to size
+  // an element's style.width/height) must derive it separately from
+  // window.innerWidth/innerHeight, the same way the WebGL canvas's
+  // own resizeCanvas() keeps its buffer size and CSS size distinct.
   width: number;
   height: number;
 }
@@ -66,6 +76,59 @@ const CAPTURE_MARGIN_PX = 200;
 // capture.
 const IMAGE_LOAD_TIMEOUT_MS = 800;
 
+/* ============================================================
+   CROSS-CAPTURE IMAGE CACHE
+
+   modern-screenshot re-fetches and re-base64-encodes every <img> and
+   CSS background-image in the capture region from scratch on EVERY
+   call — its own request cache is per-call and destroyed right after
+   (see `destroyContext` in its source), so nothing carries over
+   between navigations even though a page's images never change
+   between them. This disproportionately costs the homepage, which
+   has far more images than any other page on the site.
+
+   `fetchFn` is a public hook the library checks before doing its own
+   fetch for any image request (both <img> src and CSS url() route
+   through it) — resolving it to a data URL short-circuits the
+   library's own fetch+embed entirely. Caching by URL here, in module
+   scope (not per-capture), means only the FIRST capture of a given
+   image pays the fetch+encode cost for the lifetime of the tab.
+============================================================ */
+
+const imageDataUrlCache = new Map<string, Promise<string>>();
+
+function blobToDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function cachedFetchImageAsDataUrl(url: string): Promise<string | false> {
+  let cached = imageDataUrlCache.get(url);
+  if (!cached) {
+    cached = fetch(url, { cache: "force-cache" })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Failed to fetch ${url}`);
+        return response.blob();
+      })
+      .then(blobToDataUrl);
+    // A failed fetch shouldn't be cached forever — evict so a later
+    // capture (e.g. after a flaky network blip) can retry.
+    cached.catch(() => imageDataUrlCache.delete(url));
+    imageDataUrlCache.set(url, cached);
+  }
+  try {
+    return await cached;
+  } catch {
+    // Let modern-screenshot fall back to its own default fetch/
+    // placeholder-image behavior instead of failing the capture.
+    return false;
+  }
+}
+
 function isNearViewport(el: Element): boolean {
   const rect = el.getBoundingClientRect();
   // A zero-size rect (display:none, or an element with no box at all)
@@ -94,6 +157,8 @@ async function captureFullDocument(
       timeout: IMAGE_LOAD_TIMEOUT_MS,
       width: captureWidth,
       height: captureHeight,
+      scale: getCapturePixelRatio(),
+      fetchFn: cachedFetchImageAsDataUrl,
       filter: (node) => {
         if (!(node instanceof Element)) return true;
         // Exclude our own overlay layers — capturing them would
@@ -125,20 +190,26 @@ function cropToViewport(
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
 
-  // The capture above was requested at an explicit width/height (see
-  // captureFullDocument), so `full`'s pixel dimensions already line
-  // up 1:1 with the CSS-pixel region we asked for — no scaling or
-  // DPR conversion needed here.
+  // The capture above was requested at an explicit width/height AND
+  // scale (see captureFullDocument), so `full`'s pixel dimensions are
+  // the CSS-pixel region we asked for multiplied by this same pixel
+  // ratio — everything below has to work in that scaled pixel space
+  // too, or the crop would silently downsample the capture straight
+  // back to 1x and undo the point of capturing at higher DPI.
+  const pixelRatio = getCapturePixelRatio();
+  const scaledViewportWidth = Math.round(viewportWidth * pixelRatio);
+  const scaledViewportHeight = Math.round(viewportHeight * pixelRatio);
+
   const sourceX = 0;
-  const sourceY = Math.max(0, Math.round(scrollY));
-  const sourceWidth = Math.min(full.width, viewportWidth);
-  const sourceHeight = Math.min(full.height - sourceY, viewportHeight);
+  const sourceY = Math.max(0, Math.round(scrollY * pixelRatio));
+  const sourceWidth = Math.min(full.width, scaledViewportWidth);
+  const sourceHeight = Math.min(full.height - sourceY, scaledViewportHeight);
 
   if (sourceWidth <= 0 || sourceHeight <= 0) return null;
 
   const cropped = document.createElement("canvas");
-  cropped.width = viewportWidth;
-  cropped.height = viewportHeight;
+  cropped.width = scaledViewportWidth;
+  cropped.height = scaledViewportHeight;
 
   const ctx = cropped.getContext("2d");
   if (!ctx) return null;
@@ -157,15 +228,19 @@ function cropToViewport(
       sourceHeight,
       0,
       0,
-      viewportWidth,
-      viewportHeight,
+      scaledViewportWidth,
+      scaledViewportHeight,
     );
   } catch (error) {
     console.error("[page-transition] crop failed:", error);
     return null;
   }
 
-  return { canvas: cropped, width: viewportWidth, height: viewportHeight };
+  // width/height are the scaled buffer pixel size (matching the
+  // WebGL canvas's own DPR-scaled drawing buffer) — not CSS pixels.
+  // The one caller that needs a CSS pixel box (the freeze canvas)
+  // derives it separately from window.innerWidth/innerHeight.
+  return { canvas: cropped, width: scaledViewportWidth, height: scaledViewportHeight };
 }
 
 /**

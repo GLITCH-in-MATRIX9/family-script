@@ -131,22 +131,47 @@ export default function PageTransitionProvider({
         // this swap is imperceptible — the real DOM can now change
         // freely underneath it with zero visible flash.
         if (freezeCanvas) {
+          // Buffer size = the captured frame's own pixel size (DPR-
+          // scaled, matching the WebGL canvas's resolution — see
+          // TransitionFrame's docs in PageTransitionCapture.ts). CSS
+          // box size = the actual CSS viewport size, NOT before.width/
+          // height directly — those are no longer the same number now
+          // that captures happen at up to 2x resolution; using them
+          // for the CSS box would draw the frame at double size.
           freezeCanvas.width = before.width;
           freezeCanvas.height = before.height;
-          // Lock the CSS box to the captured pixel size explicitly,
-          // instead of the default 100vw/100vh from its className. If
-          // the viewport resizes during the transition (a vertical
+          // Lock the CSS box to the viewport size explicitly, instead
+          // of the default 100vw/100vh from its className. If the
+          // viewport resizes during the transition (a vertical
           // scrollbar appearing/disappearing between pages of very
           // different heights is the common trigger on this site),
           // percentage sizing would make the browser stretch this
           // fixed-resolution bitmap to fit the new box — this pins it
           // to its actual captured dimensions so that can't happen.
-          freezeCanvas.style.width = `${before.width}px`;
-          freezeCanvas.style.height = `${before.height}px`;
+          freezeCanvas.style.width = `${window.innerWidth}px`;
+          freezeCanvas.style.height = `${window.innerHeight}px`;
           const ctx = freezeCanvas.getContext("2d");
           ctx?.drawImage(before.canvas, 0, 0);
           freezeCanvas.style.opacity = "1";
         }
+
+        // Double rAF: confirm the frozen frame has actually been
+        // painted before letting anything underneath change. Setting
+        // a style property doesn't guarantee a paint has landed by
+        // the next line of JS — without this, router.push below could
+        // start swapping in the new route's DOM (a very different
+        // height/layout than the outgoing page) before the frozen
+        // overlay is genuinely on screen, letting a glimpse of the
+        // real reflow through as a visible jump. Same guarantee
+        // template.tsx uses for the route-mount signal, applied
+        // symmetrically here for the other end of the transition.
+        await new Promise<void>((resolve) => {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => resolve());
+          });
+        });
+
+        if (transitionIdRef.current !== myId) return;
 
         // C — navigate. The new route mounts hidden beneath the
         // frozen overlay.
