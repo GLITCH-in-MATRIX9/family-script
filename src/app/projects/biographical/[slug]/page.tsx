@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+
 import { projects } from "../../../../data/projects";
 import ProjectDetails from "../../../components/projects/ProjectDetails";
 
@@ -8,7 +9,7 @@ type PageProps = {
   }>;
 };
 
-export default async function Page({
+export default async function BiographicalProjectPage({
   params,
 }: PageProps) {
   const { slug } = await params;

@@ -73,7 +73,7 @@ export const projects: Project[] = [
       },
     ],
 
-    layout: "left",
+    layout: "right",
   },
 
   // =========================================================
@@ -128,7 +128,7 @@ export const projects: Project[] = [
       },
     ],
 
-    layout: "right",
+    layout: "left",
   },
 
   // =========================================================
@@ -152,7 +152,7 @@ export const projects: Project[] = [
 
     coverImage: "/assets/PROJECTS/BIOGRAPHICAL/DR. V K KUTTY/cover.jpg",
 
-    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/DR. V K KUTTY/main.png",
+    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/DR. V K KUTTY/book.png",
 
     gallery: [
       {
@@ -167,9 +167,21 @@ export const projects: Project[] = [
       {
         image: "/assets/PROJECTS/BIOGRAPHICAL/DR. V K KUTTY/4.jpg",
       },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/DR. V K KUTTY/5.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/DR. V K KUTTY/6.jpeg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/DR. V K KUTTY/7.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/DR. V K KUTTY/cover.jpg",
+      },
     ],
 
-    layout: "left",
+    layout: "right",
   },
 
   // =========================================================
@@ -211,9 +223,18 @@ export const projects: Project[] = [
       {
         image: "/assets/PROJECTS/BIOGRAPHICAL/RENU MEHRA/5.jpg",
       },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/RENU MEHRA/6.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/RENU MEHRA/7.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/RENU MEHRA/8.jpg",
+      },
     ],
 
-    layout: "right",
+    layout: "left",
   },
 
   // =========================================================
@@ -256,9 +277,21 @@ export const projects: Project[] = [
       {
         image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA GUPTA/4.jpg",
       },
+       {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA GUPTA/5.jpg",
+      },
+       {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA GUPTA/6.jpg",
+      },
+       {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA GUPTA/7.jpg",
+      },
+       {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA GUPTA/cover.jpg",
+      },
     ],
 
-    layout: "left",
+    layout: "right",
   },
 
   // =========================================================
@@ -305,9 +338,15 @@ export const projects: Project[] = [
       {
         image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA RAINA/6.jpg",
       },
+       {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA RAINA/7.jpg",
+      },
+       {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/SUDHA RAINA/8.png",
+      },
     ],
 
-    layout: "right",
+    layout: "left",
   },
 
   // =========================================================
@@ -354,9 +393,15 @@ export const projects: Project[] = [
       {
         image: "/assets/PROJECTS/BIOGRAPHICAL/VINOD KUMAR KHANNA/6.jpeg",
       },
+        {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/VINOD KUMAR KHANNA/7.jpg",
+      },
+        {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/VINOD KUMAR KHANNA/6.jpeg",
+      },
     ],
 
-    layout: "left",
+    layout: "right",
   },
 
   // =========================================================
@@ -378,7 +423,7 @@ export const projects: Project[] = [
 
     coverImage: "/assets/PROJECTS/BIOGRAPHICAL/BELA DEVI/cover.png",
 
-    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/BELA DEVI/main.png",
+    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/BELA DEVI/book.png",
 
     gallery: [
       {
@@ -390,9 +435,24 @@ export const projects: Project[] = [
       {
         image: "/assets/PROJECTS/BIOGRAPHICAL/BELA DEVI/3.jpg",
       },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/BELA DEVI/4.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/BELA DEVI/5.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/BELA DEVI/6.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/BELA DEVI/7.jpg",
+      },
+      {
+        image: "/assets/PROJECTS/BIOGRAPHICAL/BELA DEVI/8.png",
+      },
     ],
 
-    layout: "right",
+    layout: "left",
   },
 
   // =========================================================
@@ -446,7 +506,7 @@ export const projects: Project[] = [
       
     ],
 
-    layout: "left",
+    layout: "right",
   },
 
   // =========================================================
@@ -499,7 +559,7 @@ export const projects: Project[] = [
       },
     ],
 
-    layout: "right",
+    layout: "left",
   },
 
   // =========================================================
@@ -528,26 +588,36 @@ export const projects: Project[] = [
     ],
 
     coverImage:
-      "/assets/projects/institutional/vasant-valley-school/background.png",
+      "/assets/projects/institutional/VASANT VALLEY SCHOOL.JPG",
 
-    bookImage: "/assets/projects/institutional/vasant-valley-school/main.png",
+    bookImage: "/assets/projects/institutional/vasant-valley-school/book.png",
 
     gallery: [
       {
-        image: "/assets/projects/institutional/vasant-valley-school/1.png",
+        image: "/assets/projects/institutional/vasant-valley-school/1.jpg",
       },
       {
-        image: "/assets/projects/institutional/vasant-valley-school/2.png",
+        image: "/assets/projects/institutional/vasant-valley-school/2.jpg",
       },
       {
-        image: "/assets/projects/institutional/vasant-valley-school/3.png",
+        image: "/assets/projects/institutional/vasant-valley-school/3.jpg",
       },
       {
-        image: "/assets/projects/institutional/vasant-valley-school/4.png",
+        image: "/assets/projects/institutional/vasant-valley-school/4.jpg",
       },
       {
-        image: "/assets/projects/institutional/vasant-valley-school/5.png",
+        image: "/assets/projects/institutional/vasant-valley-school/5.jpg",
       },
+      {
+        image: "/assets/projects/institutional/vasant-valley-school/6.jpg",
+      },
+      {
+        image: "/assets/projects/institutional/vasant-valley-school/7.jpg",
+      },
+      {
+        image: "/assets/projects/institutional/vasant-valley-school/8.jpg",
+      },
+      
     ],
 
     layout: "right",
@@ -577,25 +647,34 @@ export const projects: Project[] = [
     ],
 
     coverImage:
-      "/assets/projects/institutional/stapati-architects/background.png",
+      "/assets/projects/institutional/STAPATI.jpg",
 
-    bookImage: "/assets/projects/institutional/stapati-architects/main.png",
+    bookImage: "/assets/projects/institutional/stapati-architects/book.png",
 
     gallery: [
       {
-        image: "/assets/projects/institutional/stapati-architects/1.png",
+        image: "/assets/projects/institutional/stapati-architects/1.jpg",
       },
       {
-        image: "/assets/projects/institutional/stapati-architects/2.png",
+        image: "/assets/projects/institutional/stapati-architects/2.jpg",
       },
       {
-        image: "/assets/projects/institutional/stapati-architects/3.png",
+        image: "/assets/projects/institutional/stapati-architects/3.jpg",
       },
       {
-        image: "/assets/projects/institutional/stapati-architects/4.png",
+        image: "/assets/projects/institutional/stapati-architects/4.jpg",
       },
       {
-        image: "/assets/projects/institutional/stapati-architects/5.png",
+        image: "/assets/projects/institutional/stapati-architects/5.jpg",
+      },
+        {
+        image: "/assets/projects/institutional/stapati-architects/6.jpg",
+      },
+        {
+        image: "/assets/projects/institutional/stapati-architects/7.jpg",
+      },
+        {
+        image: "/assets/projects/institutional/stapati-architects/8.jpg",
       },
     ],
 

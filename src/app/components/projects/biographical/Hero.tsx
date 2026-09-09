@@ -306,10 +306,12 @@ export default function Hero() {
                       h-full
                       w-full
                       object-cover
-                      transition-transform
+                      grayscale
+                      transition-all
                       duration-700
                       ease-out
-                      group-hover:scale-[1.045]
+                      group-hover:scale-[1.03]
+                      group-hover:grayscale-0
                     "
                 />
 
