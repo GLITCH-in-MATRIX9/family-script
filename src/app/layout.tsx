@@ -4,6 +4,7 @@ import "./globals.css";
 
 import Navbar from "./components/layout/Navbar";
 import BodyStyleReset from "./components/layout/BodyStyleReset";
+import ChunkErrorReload from "./components/layout/ChunkErrorReload";
 import PageTransitionProvider from "./components/transition/PageTransitionProvider";
 
 const geistSans = Geist({
@@ -46,6 +47,13 @@ export default function RootLayout({
             src/app/components/transition/PageTransitionProvider.tsx.
         ================================================= */}
         <PageTransitionProvider>
+
+          {/* ================= CHUNK LOAD ERROR SAFETY NET =================
+              If the client tries to fetch a route chunk that no longer
+              exists (stale tab after a new deploy, or a dev-server
+              rebuild), reload instead of leaving a dead page behind.
+          ================================================= */}
+          <ChunkErrorReload />
 
           {/* ================= BODY STYLE SAFETY NET =================
               Resets any leftover body.style.overflow / touchAction on

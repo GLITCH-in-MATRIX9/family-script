@@ -50,6 +50,109 @@ const RIPPLE_DURATION = 1250;
 const FADE_FALLBACK_DURATION = 200;
 
 /* ============================================================
+   TEXT REVEAL
+
+   Softens the incoming page's text so it doesn't just snap into
+   view once the ripple finishes — headings/paragraphs are hidden
+   right before the "after" screenshot is captured (so the captured
+   frame shown during the ripple crossfade matches what the real DOM
+   looks like underneath it) and revealed with a staggered fade +
+   slide-up right when the ripple hands off to the real page.
+
+   The homepage choreographs its own entrance/scroll animations with
+   GSAP across many sections spread over its ~8000px length — excluded
+   here entirely rather than risk fighting over the same properties.
+
+   Purpose, Philosophy, and Products also use GSAP (ScrollTrigger
+   fromTo, `toggleActions: "play none none reverse"`) for their own
+   sections, but only for content *below* the initial viewport —
+   confirmed by testing that a ScrollTrigger whose "start" position is
+   already satisfied when it's created (true for anything already in
+   view, like a hero heading) doesn't actually animate from its "from"
+   state at all; GSAP just leaves it at its natural rendered state.
+   So above-the-fold content on those pages currently gets no visible
+   entrance treatment either, and below-the-fold content is correctly
+   already hidden (opacity 0) by GSAP's own "from" state, waiting for
+   scroll. Filtering hidePageText to only elements currently within
+   (or near) the viewport at hide-time means it only ever touches the
+   untouched above-the-fold text — GSAP's below-the-fold sections are
+   never selected, so there's nothing to conflict with.
+============================================================ */
+
+const TEXT_REVEAL_SELECTOR = "main :is(h1, h2, h3, h4, h5, h6, p)";
+const TEXT_REVEAL_EXCLUDED_PATHS = new Set(["/"]);
+const TEXT_REVEAL_VIEWPORT_MARGIN_PX = 200;
+const TEXT_REVEAL_HIDDEN_TRANSFORM = "translate3d(0, 24px, 0)";
+const TEXT_REVEAL_DURATION = 700;
+const TEXT_REVEAL_STAGGER_MS = 60;
+const TEXT_REVEAL_MAX_STAGGER_MS = 300;
+
+function isNearViewport(el: HTMLElement): boolean {
+  const rect = el.getBoundingClientRect();
+  return (
+    rect.bottom > -TEXT_REVEAL_VIEWPORT_MARGIN_PX &&
+    rect.top < window.innerHeight + TEXT_REVEAL_VIEWPORT_MARGIN_PX
+  );
+}
+
+function hidePageText(
+  pathname: string,
+  hiddenElementsRef: React.MutableRefObject<HTMLElement[]>,
+) {
+  if (TEXT_REVEAL_EXCLUDED_PATHS.has(pathname)) return;
+
+  const elements = Array.from(
+    document.querySelectorAll<HTMLElement>(TEXT_REVEAL_SELECTOR),
+  ).filter(isNearViewport);
+
+  elements.forEach((el) => {
+    el.style.transition = "none";
+    el.style.opacity = "0";
+    el.style.transform = TEXT_REVEAL_HIDDEN_TRANSFORM;
+  });
+
+  hiddenElementsRef.current = elements;
+}
+
+// Safe to call unconditionally from every exit path (including ones
+// where nothing was ever hidden, or where the elements it hid have
+// since been superseded/removed from the DOM) — it just no-ops.
+function revealPageText(
+  hiddenElementsRef: React.MutableRefObject<HTMLElement[]>,
+) {
+  const elements = hiddenElementsRef.current;
+  if (elements.length === 0) return;
+  hiddenElementsRef.current = [];
+
+  elements.forEach((el, index) => {
+    const delay = Math.min(
+      index * TEXT_REVEAL_STAGGER_MS,
+      TEXT_REVEAL_MAX_STAGGER_MS,
+    );
+    el.style.transition = [
+      `opacity ${TEXT_REVEAL_DURATION}ms ease-out ${delay}ms`,
+      `transform ${TEXT_REVEAL_DURATION}ms ease-out ${delay}ms`,
+    ].join(", ");
+  });
+
+  requestAnimationFrame(() => {
+    elements.forEach((el) => {
+      el.style.opacity = "1";
+      el.style.transform = "translate3d(0, 0, 0)";
+    });
+  });
+
+  const cleanupDelay = TEXT_REVEAL_MAX_STAGGER_MS + TEXT_REVEAL_DURATION + 50;
+  setTimeout(() => {
+    elements.forEach((el) => {
+      el.style.transition = "";
+      el.style.opacity = "";
+      el.style.transform = "";
+    });
+  }, cleanupDelay);
+}
+
+/* ============================================================
    COMPONENT
 ============================================================ */
 
@@ -76,6 +179,11 @@ export default function PageTransitionProvider({
   // stale "before" frame can never flash over content the newer
   // navigation already put on screen.
   const transitionIdRef = useRef(0);
+
+  // Text elements currently hidden by hidePageText(), pending
+  // revealPageText() putting them back. See the TEXT REVEAL section
+  // above.
+  const hiddenTextElementsRef = useRef<HTMLElement[]>([]);
 
   /* ==========================================================
      ROUTE-MOUNT SIGNAL (called from root template.tsx)
@@ -210,6 +318,13 @@ export default function PageTransitionProvider({
           return;
         }
 
+        // Hide the incoming page's text before capturing it, so the
+        // "after" screenshot shown during the ripple crossfade matches
+        // what the real DOM looks like underneath — otherwise hiding
+        // it only afterward would flash fully-visible text to hidden
+        // right as the overlay disappears. See TEXT REVEAL above.
+        hidePageText(pathname, hiddenTextElementsRef);
+
         // D — capture the new route (already fully rendered in the
         // DOM, just visually hidden beneath the frozen overlay —
         // DOM-based capture reads the tree, not the screen, so
@@ -229,6 +344,7 @@ export default function PageTransitionProvider({
               if (freezeCanvas) freezeCanvas.style.transition = "";
             }, FADE_FALLBACK_DURATION + 50);
           }
+          revealPageText(hiddenTextElementsRef);
           return;
         }
 
@@ -255,6 +371,7 @@ export default function PageTransitionProvider({
         // back to the stale "before" pixels. Do not insert anything
         // async between these two lines.
         if (freezeCanvas) freezeCanvas.style.opacity = "0";
+        revealPageText(hiddenTextElementsRef);
       } catch (error) {
         // A screenshot/WebGL failure must never leave the click
         // looking like it did nothing — if navigation hasn't happened
@@ -266,6 +383,7 @@ export default function PageTransitionProvider({
         if (transitionIdRef.current === myId && freezeCanvas) {
           freezeCanvas.style.opacity = "0";
         }
+        revealPageText(hiddenTextElementsRef);
       } finally {
         if (transitionIdRef.current === myId) {
           pendingPathnameRef.current = null;
@@ -332,6 +450,7 @@ export default function PageTransitionProvider({
         if (freezeCanvasRef.current) {
           freezeCanvasRef.current.style.opacity = "0";
         }
+        revealPageText(hiddenTextElementsRef);
         router.push(url.pathname + url.search);
         return;
       }
