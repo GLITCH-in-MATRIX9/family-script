@@ -1,0 +1,351 @@
+// components/transition/PageTransitionProvider.tsx
+//
+// Drives the ripple transition between actual site routes. Mounted
+// once in the root layout. Owns:
+//
+//   - a global capture-phase click listener that intercepts internal
+//     <a> clicks (Next <Link> renders as <a>) without touching any of
+//     the ~8 files that render links elsewhere in the app
+//   - a plain 2D "freeze frame" canvas that holds a screenshot of the
+//     outgoing page, shown the instant a navigation starts so the
+//     route change happening underneath is never visible
+//   - the WebGL ripple canvas (PageTransitionCanvas) that crossfades
+//     from the frozen "before" frame to a screenshot of the new route
+//
+// See PageTransitionContext.tsx for how the new route's mount is
+// detected (there's no router-events API in App Router).
+
+"use client";
+
+import {
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
+import { useRouter } from "next/navigation";
+
+import { PageTransitionContext } from "./PageTransitionContext";
+import PageTransitionCanvas, {
+  type PageTransitionCanvasHandle,
+} from "./PageTransitionCanvas";
+import { captureViewportSnapshot } from "./PageTransitionCapture";
+
+/* ============================================================
+   CONSTANTS
+============================================================ */
+
+// Measured against the tallest, most image-heavy page on the site
+// (the homepage, ~8000px of scrollable content): a full-document
+// capture takes 1.3-1.9s depending on conditions, vs. ~100-300ms on
+// shorter pages. The DOM serialization work is largely synchronous —
+// racing it against a timeout doesn't actually cancel it, it just
+// stops waiting, so the browser can still be catching up from it
+// afterward. These budgets give real margin above the observed worst
+// case so the homepage's capture reliably finishes on its own instead
+// of skirting the timeout boundary.
+const BEFORE_CAPTURE_TIMEOUT = 3000;
+const AFTER_CAPTURE_TIMEOUT = 3000;
+const ROUTE_MOUNT_TIMEOUT = 3000;
+const RIPPLE_DURATION = 1250;
+const FADE_FALLBACK_DURATION = 200;
+
+/* ============================================================
+   COMPONENT
+============================================================ */
+
+export default function PageTransitionProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+
+  const canvasHandleRef = useRef<PageTransitionCanvasHandle | null>(null);
+  const freezeCanvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const isWebglReadyRef = useRef(false);
+  const isBusyRef = useRef(false);
+  const pendingPathnameRef = useRef<string | null>(null);
+  const pendingResolveRef = useRef<(() => void) | null>(null);
+
+  // Bumped whenever a click supersedes an in-flight transition (see the
+  // busy-click branch below). Every DOM-touching step in beginTransition
+  // re-checks this after its await — if it no longer matches the id it
+  // captured at the start, that step's own work has been superseded by a
+  // newer click and it bails without painting/animating anything, so a
+  // stale "before" frame can never flash over content the newer
+  // navigation already put on screen.
+  const transitionIdRef = useRef(0);
+
+  /* ==========================================================
+     ROUTE-MOUNT SIGNAL (called from root template.tsx)
+  ========================================================== */
+
+  const notifyRouteMounted = useCallback((pathname: string) => {
+    if (
+      pendingPathnameRef.current !== null &&
+      pathname === pendingPathnameRef.current
+    ) {
+      pendingResolveRef.current?.();
+      pendingResolveRef.current = null;
+      pendingPathnameRef.current = null;
+    }
+  }, []);
+
+  /* ==========================================================
+     TRANSITION SEQUENCE
+  ========================================================== */
+
+  const beginTransition = useCallback(
+    async (
+      href: string,
+      pathname: string,
+      origin: { originX: number; originY: number },
+    ) => {
+      const myId = ++transitionIdRef.current;
+      isBusyRef.current = true;
+      const scrollYAtClick = window.scrollY;
+      const freezeCanvas = freezeCanvasRef.current;
+      let navigated = false;
+
+      try {
+        // A — capture the outgoing page exactly as the user sees it now.
+        const before = await captureViewportSnapshot(
+          BEFORE_CAPTURE_TIMEOUT,
+          scrollYAtClick,
+        );
+
+        if (transitionIdRef.current !== myId) return;
+
+        if (!before) {
+          // Capture failed/timed out — never block navigation on a
+          // screenshot. Just do a plain instant nav.
+          router.push(href);
+          navigated = true;
+          return;
+        }
+
+        // B — freeze: paint the captured frame over a canvas that's
+        // already sitting at opacity 0, then flip it to 1. Since the
+        // frozen pixels are identical to what's already on screen,
+        // this swap is imperceptible — the real DOM can now change
+        // freely underneath it with zero visible flash.
+        if (freezeCanvas) {
+          freezeCanvas.width = before.width;
+          freezeCanvas.height = before.height;
+          // Lock the CSS box to the captured pixel size explicitly,
+          // instead of the default 100vw/100vh from its className. If
+          // the viewport resizes during the transition (a vertical
+          // scrollbar appearing/disappearing between pages of very
+          // different heights is the common trigger on this site),
+          // percentage sizing would make the browser stretch this
+          // fixed-resolution bitmap to fit the new box — this pins it
+          // to its actual captured dimensions so that can't happen.
+          freezeCanvas.style.width = `${before.width}px`;
+          freezeCanvas.style.height = `${before.height}px`;
+          const ctx = freezeCanvas.getContext("2d");
+          ctx?.drawImage(before.canvas, 0, 0);
+          freezeCanvas.style.opacity = "1";
+        }
+
+        // C — navigate. The new route mounts hidden beneath the
+        // frozen overlay.
+        pendingPathnameRef.current = pathname;
+        const routeMounted = new Promise<void>((resolve) => {
+          pendingResolveRef.current = resolve;
+        });
+
+        router.push(href);
+        navigated = true;
+
+        const mounted = await Promise.race([
+          routeMounted.then(() => true),
+          new Promise<boolean>((resolve) => {
+            setTimeout(() => resolve(false), ROUTE_MOUNT_TIMEOUT);
+          }),
+        ]);
+
+        if (transitionIdRef.current !== myId) return;
+
+        if (!mounted) {
+          // The new route never signalled ready (unexpected error,
+          // redirect, etc). Navigation already happened — fade the
+          // frozen overlay out instead of just dropping it: the real
+          // page underneath is already showing, and without an
+          // explicit opacity reset here the frozen "before" screenshot
+          // stays pinned at opacity 1 forever, permanently hiding the
+          // real page behind a stale frame.
+          if (freezeCanvas) {
+            freezeCanvas.style.transition = `opacity ${FADE_FALLBACK_DURATION}ms ease`;
+            freezeCanvas.style.opacity = "0";
+            setTimeout(() => {
+              if (freezeCanvas) freezeCanvas.style.transition = "";
+            }, FADE_FALLBACK_DURATION + 50);
+          }
+          return;
+        }
+
+        // D — capture the new route (already fully rendered in the
+        // DOM, just visually hidden beneath the frozen overlay —
+        // DOM-based capture reads the tree, not the screen, so
+        // occlusion doesn't matter here). New pages scroll-restore to
+        // top by default.
+        const after = await captureViewportSnapshot(AFTER_CAPTURE_TIMEOUT, 0);
+
+        if (transitionIdRef.current !== myId) return;
+
+        if (!after) {
+          // Skip the shader animation — plain fade reveal instead of
+          // a permanently stuck frozen frame.
+          if (freezeCanvas) {
+            freezeCanvas.style.transition = `opacity ${FADE_FALLBACK_DURATION}ms ease`;
+            freezeCanvas.style.opacity = "0";
+            setTimeout(() => {
+              if (freezeCanvas) freezeCanvas.style.transition = "";
+            }, FADE_FALLBACK_DURATION + 50);
+          }
+          return;
+        }
+
+        // E — run the ripple crossfade between the two real frames.
+        await canvasHandleRef.current?.renderTransition(
+          { before, after },
+          {
+            originX: origin.originX,
+            originY: origin.originY,
+            strength: 1.05,
+            duration: RIPPLE_DURATION,
+          },
+        );
+
+        if (transitionIdRef.current !== myId) return;
+
+        // CRITICAL: this must run synchronously, in the very next
+        // statement after renderTransition resolves, with no
+        // intervening await/setState/CSS-transition. renderTransition's
+        // own canvas is already transparent by the time this line
+        // runs (set inside the same rAF callback that resolved the
+        // promise), so removing the frozen overlay here — before the
+        // browser's next paint — is what prevents a one-frame flash
+        // back to the stale "before" pixels. Do not insert anything
+        // async between these two lines.
+        if (freezeCanvas) freezeCanvas.style.opacity = "0";
+      } catch (error) {
+        // A screenshot/WebGL failure must never leave the click
+        // looking like it did nothing — if navigation hasn't happened
+        // yet, fall back to a plain instant nav.
+        console.error("[page-transition] transition failed:", error);
+        if (!navigated) {
+          router.push(href);
+        }
+        if (transitionIdRef.current === myId && freezeCanvas) {
+          freezeCanvas.style.opacity = "0";
+        }
+      } finally {
+        if (transitionIdRef.current === myId) {
+          pendingPathnameRef.current = null;
+          pendingResolveRef.current = null;
+          isBusyRef.current = false;
+        }
+      }
+    },
+    [router],
+  );
+
+  /* ==========================================================
+     GLOBAL CLICK INTERCEPTION
+  ========================================================== */
+
+  useEffect(() => {
+    function handleClick(event: MouseEvent) {
+      if (!isWebglReadyRef.current) return;
+      if (event.defaultPrevented) return;
+      if (event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
+
+      const target = event.target as Element | null;
+      const anchor = target?.closest?.("a[href]") as HTMLAnchorElement | null;
+      if (!anchor) return;
+      if (anchor.target && anchor.target !== "_self") return;
+      if (anchor.hasAttribute("download")) return;
+      if (anchor.hasAttribute("data-no-transition")) return;
+
+      let url: URL;
+      try {
+        url = new URL(anchor.href, window.location.href);
+      } catch {
+        return;
+      }
+
+      if (url.origin !== window.location.origin) return;
+      if (/\.[a-z0-9]{2,5}$/i.test(url.pathname)) return; // asset/file links
+      if (
+        url.pathname === window.location.pathname &&
+        url.search === window.location.search
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      if (isBusyRef.current) {
+        // A previous transition is still finishing — captures on a
+        // heavy page can take a few seconds, and without this a click
+        // that lands during that window was silently dropped (looking
+        // exactly like "sometimes clicking a button does nothing").
+        // Supersede it instead: invalidate whatever step it's on (its
+        // own transitionIdRef checks make every remaining step a
+        // no-op), cancel the WebGL canvas if it's mid-animation, hide
+        // the frozen overlay, and navigate immediately without the
+        // effect so the click always does *something*.
+        transitionIdRef.current++;
+        isBusyRef.current = false;
+        canvasHandleRef.current?.cancelTransition();
+        if (freezeCanvasRef.current) {
+          freezeCanvasRef.current.style.opacity = "0";
+        }
+        router.push(url.pathname + url.search);
+        return;
+      }
+
+      // Fixed bottom-center origin, matching the deleted homepage
+      // ripple system's own default (getRippleOrigin / playTransition
+      // both used originX=0.5, originY=1) — NOT the click position.
+      // Nav links sit near the top of the screen, so an origin derived
+      // from click coordinates was pinned at the very edge, which is
+      // what produced the lopsided "zoom" look.
+      void beginTransition(url.pathname + url.search, url.pathname, {
+        originX: 0.5,
+        originY: 1,
+      });
+    }
+
+    document.addEventListener("click", handleClick, true);
+    return () => document.removeEventListener("click", handleClick, true);
+  }, [beginTransition]);
+
+  return (
+    <PageTransitionContext.Provider value={{ notifyRouteMounted }}>
+      <canvas
+        ref={freezeCanvasRef}
+        aria-hidden="true"
+        data-page-transition-overlay=""
+        className="pointer-events-none fixed inset-0 z-[9998] block h-screen w-screen opacity-0"
+        style={{ background: "transparent", willChange: "opacity" }}
+      />
+      <PageTransitionCanvas
+        ref={canvasHandleRef}
+        onReady={() => {
+          isWebglReadyRef.current = true;
+        }}
+        onError={() => {
+          isWebglReadyRef.current = false;
+        }}
+      />
+      {children}
+    </PageTransitionContext.Provider>
+  );
+}
