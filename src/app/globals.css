@@ -175,6 +175,22 @@ body::-webkit-scrollbar {
 }
 
 /* ============================================================
+   HIDE SCROLLBAR (reusable, for internally-scrollable elements)
+============================================================ */
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+
+  width: 0;
+  height: 0;
+}
+
+/* ============================================================
    ROOT CONTAINER
 ============================================================ */
 
