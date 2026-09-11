@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FiFacebook, FiInstagram, FiYoutube } from "react-icons/fi";
+import PageGradientBackground from "../layout/PageGradientBackground";
 
 const projects = [
   {
@@ -23,39 +24,8 @@ const projects = [
 
 export default function ProjectsPage() {
   return (
-    <main className="relative min-h-screen w-full  bg-[#32141f] text-white">
-      {/* =========================================================
-          BACKGROUND
-          ========================================================= */}
-
-      <div className="pointer-events-none absolute inset-0">
-        {/* Top burgundy */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to bottom, #431827 0%, #3b1724 38%, #2b1821 72%, #171319 100%)",
-          }}
-        />
-
-        {/* Subtle center glow */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(circle at 50% 40%, rgba(119,57,65,0.12), transparent 55%)",
-          }}
-        />
-
-        {/* Bottom darkness */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to bottom, transparent 55%, rgba(10,8,10,0.32) 100%)",
-          }}
-        />
-      </div>
+    <main className="relative min-h-screen w-full  bg-[#532439] text-white">
+      <PageGradientBackground />
 
       {/* =========================================================
           MAIN CONTENT
