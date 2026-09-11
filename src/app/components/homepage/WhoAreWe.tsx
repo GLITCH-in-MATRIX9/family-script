@@ -29,7 +29,7 @@ export default function WhoAreWe() {
    *
    * page.tsx owns the actual homepage section:
    *
-   * <section data-home-section="1">
+   * <section>
    *   <WhoAreWe />
    * </section>
    *
@@ -224,10 +224,9 @@ export default function WhoAreWe() {
         /*
          * IMPORTANT:
          *
-         * No onLeaveBack reset.
-         *
-         * Ripple navigation can move directly between
-         * sections without normal browser scrolling.
+         * No onLeaveBack reset — restart() already replays
+         * the entrance cleanly from either direction, so a
+         * separate reset step isn't needed.
          */
       });
 
@@ -309,7 +308,6 @@ export default function WhoAreWe() {
 
       <div
         ref={backgroundRef}
-        data-ripple-background
         className="
           pointer-events-none
           absolute
@@ -356,7 +354,7 @@ export default function WhoAreWe() {
         "
         style={{
           background:
-            "linear-gradient(to bottom, rgba(83,36,57,0.88) 0%, rgba(83,36,57,0.70) 32%, rgba(83,36,57,0.30) 65%, rgba(59,20,37,0.10) 100%)",
+            "linear-gradient(to bottom, rgba(83, 36, 57, 0.90) 0%, rgba(83, 36, 57, 0.80) 30%, rgba(83, 36, 57, 0.20) 65%, rgba(83, 36, 57, 0.10) 100%)",
         }}
         aria-hidden="true"
       />
@@ -381,9 +379,7 @@ export default function WhoAreWe() {
 
       {/* ======================================================
           CONTENT
-          
-          The content participates in the ripple transition.
-          
+
           The background remains independent and static.
       ====================================================== */}
 
@@ -425,7 +421,6 @@ export default function WhoAreWe() {
 
           <h2
             ref={headingRef}
-            data-ripple-element
             className="
               futura-medium
               uppercase
@@ -443,7 +438,6 @@ export default function WhoAreWe() {
 
           <div
             ref={descriptionRef}
-            data-ripple-element
             className="
               futura-light
               mt-14
@@ -487,7 +481,6 @@ export default function WhoAreWe() {
 
           <div
             ref={statsRef}
-            data-ripple-element
             className="
               mt-16
               flex
@@ -542,7 +535,6 @@ export default function WhoAreWe() {
 
           <button
             ref={ctaRef}
-            data-ripple-element
             type="button"
             className="
               futura-light

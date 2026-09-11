@@ -861,15 +861,12 @@ export default function ContactSection() {
   return (
     <section
       ref={sectionRef}
-      data-home-section="6"
       className="
         relative
         flex
-        h-[100svh]
         min-h-[100svh]
         w-full
         flex-col
-        
       "
     >
       {/* ======================================================
@@ -926,7 +923,6 @@ export default function ContactSection() {
       ====================================================== */}
 
       <div
-        data-ripple-element
         className="
           relative
           z-10

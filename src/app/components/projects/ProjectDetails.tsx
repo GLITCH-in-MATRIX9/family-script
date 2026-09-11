@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { Project } from "../../../data/projects";
+import PageGradientBackground from "../layout/PageGradientBackground";
 
 type ProjectDetailsProps = {
   project: Project;
@@ -50,6 +51,11 @@ export default function ProjectDetails({
               "radial-gradient(ellipse at center, rgba(72,29,44,0.18) 0%, rgba(35,16,25,0.18) 100%)",
           }}
         />
+
+        {/* Same top/bottom darkening rects as every other non-homepage
+            page — no base-color layer here, so the cover photo (and
+            the tint layers above) stay visible underneath. */}
+        <PageGradientBackground includeBase={false} />
       </div>
 
       {/* =========================================================
