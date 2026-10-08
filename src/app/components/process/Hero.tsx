@@ -48,7 +48,7 @@ const processSteps: ProcessStep[] = [
       "Through conceptualization, storyboarding, and narrative development, Family Script breathes life into raw data. Skilled storytellers weave together disparate elements, crafting comprehensive narratives that resonate with depths and entirety their essence.",
     icon: "/process-icons/process-4.svg",
     imageDesktop: "/assets/process/04_DESKTOP.jpeg",
-    imageMobile: "/assets/process/04_MOBILE.jpeg",
+    imageMobile: "/assets/process/04_DESKTOP.jpeg",
   },
   {
     number: "05",
