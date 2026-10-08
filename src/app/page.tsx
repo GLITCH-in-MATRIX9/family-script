@@ -9,17 +9,9 @@ import OurJourney from "./components/homepage/OurJourney";
 import Testimonials from "./components/homepage/Testimonials";
 import ContactSection from "./components/homepage/ContactSection";
 
-import SocialIcons from "./components/layout/SocialIcos";
-
 export default function Home() {
   return (
     <main className="relative w-full">
-      {/* ==================================================
-          SOCIAL MEDIA
-      ================================================== */}
-
-      <SocialIcons />
-
       {/* ==================================================
           HERO
       ================================================== */}
@@ -101,10 +93,7 @@ export default function Home() {
           TESTIMONIALS
       ================================================== */}
 
-      <section
-        id="testimonials"
-        className="relative w-full"
-      >
+      <section id="testimonials" className="relative w-full">
         <Testimonials />
       </section>
 

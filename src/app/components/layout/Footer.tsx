@@ -105,20 +105,20 @@ function FooterColumn({
           space-y-2.5
         "
       >
-      {links.map((link) => {
-      const label = typeof link === "string" ? link : link.label;
-      const href = typeof link === "string" ? "/" : link.href;
+        {links.map((link) => {
+          const label = typeof link === "string" ? link : link.label;
+          const href = typeof link === "string" ? "/" : link.href;
 
-      const isExternal = href.startsWith("http");
+          const isExternal = href.startsWith("http");
 
-      return (
-        <li key={label}>
-          {isExternal ? (
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
+          return (
+            <li key={label}>
+              {isExternal ? (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
                 futura-light
                 text-[11px]
                 leading-none
@@ -128,13 +128,13 @@ function FooterColumn({
                 duration-200
                 hover:text-white/90
               "
-            >
-              {label}
-            </a>
-          ) : (
-            <Link
-              href={href}
-              className="
+                >
+                  {label}
+                </a>
+              ) : (
+                <Link
+                  href={href}
+                  className="
                 futura-light
                 text-[11px]
                 leading-none
@@ -144,13 +144,13 @@ function FooterColumn({
                 duration-200
                 hover:text-white/90
               "
-            >
-              {label}
-            </Link>
-          )}
-        </li>
-      );
-    })}
+                >
+                  {label}
+                </Link>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
@@ -161,12 +161,13 @@ function FooterColumn({
 ============================================================ */
 
 export default function Footer() {
-  const currentYear =
-    new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer
       className="
+        relative
+        z-10
         w-full
         bg-[#57233b]
         text-white
@@ -200,7 +201,6 @@ export default function Footer() {
             md:pt-6
           "
         >
-
           {/* ==================================================
               MAIN FOOTER CONTENT
           ================================================== */}
@@ -216,7 +216,6 @@ export default function Footer() {
               lg:gap-x-20
           "
           >
-
             {/* ================================================
                 FAMILY SCRIPT
             ================================================ */}
@@ -259,14 +258,11 @@ export default function Footer() {
                   md:text-[10px]
                 "
               >
-                An offering of M/s Prarabdha Info
-                Solutions Pvt Ltd,
+                An offering of M/s Prarabdha Info Solutions Pvt Ltd,
                 <br />
-                Incubated under IGDTUW-Anveshan
-                Foundation, Delhi
+                Incubated under IGDTUW-Anveshan Foundation, Delhi
                 <br />
-                Registered under Startup India
-                and MSME Recognised
+                Registered under Startup India and MSME Recognised
               </p>
 
               {/* ==============================================
@@ -290,14 +286,11 @@ export default function Footer() {
                 >
                   Contact Us:
                   <br />
-                  Prarabdha Info Solutions Private
-                  Limited,
+                  Prarabdha Info Solutions Private Limited,
                   <br />
-                  IGDTUW-Anveshan Foundation
-                  Premises,
+                  IGDTUW-Anveshan Foundation Premises,
                   <br />
-                  Kashmere Gate, Delhi-06,
-                  India
+                  Kashmere Gate, Delhi-06, India
                 </p>
               </div>
 
@@ -320,8 +313,7 @@ export default function Footer() {
                     md:text-[10px]
                   "
                 >
-                  Email: info@familyscript.com,
-                  team@familyscript.in
+                  Email: info@familyscript.com, team@familyscript.in
                   <br />
                   +91 9560283939
                 </p>
@@ -332,34 +324,19 @@ export default function Footer() {
                 COMPANY
             ================================================ */}
 
-            <FooterColumn
-              title="Company"
-              links={
-                COMPANY_LINKS
-              }
-            />
+            <FooterColumn title="Company" links={COMPANY_LINKS} />
 
             {/* ================================================
                 PROJECTS
             ================================================ */}
 
-            <FooterColumn
-              title="Projects"
-              links={
-                PROJECT_LINKS
-              }
-            />
+            <FooterColumn title="Projects" links={PROJECT_LINKS} />
 
             {/* ================================================
                 LEGAL
             ================================================ */}
 
-            <FooterColumn
-              title="Legal"
-              links={
-                LEGAL_LINKS
-              }
-            />
+            <FooterColumn title="Legal" links={LEGAL_LINKS} />
           </div>
 
           {/* ==================================================
@@ -403,9 +380,8 @@ export default function Footer() {
                   md:text-[10px]
                 "
               >
-                © {currentYear} Family Script
-                by Prarabdha Info Solutions
-                Pvt. Ltd.
+                © {currentYear} Family Script by Prarabdha Info Solutions Pvt.
+                Ltd.
               </p>
 
               {/* ==============================================
@@ -425,7 +401,6 @@ export default function Footer() {
               </p>
             </div>
           </div>
-
         </div>
       </div>
     </footer>

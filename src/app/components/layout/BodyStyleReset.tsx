@@ -10,20 +10,9 @@ import { useEffect } from "react";
  * <body> persists across client-side navigations in the
  * App Router (only the page content under <main> swaps out).
  *
- * HomepageNavigator / useRippleNavigation temporarily sets
- *   document.body.style.overflow = "hidden"
- *   document.body.style.touchAction = "none"
- * while a ripple transition is animating, then restores it.
- *
- * If the user navigates away mid-transition (or in rare
- * dev-only React Strict Mode double-invoke edge cases), that
- * restore can be skipped, leaving <body> permanently locked
- * with overflow: hidden — which blocks native wheel/trackpad
- * scrolling on every other page for the rest of the session.
- *
- * This component forces a clean slate on every route change,
- * regardless of what the homepage ripple code did or didn't
- * clean up after itself.
+ * Route-specific interaction code can temporarily change body styles.
+ * Reset them on every route change so those styles never leak into
+ * another page and block native scrolling.
  */
 export default function BodyStyleReset() {
   const pathname = usePathname();

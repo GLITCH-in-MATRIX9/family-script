@@ -2,15 +2,20 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import type { PointerEvent as ReactPointerEvent, ReactNode } from "react";
 import type { Project } from "../../../data/projects";
 import { splitHeadingLines } from "../../utils/splitHeading";
 
 type ProjectDetailsProps = {
   project: Project;
+  animateEntrance?: boolean;
 };
 
-export default function ProjectDetails({ project }: ProjectDetailsProps) {
+export default function ProjectDetails({
+  project,
+  animateEntrance = false,
+}: ProjectDetailsProps) {
   const gallery = project.gallery;
 
   // Read more / read less. Keyed by slug so the state resets when
@@ -18,15 +23,11 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const expanded = expandedSlug === project.slug;
   const hasMore = project.description.length > 1;
-  const visibleDescription = expanded
-    ? project.description
-    : project.description.slice(0, 1);
-  const toggleExpanded = () =>
-    setExpandedSlug(expanded ? null : project.slug);
+  const toggleExpanded = () => setExpandedSlug(expanded ? null : project.slug);
 
   return (
     <main
-      className="
+      className={`
         relative
         min-h-screen
         w-full
@@ -34,7 +35,8 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
         bg-[#3c1a26]
         text-white
         md:bg-transparent
-      "
+        ${animateEntrance ? "biographical-appear" : ""}
+      `}
     >
       {/* =========================================================
           DESKTOP BACKGROUND ONLY
@@ -51,7 +53,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(64,24,38,0.86) 0%, rgba(61,24,38,0.84) 40%, rgba(45,20,29,0.94) 100%)",
+              "linear-gradient(to bottom, rgba(38,2,21,0.86) 0%, rgba(53,3,25,0.84) 40%, rgba(64,3,31,0.9) 75%, rgba(72,4,36,0.94) 100%)",
           }}
         />
 
@@ -59,7 +61,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(72,29,44,0.18) 0%, rgba(35,16,25,0.18) 100%)",
+              "radial-gradient(ellipse at center, rgba(72,4,36,0.18) 0%, rgba(35,2,20,0.18) 100%)",
           }}
         />
       </div>
@@ -69,7 +71,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
       ========================================================= */}
 
       <section
-        className="
+        className={`
           relative
           z-10
           mx-auto
@@ -82,96 +84,93 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
           pt-24
           sm:px-8
           sm:pt-28
-          md:block
-          md:px-[6%]
-          md:pt-28
+          lg:block
           lg:px-[6%]
           lg:pt-28
-        "
+          ${animateEntrance ? "biographical-appear-item" : ""}
+        `}
       >
         {/* BREADCRUMB */}
 
-{/* BREADCRUMB */}
+        <div className="mb-6 flex items-center gap-2 md:mb-7">
+          <Link
+            href="/"
+            className="
+              futura-light
+              text-[10px]
+              uppercase
+              tracking-wide
+              text-white/45
+              transition-colors
+              hover:text-white
+              md:text-[13px]
+            "
+          >
+            Home
+          </Link>
 
-<div className="mb-6 flex items-center gap-2 md:mb-7">
-  <Link
-    href="/"
-    className="
+          <span className="futura-light text-[10px] text-white/25 md:text-[13px]">
+            &gt;&gt;
+          </span>
+
+          <Link
+            href="/projects"
+            className="
       futura-light
-      text-[9px]
+      text-[10px]
       uppercase
       tracking-wide
       text-white/45
       transition-colors
       hover:text-white
-      md:text-[11px]
+      md:text-[13px]
     "
-  >
-    Home
-  </Link>
+          >
+            Projects
+          </Link>
 
-  <span className="futura-light text-[9px] text-white/25 md:text-[11px]">
-    &gt;&gt;
-  </span>
+          <span className="futura-light text-[10px] text-white/25 md:text-[13px]">
+            &gt;&gt;
+          </span>
 
-  <Link
-    href="/projects"
-    className="
+          <Link
+            href={`/projects/${project.category.toLowerCase()}`}
+            className="
       futura-light
-      text-[9px]
+      text-[10px]
       uppercase
       tracking-wide
       text-white/45
       transition-colors
       hover:text-white
-      md:text-[11px]
+      md:text-[13px]
     "
-  >
-    Projects
-  </Link>
+          >
+            {project.category}
+          </Link>
 
-  <span className="futura-light text-[9px] text-white/25 md:text-[11px]">
-    &gt;&gt;
-  </span>
+          <span className="futura-light text-[10px] text-white/25 md:text-[13px]">
+            &gt;&gt;
+          </span>
 
-  <Link
-    href={`/projects/${project.category.toLowerCase()}`}
-    className="
+          <span
+            className="
       futura-light
-      text-[9px]
-      uppercase
-      tracking-wide
-      text-white/45
-      transition-colors
-      hover:text-white
-      md:text-[11px]
-    "
-  >
-    {project.category}
-  </Link>
-
-  <span className="futura-light text-[9px] text-white/25 md:text-[11px]">
-    &gt;&gt;
-  </span>
-
-  <span
-    className="
-      futura-light
-      text-[9px]
+      text-[10px]
       uppercase
       tracking-wide
       text-white
-      md:text-[11px]
+      md:text-[13px]
     "
-  >
-    {project.title}
-  </span>
-</div>
+          >
+            {project.title}
+          </span>
+        </div>
 
         {/* DESKTOP CONTENT */}
 
         <div
-          className="
+          className={`
             flex
             w-full
             flex-col
@@ -179,7 +178,8 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
             lg:flex-row
             lg:items-stretch
             lg:gap-12
-          "
+            ${animateEntrance ? "biographical-appear-item" : ""}
+          `}
         >
           {/* LEFT SIDE */}
 
@@ -207,7 +207,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                 tracking-[0.015em]
                 text-[#e3a94f]
                 sm:text-[40px]
-                md:text-[46px]
+                md:text-[42px]
                 lg:text-[50px]
                 xl:text-[40px]
               "
@@ -236,7 +236,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
       uppercase
       tracking-wide
       text-white/75
-      md:text-[11px]
+      md:text-[14px]
       lg:text-[12px]
     "
               >
@@ -251,7 +251,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
         uppercase
         tracking-wide
         text-white/75
-        md:text-[11px]
+        md:text-[14px]
         lg:text-[12px]
       "
                 >
@@ -269,9 +269,8 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                 lg:space-y-5
               "
             >
-              {visibleDescription.map((paragraph, index) => (
+              {project.description[0] && (
                 <p
-                  key={index}
                   className="
                     futura-light
                     text-[11px]
@@ -279,13 +278,43 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                     tracking-wide
                     text-white/80
                     sm:text-[12px]
-                    md:text-[13px]
+                    md:text-[17px]
                     lg:text-[14px]
                   "
                 >
-                  {paragraph}
+                  {project.description[0]}
                 </p>
-              ))}
+              )}
+
+              {hasMore && (
+                <div
+                  className={`grid overflow-hidden transition-[grid-template-rows,opacity,margin] duration-500 ease-out ${
+                    expanded
+                      ? "mt-5 grid-rows-[1fr] opacity-100"
+                      : "mt-0 grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="min-h-0 space-y-5">
+                    {project.description.slice(1).map((paragraph, index) => (
+                      <p
+                        key={`${paragraph}-${index}`}
+                        className="
+                          futura-light
+                          text-[11px]
+                          leading-[1.5]
+                          tracking-wide
+                          text-white/80
+                          sm:text-[12px]
+                          md:text-[17px]
+                          lg:text-[14px]
+                        "
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {hasMore && (
@@ -315,7 +344,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
 
           <div className="w-full lg:w-[58%]">
             <div
-              className="
+              className={`
                 mx-auto
                 grid
                 w-full
@@ -323,7 +352,8 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                 gap-2
                 md:gap-2.5
                 lg:gap-3
-              "
+                ${animateEntrance ? "biographical-appear-gallery" : ""}
+              `}
             >
               <GalleryImage
                 src={gallery[0]?.image}
@@ -358,44 +388,24 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
               <div
                 className="
                   col-start-1
+                  col-span-2
                   row-span-2
                   row-start-2
+                  min-h-[360px]
                   flex
                   items-center
                   justify-center
-                  overflow-visible
+                  overflow-hidden
                 "
               >
                 {project.bookImage && (
-                  <img
-                    src={project.bookImage}
-                    alt={`${project.title} book`}
-                    className={`
-                      h-full
-                      w-full
-
-                      ${
-                        project.slug === "dr-v-k-kutty"
-                          ? "scale-[3]"
-                          : project.slug === "vinod-kumar-khanna"
-                            ? "scale-[1.35]"
-                            : project.slug === "vasant-valley-school"
-                              ? "scale-[1.85]"
-                              : project.slug === "stapati-architects"
-                                ? "scale-[2]"
-                                : "scale-[1.40]"
-                      }
-
-                      translate-x-[50%]
-                      object-contain
-                      drop-shadow-[0_12px_15px_rgba(0,0,0,0.45)]
-                      transition-transform
-                      duration-700
-                      ease-out
-                      hover:-translate-y-2
-                      hover:translate-x-[50%]
-                    `}
-                  />
+                  <BookTilt className="h-full w-full">
+                    <img
+                      src={project.bookImage}
+                      alt={`${project.title} book`}
+                      className="h-full w-full max-h-full max-w-full object-contain drop-shadow-[0_12px_15px_rgba(0,0,0,0.45)]"
+                    />
+                  </BookTilt>
                 )}
               </div>
 
@@ -458,25 +468,24 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
       ========================================================= */}
 
       <section
-        className="
+        className={`
           relative
           z-10
           block
           min-h-screen
           w-full
           overflow-hidden
-          md:hidden
-        "
+          lg:hidden
+          ${animateEntrance ? "biographical-appear-item" : ""}
+        `}
         style={{
-          background: `
-            radial-gradient(
-              ellipse at center,
-              #421d2b 0%,
-              #3f1b29 38%,
-              #381923 68%,
-              #23141c 100%
-            )
-          `,
+          background: `linear-gradient(
+            to bottom,
+            #260215 0%,
+            #350319 40%,
+            #40031f 75%,
+            #480424 100%
+          )`,
         }}
       >
         {/* SPACE FOR EXISTING NAVBAR */}
@@ -486,26 +495,30 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
         {/* MOBILE CONTENT */}
 
         <div
-          className="
+          className={`
             relative
             z-10
             w-full
             px-[30px]
+            md:px-[8%]
             pb-8
-            pt-[33px]
-          "
+            pt-[48px]
+            md:pt-14
+            ${animateEntrance ? "biographical-appear-item" : ""}
+          `}
         >
           {/* BOOK NAME - TOP */}
 
           <div className="mb-[10px]">
             <h1
               className="
-                futura-bold
+                futura-light
                 text-[40px]
                 uppercase
                 leading-[1.02]
                 tracking-[0.05em]
                 text-[#e3a94f]
+                md:text-[52px]
               "
             >
               {splitHeadingLines(project.title).map((line) => (
@@ -522,11 +535,12 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
             <div className="flex items-center gap-[80px]">
               <span
                 className="
-                  futura-bold
+                  futura-light
                   text-[12px]
                   uppercase
                   tracking-[0.1em]
                   text-white/80
+                  md:text-[15px]
                 "
               >
                 {project.subtitle}
@@ -540,6 +554,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                     uppercase
                     tracking-[0.08em]
                     text-white/65
+                    md:text-[13px]
                   "
                 >
                   {project.location}
@@ -553,20 +568,48 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
           {project.description.length > 0 && (
             <div className="mb-[13px]">
               <div className="space-y-[11px]">
-                {visibleDescription.map((paragraph, index) => (
+                {project.description[0] && (
                   <p
-                    key={index}
                     className="
                       futura-light
                       text-[12px]
                       leading-[1.5]
                       tracking-[0.01em]
                       text-white/85
+                      md:text-[16px]
                     "
                   >
-                    {paragraph}
+                    {project.description[0]}
                   </p>
-                ))}
+                )}
+
+                {hasMore && (
+                  <div
+                    className={`grid overflow-hidden transition-[grid-template-rows,opacity,margin] duration-500 ease-out ${
+                      expanded
+                        ? "mt-[11px] grid-rows-[1fr] opacity-100"
+                        : "mt-0 grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="min-h-0 space-y-[11px]">
+                      {project.description.slice(1).map((paragraph, index) => (
+                        <p
+                          key={`${paragraph}-${index}`}
+                          className="
+                            futura-light
+                            text-[12px]
+                            leading-[1.5]
+                            tracking-[0.01em]
+                            text-white/85
+                            md:text-[16px]
+                          "
+                        >
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {hasMore && (
@@ -580,6 +623,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                     text-[11px]
                     tracking-wide
                     text-white/60
+                    md:text-[13px]
                     transition-colors
                     duration-300
                     hover:text-white
@@ -603,34 +647,30 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                 justify-center
               "
             >
-              <img
-                src={project.bookImage}
-                alt={`${project.title} book`}
-                className={`
-                  h-auto
-                  w-[190px]
-                  object-contain
-                  drop-shadow-[0_8px_10px_rgba(0,0,0,0.45)]
-
-                  ${
-                    project.slug === "dr-v-k-kutty"
-                      ? "scale-[1.45]"
-                      : project.slug === "vinod-kumar-khanna"
-                        ? "scale-[0.95]"
-                        : project.slug === "vasant-valley-school"
-                          ? "scale-[1.1]"
-                          : project.slug === "stapati-architects"
-                            ? "scale-[1.15]"
-                            : "scale-[1]"
-                  }
-                `}
-              />
+              <BookTilt>
+                <img
+                  src={project.bookImage}
+                  alt={`${project.title} book`}
+                  className={`
+                    h-auto
+                    w-[260px]
+                    max-w-full
+                    md:w-[400px]
+                    object-contain
+                    drop-shadow-[0_8px_10px_rgba(0,0,0,0.45)]
+                  `}
+                />
+              </BookTilt>
             </div>
           )}
 
           {/* MOBILE GALLERY */}
 
-          <div className="mt-[18px] grid grid-cols-2 gap-[9px]">
+          <div
+            className={`mt-[18px] grid grid-cols-2 gap-[9px] md:gap-4 ${
+              animateEntrance ? "biographical-appear-gallery" : ""
+            }`}
+          >
             {gallery.map((item, index) => (
               <div
                 key={`${item.image}-${index}`}
@@ -696,32 +736,45 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
           </div>
         </div>
       </section>
-
-      {/* =========================================================
-          SOCIAL ICONS - DESKTOP ONLY
-      ========================================================= */}
-
-      <div
-        className="
-          fixed
-          bottom-5
-          right-4
-          z-30
-          hidden
-          flex-col
-          items-center
-          gap-3
-          text-white
-          md:flex
-          md:bottom-6
-          md:right-6
-        "
-      >
-        <span className="text-[12px]">f</span>
-        <span className="text-[12px]">◎</span>
-        <span className="text-[12px]">▶</span>
-      </div>
     </main>
+  );
+}
+
+type BookTiltProps = {
+  children: ReactNode;
+  className?: string;
+};
+
+function BookTilt({ children, className = "" }: BookTiltProps) {
+  const tiltRef = useRef<HTMLDivElement>(null);
+
+  const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const element = tiltRef.current;
+    if (!element) return;
+
+    const bounds = element.getBoundingClientRect();
+    const offsetX = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const offsetY = (event.clientY - bounds.top) / bounds.height - 0.5;
+
+    element.style.transform = `perspective(1000px) rotateX(${-offsetY * 10}deg) rotateY(${offsetX * 10}deg) scale(1.015)`;
+  };
+
+  const resetTilt = () => {
+    if (tiltRef.current) {
+      tiltRef.current.style.transform =
+        "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
+    }
+  };
+
+  return (
+    <div
+      ref={tiltRef}
+      className={`book-tilt-hover ${className}`}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={resetTilt}
+    >
+      {children}
+    </div>
   );
 }
 

@@ -8,9 +8,7 @@ type EventDetailsProps = {
   event: EventItem;
 };
 
-export default function EventDetails({
-  event,
-}: EventDetailsProps) {
+export default function EventDetails({ event }: EventDetailsProps) {
   return (
     <main
       className="
@@ -74,7 +72,6 @@ export default function EventDetails({
           lg:px-[6%]
         "
       >
-
         {/* ======================================================
             BREADCRUMB
         ====================================================== */}
@@ -94,7 +91,7 @@ export default function EventDetails({
             href="/"
             className="
               futura-light
-              text-[9px]
+              text-[10px]
               uppercase
               tracking-wide
               text-[rgb(233_231_218)]/40
@@ -102,12 +99,13 @@ export default function EventDetails({
               duration-300
               hover:text-[rgb(233_231_218)]/75
               sm:text-[10px]
+              md:text-[13px]
             "
           >
             Home
           </Link>
 
-          <span className="text-[9px] text-[rgb(233_231_218)]/30 sm:text-[10px]">
+          <span className="text-[10px] text-[rgb(233_231_218)]/30 sm:text-[10px] md:text-[13px]">
             &gt;&gt;
           </span>
 
@@ -115,7 +113,7 @@ export default function EventDetails({
             href="/projects"
             className="
               futura-light
-              text-[9px]
+              text-[10px]
               uppercase
               tracking-wide
               text-[rgb(233_231_218)]/40
@@ -123,12 +121,13 @@ export default function EventDetails({
               duration-300
               hover:text-[rgb(233_231_218)]/75
               sm:text-[10px]
+              md:text-[13px]
             "
           >
             Projects
           </Link>
 
-          <span className="text-[9px] text-[rgb(233_231_218)]/30 sm:text-[10px]">
+          <span className="text-[10px] text-[rgb(233_231_218)]/30 sm:text-[10px] md:text-[13px]">
             &gt;&gt;
           </span>
 
@@ -137,11 +136,12 @@ export default function EventDetails({
               futura-light
               max-w-[55%]
               truncate
-              text-[9px]
+              text-[10px]
               uppercase
               tracking-wide
               text-[rgb(233_231_218)]/45
               sm:text-[10px]
+              md:text-[13px]
             "
           >
             {event.title}
@@ -172,7 +172,6 @@ export default function EventDetails({
             lg:gap-6
           "
         >
-
           {/* ====================================================
               LEFT — EVENT INFORMATION
           ==================================================== */}
@@ -190,7 +189,6 @@ export default function EventDetails({
                 max-w-[650px]
               "
             >
-
               {/* EVENT TITLE */}
 
               <h1
@@ -249,12 +247,10 @@ export default function EventDetails({
                 lg:gap-7
               "
             >
-              {event.images
-                .slice(0, 4)
-                .map((image, index) => (
-                  <div
-                    key={`${event.slug}-${index}`}
-                    className="
+              {event.images.slice(0, 4).map((image, index) => (
+                <div
+                  key={`${event.slug}-${index}`}
+                  className="
                       group
                       relative
                       aspect-[1.25/1]
@@ -264,27 +260,27 @@ export default function EventDetails({
                       border-[rgb(233_231_218)]/80
                       bg-[rgb(56_44_59)]/40
                     "
-                  >
-                    <Image
-                      src={image}
-                      alt={`${event.title} ${index + 1}`}
-                      fill
-                      sizes="
+                >
+                  <Image
+                    src={image}
+                    alt={`${event.title} ${index + 1}`}
+                    fill
+                    sizes="
                         (max-width: 640px) 44vw,
                         (max-width: 1024px) 45vw,
                         27vw
                       "
-                      className="
+                    className="
                         object-cover
                         transition-transform
                         duration-700
                         ease-out
                         group-hover:scale-[1.035]
                       "
-                    />
+                  />
 
-                    <div
-                      className="
+                  <div
+                    className="
                         pointer-events-none
                         absolute
                         inset-0
@@ -293,9 +289,9 @@ export default function EventDetails({
                         duration-500
                         group-hover:bg-transparent
                       "
-                    />
-                  </div>
-                ))}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>

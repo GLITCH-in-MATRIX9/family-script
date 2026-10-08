@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import SocialIcons from "../layout/SocialIcos";
 
 interface ProcessStep {
   title: string;
@@ -656,7 +655,7 @@ const REVEAL_DURATION = 200;
 const HIDE_DURATION = 150;
 
 export default function Hero() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(0);
   const [canHover, setCanHover] = useState(false);
 
   useEffect(() => {
@@ -680,11 +679,9 @@ export default function Hero() {
       )`,
       }}
     >
-      <SocialIcons />
-   <div className="pointer-events-none absolute left-0 top-0 z-10 h-40 w-full bg-gradient-to-b from-black/40 via-black/15 to-transparent md:h-56" />
+      <div className="pointer-events-none absolute left-0 top-0 z-10 h-40 w-full bg-gradient-to-b from-black/40 via-black/15 to-transparent lg:h-56" />
 
-      <section className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-[22px] pb-10 pt-[55px] sm:px-6 sm:pt-[70px] md:px-[4%] md:pb-16 md:pt-[150px]">
-
+      <section className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-[22px] pb-10 pt-[95px] sm:px-6 sm:pt-[105px] lg:px-[4%] lg:pb-16 lg:pt-[150px]">
         {/* PAGE TITLE */}
 
         <div className="flex justify-center text-center">
@@ -719,20 +716,21 @@ export default function Hero() {
             mx-auto
             mt-[30px]
             flex
-            w-[250px]
+            w-full
             flex-col
             items-center
             justify-start
             gap-[12px]
 
-            md:mt-[72px]
-            md:h-[400px]
-            md:w-full
-            md:max-w-[1000px]
-            md:flex-row
-            md:items-stretch
-            md:justify-center
-            md:gap-[32px]
+            lg:mt-[72px]
+            lg:h-[400px]
+            lg:w-full
+            lg:flex-row
+            lg:items-stretch
+            lg:justify-center
+            lg:gap-[32px]
+            lg:h-[500px]
+            lg:gap-[40px]
           "
           onMouseLeave={() => {
             if (canHover) setActiveIndex(null);
@@ -785,14 +783,16 @@ export default function Hero() {
 
                   h-[58px]
 
-                  md:min-h-0
-                  md:min-w-0
-                  md:h-full
-                  md:w-auto
-                  md:[--active-card-size:360px]
-                  md:[--collapsed-card-size:72px]
+                  lg:min-h-0
+                  lg:min-w-0
+                  lg:h-full
+                  lg:w-auto
+                  lg:[--active-card-size:360px]
+                  lg:[--collapsed-card-size:72px]
+                  lg:[--active-card-size:420px]
+                  lg:[--collapsed-card-size:84px]
 
-                  [--active-card-size:150px]
+                  [--active-card-size:360px]
                   [--collapsed-card-size:42px]
                 "
                 style={{
@@ -810,7 +810,7 @@ export default function Hero() {
                 {/* MOBILE GRADIENT */}
 
                 <div
-                  className="pointer-events-none absolute inset-0 md:hidden"
+                  className="pointer-events-none absolute inset-0 lg:hidden"
                   style={{
                     background: mobileCollapsedGradients[index],
                   }}
@@ -819,7 +819,7 @@ export default function Hero() {
                 {/* DESKTOP GRADIENT */}
 
                 <div
-                  className="pointer-events-none absolute inset-0 hidden md:block"
+                  className="pointer-events-none absolute inset-0 hidden lg:block"
                   style={{
                     background: isActive
                       ? cardGradients[index].active
@@ -842,26 +842,23 @@ export default function Hero() {
                   }}
                 >
                   <div className="relative h-full w-full">
-
-                    <span className="sr-only">
-                      {step.number}
-                    </span>
+                    <span className="sr-only">{step.number}</span>
 
                     {/* ================================================= */}
                     {/* MOBILE TITLE - LEFT ALIGNED                        */}
                     {/* ================================================= */}
 
-                    <div className="absolute left-[10px] top-1/2 -translate-y-1/2 md:hidden">
-                    <span className="futura-medium block w-[150px] text-left text-[7px] uppercase leading-[1.2] tracking-[0.22em] text-[#F4F0E9]">
-  {step.title}
-</span>
+                    <div className="absolute left-[10px] top-1/2 -translate-y-1/2 lg:hidden">
+                      <span className="futura-medium block w-[calc(100vw-80px)] max-w-[280px] text-left text-[11px] uppercase leading-[1.25] tracking-[0.12em] text-[#F4F0E9] md:text-[13px]">
+                        {step.title}
+                      </span>
                     </div>
 
                     {/* ================================================= */}
                     {/* DESKTOP TITLE                                     */}
                     {/* ================================================= */}
 
-                    <div className="absolute left-1/2 top-[22px] hidden -translate-x-1/2 md:block">
+                    <div className="absolute left-1/2 top-[22px] hidden -translate-x-1/2 lg:block">
                       <span
                         className="futura-light block text-[12px] uppercase leading-[1.55] tracking-[0.25em] text-[#F4F0E9]"
                         style={{
@@ -892,17 +889,16 @@ export default function Hero() {
                         object-contain
                         opacity-90
 
-                        md:bottom-[22px]
-                        md:left-1/2
-                        md:right-auto
-                        md:top-auto
-                        md:h-[22px]
-                        md:w-[22px]
-                        md:-translate-x-1/2
-                        md:translate-y-0
+                        lg:bottom-[22px]
+                        lg:left-1/2
+                        lg:right-auto
+                        lg:top-auto
+                        lg:h-[22px]
+                        lg:w-[22px]
+                        lg:-translate-x-1/2
+                        lg:translate-y-0
                       "
                     />
-
                   </div>
                 </div>
 
@@ -915,38 +911,29 @@ export default function Hero() {
                   style={{
                     opacity: isActive ? 1 : 0,
 
-                    transform: isActive
-                      ? "translateY(0)"
-                      : "translateY(10px)",
+                    transform: isActive ? "translateY(0)" : "translateY(10px)",
 
                     transition: `
                       opacity ${
                         isActive ? REVEAL_DURATION : HIDE_DURATION
-                      }ms ease ${
-                        isActive ? REVEAL_DELAY : 0
-                      }ms,
+                      }ms ease ${isActive ? REVEAL_DELAY : 0}ms,
 
                       transform ${
                         isActive ? REVEAL_DURATION : HIDE_DURATION
-                      }ms ${EASE} ${
-                        isActive ? REVEAL_DELAY : 0
-                      }ms
+                      }ms ${EASE} ${isActive ? REVEAL_DELAY : 0}ms
                     `,
 
                     pointerEvents: isActive ? "auto" : "none",
                   }}
                 >
-
                   {/* ================================================= */}
                   {/* MOBILE EXPANDED CARD                              */}
                   {/* ================================================= */}
 
-                  <div className="flex h-full w-full flex-col overflow-hidden rounded-[5px] md:hidden">
-
+                  <div className="flex h-full w-full flex-col overflow-hidden rounded-[5px] lg:hidden">
                     {/* IMAGE */}
 
                     <div className="relative h-[58%] min-h-0 w-full shrink-0 overflow-hidden">
-
                       <img
                         src={step.imageMobile}
                         alt=""
@@ -984,7 +971,6 @@ export default function Hero() {
                           className="h-[11px] w-[11px] object-contain opacity-90"
                         />
                       </div>
-
                     </div>
 
                     {/* TEXT */}
@@ -996,15 +982,13 @@ export default function Hero() {
                           "linear-gradient(90deg, rgba(78,38,48,0.98) 0%, rgba(89,46,49,0.98) 45%, rgba(103,67,48,0.98) 100%)",
                       }}
                     >
-
-                      <h2 className="futura-medium shrink-0 text-[8px] uppercase leading-[1.25] tracking-[0.025em] text-[#CBA356]">
+                      <h2 className="futura-medium shrink-0 text-[14px] uppercase leading-[1.25] tracking-[0.025em] text-[#CBA356] md:text-[16px]">
                         {step.title}
                       </h2>
 
-                      <p className="futura-light mt-[4px] overflow-hidden text-[6px] leading-[1.4] tracking-[0.01em] text-[#F4F0E9]">
+                      <p className="futura-light mt-2 overflow-hidden text-[12px] leading-[1.5] tracking-[0.01em] text-[#F4F0E9] md:text-[14px]">
                         {step.description}
                       </p>
-
                     </div>
                   </div>
 
@@ -1012,10 +996,8 @@ export default function Hero() {
                   {/* DESKTOP EXPANDED CARD                             */}
                   {/* ================================================= */}
 
-                  <div className="hidden h-full w-full md:flex md:flex-col">
-
-                    <div className="relative h-[175px] w-full shrink-0 overflow-hidden rounded-[7px]">
-
+                  <div className="hidden h-full w-full lg:flex lg:flex-col">
+                    <div className="relative h-[175px] w-full shrink-0 overflow-hidden rounded-[7px] lg:h-[220px]">
                       <img
                         src={step.imageDesktop}
                         alt=""
@@ -1047,27 +1029,20 @@ export default function Hero() {
                           className="h-[31px] w-[31px] object-contain opacity-90"
                         />
                       </div>
-
                     </div>
 
-                    <div className="flex min-h-0 flex-1 flex-col px-[38px] pb-[18px] pt-[2px]">
-
-                      <div className="mt-[20px]">
-
-                        <h2 className="futura-medium text-[19px] uppercase leading-[1.25] tracking-[0.025em] text-[#CBA356]">
+                    <div className="flex min-h-0 flex-1 flex-col px-[38px] pb-[18px] pt-[2px] lg:px-[44px] lg:pb-[24px]">
+                      <div className="mt-[20px] lg:mt-[26px]">
+                        <h2 className="futura-medium text-[19px] uppercase leading-[1.25] tracking-[0.025em] text-[#CBA356] lg:text-[22px]">
                           {step.title}
                         </h2>
 
-                        <p className="futura-light mt-4 text-[11.5px] leading-[1.58] tracking-[0.01em] text-[#F4F0E9]">
+                        <p className="futura-light mt-4 text-[11.5px] leading-[1.58] tracking-[0.01em] text-[#F4F0E9] lg:text-[14px]">
                           {step.description}
                         </p>
-
                       </div>
-
                     </div>
-
                   </div>
-
                 </div>
               </div>
             );
@@ -1078,12 +1053,11 @@ export default function Hero() {
         {/* CTA                                                       */}
         {/* ========================================================= */}
 
-        <div className="mt-auto flex justify-center pt-8 md:pt-14">
+        <div className="mt-3 flex justify-center px-4 py-3">
           <Link href="#" className="global-cta">
             Get your Story Scripted&nbsp;&nbsp;&gt;&gt;
           </Link>
         </div>
-
       </section>
     </main>
   );

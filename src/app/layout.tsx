@@ -5,7 +5,6 @@ import "./globals.css";
 import Navbar from "./components/layout/Navbar";
 import BodyStyleReset from "./components/layout/BodyStyleReset";
 import ChunkErrorReload from "./components/layout/ChunkErrorReload";
-import PageTransitionProvider from "./components/transition/PageTransitionProvider";
 import Footer from "./components/layout/Footer";
 
 const geistSans = Geist({
@@ -34,30 +33,19 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        <link
-          rel="stylesheet"
-          href="https://use.typekit.net/zar3kom.css"
-        />
+        <link rel="stylesheet" href="https://use.typekit.net/zar3kom.css" />
       </head>
 
       <body className="flex flex-col">
+        <ChunkErrorReload />
 
-        <PageTransitionProvider>
+        <BodyStyleReset />
 
-          <ChunkErrorReload />
+        <Navbar />
 
-          <BodyStyleReset />
+        <main className="flex-1">{children}</main>
 
-          <Navbar />
-
-          <main className="flex-1">
-            {children}
-          </main>
-
-          <Footer />
-
-        </PageTransitionProvider>
-
+        <Footer />
       </body>
     </html>
   );

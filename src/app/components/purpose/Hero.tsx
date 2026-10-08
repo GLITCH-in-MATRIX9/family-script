@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SocialIcons from "../layout/SocialIcos";
 import ScrapbookImage from "./ScrapbookImage";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -128,15 +127,13 @@ export default function Hero() {
       style={{
         background: `linear-gradient(
           to bottom,
-          #431827 0%,
-          #3b1724 40%,
-          #331923 75%,
-          #2c1620 100%
+          #260215 0%,
+          #350319 40%,
+          #40031f 75%,
+          #480424 100%
         )`,
       }}
     >
-      <SocialIcons />
-
       {/* ========================================================= */}
       {/* FULL WIDTH BANNER */}
       {/* ========================================================= */}
@@ -153,12 +150,12 @@ export default function Hero() {
         />
 
         <div
-    className="pointer-events-none absolute inset-0 z-10"
-    style={{
-      background:
-        "linear-gradient(to bottom, rgba(72,4,36,0.55) 0%, rgba(56,44,59,0.25) 45%, rgba(56,44,59,0.15) 100%)",
-    }}
-  />
+          className="pointer-events-none absolute inset-0 z-10"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(72,4,36,0.55) 0%, rgba(56,44,59,0.25) 45%, rgba(56,44,59,0.15) 100%)",
+          }}
+        />
       </section>
 
       {/* ========================================================= */}
@@ -176,10 +173,10 @@ export default function Hero() {
         style={{
           background: `linear-gradient(
             to bottom,
-            #431827 0%,
-            #3b1724 40%,
-            #331923 75%,
-            #2c1620 100%
+            #260215 0%,
+            #350319 40%,
+            #40031f 75%,
+            #480424 100%
           )`,
         }}
       >
@@ -199,7 +196,8 @@ export default function Hero() {
           "
           style={{
             background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.18) 20%, rgba(0,0,0,0.06) 50%, rgba(83,36,57,0) 100%)"          }}
+              "linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.18) 20%, rgba(0,0,0,0.06) 50%, rgba(83,36,57,0) 100%)",
+          }}
         />
 
         {/* ===================================================== */}
@@ -218,7 +216,8 @@ export default function Hero() {
           "
           style={{
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.18) 20%, rgba(0,0,0,0.06) 50%, rgba(83,36,57,0) 100%)"          }}
+              "linear-gradient(to top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.18) 20%, rgba(0,0,0,0.06) 50%, rgba(83,36,57,0) 100%)",
+          }}
         />
 
         {/* ===================================================== */}
@@ -243,10 +242,7 @@ export default function Hero() {
           {/* OUR VISION */}
           {/* ================================================= */}
 
-          <div
-            ref={visionRef}
-            className="w-full md:w-[68%]"
-          >
+          <div ref={visionRef} className="w-full md:w-[68%]">
             <h2 className="futura-light text-[26px] uppercase tracking-[0.06em] text-[#e7ad55] md:text-[30px]">
               Our Vision
             </h2>
@@ -298,12 +294,12 @@ export default function Hero() {
             </h2>
 
             <p className="futura-light mt-5 text-[15px] leading-[1.8] tracking-wide text-white/80 md:text-[16px]">
-              Our mission is to create a memory treasure chest that captures
-              the full spectrum of emotions, dig beyond surface-level
-              celebrations, explores the complexities and nuances of human
-              subtleties, embrace vulnerabilities and encourage individuals
-              to recognise and honour unfiltered truth that defines them by
-              preserving their stories, memories and unscripted experiences.
+              Our mission is to create a memory treasure chest that captures the
+              full spectrum of emotions, dig beyond surface-level celebrations,
+              explores the complexities and nuances of human subtleties, embrace
+              vulnerabilities and encourage individuals to recognise and honour
+              unfiltered truth that defines them by preserving their stories,
+              memories and unscripted experiences.
             </p>
 
             <p className="futura-light mt-5 text-[15px] leading-[1.8] tracking-wide text-white/80 md:text-[16px]">
@@ -318,10 +314,7 @@ export default function Hero() {
           {/* CTA */}
           {/* ================================================= */}
 
-          <div
-            ref={ctaRef}
-            className="mt-16 flex justify-center md:mt-20"
-          >
+          <div ref={ctaRef} className="mt-16 flex justify-center md:mt-20">
             <Link
               href="#"
               className="
@@ -345,11 +338,7 @@ export default function Hero() {
                 hover:bg-white/[0.15]
               "
             >
-              Get your Story{" "}
-              <span className="futura-bold ml-1">
-                Scripted
-              </span>
-
+              Get your Story <span className="futura-bold ml-1">Scripted</span>
               <span className="ml-3 transition-transform duration-300 group-hover:translate-x-1">
                 &gt;&gt;
               </span>

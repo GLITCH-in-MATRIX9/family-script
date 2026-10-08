@@ -32,31 +32,30 @@ const founders: Founder[] = [
 
 export default function Hero() {
   return (
-<section
-  className="relative min-h-screen w-full text-white"
-  style={{
-    background: `linear-gradient(
+    <section
+      className="relative min-h-screen w-full text-white"
+      style={{
+        background: `linear-gradient(
       to bottom,
-      #431827 0%,
-      #3b1724 40%,
-      #331923 75%,
-      #2c1620 100%
+      #260215 0%,
+      #350319 40%,
+      #40031f 75%,
+      #480424 100%
     )`,
-  }}
->
-  <div className="pointer-events-none absolute left-0 top-0 z-10 h-40 w-full bg-gradient-to-b from-black/40 via-black/15 to-transparent md:h-56" />
+      }}
+    >
+      <div className="pointer-events-none absolute left-0 top-0 z-10 h-40 w-full bg-gradient-to-b from-black/40 via-black/15 to-transparent md:h-56" />
       {/* ================= CONTENT ================= */}
 
       <div className="relative z-10 mx-auto min-h-screen w-full max-w-[1400px] px-8 pb-12 pt-[150px] md:px-[7%] md:pt-[145px]">
-
         {/* ================= HEADING ================= */}
 
-        <div className="relative z-50 text-center">
-          <h1 className="futura-light text-[38px] uppercase leading-none tracking-[0.025em] text-white md:text-[42px] lg:text-[44px]">
-            Our Founders
+        <div className="relative z-50 mx-auto flex max-w-[900px] flex-col items-center text-center">
+          <h1 className="futura-light text-[38px] uppercase leading-none tracking-[0.08em] text-[#e7ad55] drop-shadow-[0_4px_18px_rgba(0,0,0,0.18)] md:text-[42px] lg:text-[44px]">
+            Our <span className="futura-bold">Founders</span>
           </h1>
 
-          <p className="futura-light mt-5 text-[14px] tracking-[0.02em] text-white/85 md:text-[15px]">
+          <p className="futura-light mt-5 max-w-[720px] text-[14px] leading-[1.5] tracking-[0.02em] text-white/85 md:text-[15px]">
             We are a team of dedicated creatives-
             <span className="futura-light">
               {" "}
@@ -73,4 +72,3 @@ export default function Hero() {
     </section>
   );
 }
-

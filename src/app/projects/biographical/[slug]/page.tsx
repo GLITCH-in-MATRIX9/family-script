@@ -9,20 +9,16 @@ type PageProps = {
   }>;
 };
 
-export default async function BiographicalProjectPage({
-  params,
-}: PageProps) {
+export default async function BiographicalProjectPage({ params }: PageProps) {
   const { slug } = await params;
 
   const project = projects.find(
-    (item) =>
-      item.slug === slug &&
-      item.category === "biographical"
+    (item) => item.slug === slug && item.category === "biographical",
   );
 
   if (!project) {
     notFound();
   }
 
-  return <ProjectDetails project={project} />;
+  return <ProjectDetails project={project} animateEntrance />;
 }
