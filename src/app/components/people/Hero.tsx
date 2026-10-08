@@ -58,11 +58,11 @@ export default function Hero() {
 
           <p className="futura-light mt-5 text-[14px] tracking-[0.02em] text-white/85 md:text-[15px]">
             We are a team of dedicated creatives-
-            <span className="futura-bold">
+            <span className="futura-light">
               {" "}
               Architects, Historians, Conservationists
             </span>{" "}
-            and <span className="futura-bold">Designers.</span>
+            and <span className="futura-light">Designers.</span>
           </p>
         </div>
 

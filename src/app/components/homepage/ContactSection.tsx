@@ -564,7 +564,11 @@ export default function ContactSection() {
 
               {/* Documentation purpose dropdown */}
               <FormSelect
-                placeholder="Documentation purpose*"
+                placeholder={
+                  selectedService === "journals"
+                    ? "Select*"
+                    : "Documentation purpose*"
+                }
                 value={selectedPurpose}
                 options={purposeOptions}
                 onChange={setSelectedPurpose}

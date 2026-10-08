@@ -27,8 +27,8 @@ const COMPANY_LINKS: (string | FooterLink)[] = [
     href: "/philosophy",
   },
   {
-    label: "Awards & Events",
-    href: "/projects/events",
+    label: "Awards",
+    href: "/awards",
   },
 ];
 

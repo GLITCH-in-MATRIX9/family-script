@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const isHome = pathname === "/";
   const [menuOpen, setMenuOpen] = useState(false);
 
   /*
@@ -61,19 +62,39 @@ export default function Navbar() {
           aria-label="Family Script Home"
           onClick={() => setMenuOpen(false)}
         >
-          <img
-            src="/assets/homepage/FS_logo.png"
-            alt="Family Script"
-            className="
-              h-[78px]
-              w-[78px]
-              object-contain
-              brightness-0
-              invert
-              max-sm:h-[62px]
-              max-sm:w-[62px]
-            "
-          />
+          {isHome ? (
+            <span
+              className="
+                futura-light
+                flex
+                h-[78px]
+                items-center
+                whitespace-nowrap
+                text-[24px]
+                uppercase
+                tracking-[0.32em]
+                text-white
+                max-sm:h-[62px]
+                max-sm:text-[18px]
+              "
+            >
+              Family Script
+            </span>
+          ) : (
+            <img
+              src="/assets/homepage/FS_logo.png"
+              alt="Family Script"
+              className="
+                h-[78px]
+                w-[78px]
+                object-contain
+                brightness-0
+                invert
+                max-sm:h-[62px]
+                max-sm:w-[62px]
+              "
+            />
+          )}
         </Link>
 
         {/* ==================================================

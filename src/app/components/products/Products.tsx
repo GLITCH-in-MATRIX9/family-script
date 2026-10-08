@@ -2,7 +2,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -13,9 +12,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const INTRO_TEXT =
   "Discover meaningful ways to preserve memories, celebrate milestones, and share your family's story.";
-
-const LIVE_CATALOG_URL =
-  "https://familyscript.com/category/all-products";
 
 const BANNER_PHOTO = "/assets/Products/upper-img.png";
 
@@ -333,18 +329,6 @@ export default function Products() {
             }}
           />
         ))}
-
-        {/* Existing catalog */}
-        <div className="mt-10 flex justify-center sm:mt-12">
-          <Link
-            href={LIVE_CATALOG_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="futura-medium text-center text-xs tracking-[0.15em] text-white underline-offset-4 transition hover:underline sm:text-sm sm:tracking-[0.2em] md:text-base"
-          >
-            REFER EXISTING WEBSITE
-          </Link>
-        </div>
 
         {/* CTA */}
         <div

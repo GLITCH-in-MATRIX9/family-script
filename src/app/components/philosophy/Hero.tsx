@@ -387,7 +387,7 @@ export default function Hero() {
             className="futura-light whitespace-nowrap uppercase tracking-[0.08em] text-white"
             style={{ fontSize: "clamp(24px, 7vw, 40px)", lineHeight: 1 }}
           >
-            Founding <span className="futura-medium">Beliefs</span>
+            Founding <span className="futura-light">Beliefs</span>
           </h1>
         </div>
 

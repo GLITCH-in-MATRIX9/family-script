@@ -247,7 +247,7 @@ export default function Hero() {
             ref={visionRef}
             className="w-full md:w-[68%]"
           >
-            <h2 className="futura-bold text-[26px] uppercase tracking-[0.06em] text-[#e7ad55] md:text-[30px]">
+            <h2 className="futura-light text-[26px] uppercase tracking-[0.06em] text-[#e7ad55] md:text-[30px]">
               Our Vision
             </h2>
 
@@ -293,7 +293,7 @@ export default function Hero() {
               md:text-right
             "
           >
-            <h2 className="futura-bold text-[26px] uppercase tracking-[0.06em] text-[#e7ad55] md:text-[30px]">
+            <h2 className="futura-light text-[26px] uppercase tracking-[0.06em] text-[#e7ad55] md:text-[30px]">
               Our Mission
             </h2>
 
