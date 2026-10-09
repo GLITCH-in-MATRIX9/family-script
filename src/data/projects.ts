@@ -526,7 +526,7 @@ export const projects: Project[] = [
 
     coverImage: "/assets/PROJECTS/BIOGRAPHICAL/DR. K D BHARGAVA/cover.png",
 
-    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/DR. K D BHARGAVA/main.png",
+    bookImage: "/assets/PROJECTS/BIOGRAPHICAL/DR. K D BHARGAVA/book.png",
 
     gallery: [
       {

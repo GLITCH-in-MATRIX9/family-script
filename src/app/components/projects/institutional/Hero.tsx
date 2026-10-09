@@ -192,9 +192,8 @@ export default function Hero() {
               md:text-[19px]
             "
           >
-            From institutions and their people to the practices and
-            philosophies that shape them, we preserve stories of
-            collective legacy.
+            From institutions and their people to the practices and philosophies
+            that shape them, we preserve stories of collective legacy.
           </p>
         </div>
 
@@ -239,12 +238,10 @@ export default function Hero() {
                     h-full
                     w-full
                     object-cover
-                    grayscale
                     transition-all
                     duration-700
                     ease-out
                     group-hover:scale-[1.03]
-                    group-hover:grayscale-0
                   "
                 />
 

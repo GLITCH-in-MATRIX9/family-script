@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SocialIcons from "../layout/SocialIcos";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -351,24 +350,22 @@ export default function Hero() {
     <main
       className="relative min-h-screen w-full overflow-hidden text-white"
       style={{
-  background: `linear-gradient(
+        background: `linear-gradient(
         to bottom,
-        #431827 0%,
-        #3b1724 40%,
-        #331923 75%,
-        #2c1620 100%
+        #260215 0%,
+        #350319 40%,
+        #40031f 75%,
+        #480424 100%
       )`,
-    }}
+      }}
     >
-      <SocialIcons />
-
       {/* =========================================================
           TOP / BOTTOM BLACK VIGNETTE
           Purely decorative, sits above the background color but
           below the actual content so it never blocks interaction.
           ========================================================= */}
 
-   <div className="pointer-events-none absolute left-0 top-0 z-10 h-40 w-full bg-gradient-to-b from-black/40 via-black/15 to-transparent md:h-56" />
+      <div className="pointer-events-none absolute left-0 top-0 z-10 h-40 w-full bg-gradient-to-b from-black/40 via-black/15 to-transparent md:h-56" />
       {/* =========================================================
           MAIN CONTENT
           Existing navbar/header remains handled by the codebase.
@@ -385,7 +382,7 @@ export default function Hero() {
         >
           <h1
             className="futura-light whitespace-nowrap uppercase tracking-[0.08em] text-white"
-            style={{ fontSize: "clamp(24px, 7vw, 40px)", lineHeight: 1 }}
+            style={{ fontSize: "clamp(24px, 7vw, 48px)", lineHeight: 1 }}
           >
             Founding <span className="futura-light">Beliefs</span>
           </h1>
@@ -401,8 +398,9 @@ export default function Hero() {
             mx-auto mt-10 flex w-full flex-col items-center
             gap-[35px]
             md:mt-12
+            md:max-w-[760px]
             xl:flex-row xl:flex-wrap xl:justify-center xl:gap-12
-            xl:max-w-[1000px]
+            xl:max-w-[1200px]
           "
         >
           {beliefs.map((belief, index) => (
@@ -417,23 +415,22 @@ export default function Hero() {
                 hover:border-[#E9E7DA]/45
                 hover:bg-white/[0.025]
 
+                md:min-h-[220px]
+                md:w-[min(620px,calc(100vw_-_120px))]
+
                 ${
                   index === 0
                     ? "translate-x-[24px] pl-[72px] pr-5"
                     : "-translate-x-[24px] pl-5 pr-[72px]"
                 }
 
-                xl:h-[280px]
-                xl:w-[400px]
+                xl:h-[320px]
+                xl:w-[520px]
                 xl:translate-x-0
                 xl:px-7
                 xl:py-6
 
-                ${
-                  index === 0
-                    ? "xl:pl-16 xl:pl-20"
-                    : "xl:pr-16 xl:pr-20"
-                }
+                ${index === 0 ? "xl:pl-16 xl:pl-20" : "xl:pr-16 xl:pr-20"}
               `}
             >
               {/* Portrait */}
@@ -448,20 +445,15 @@ export default function Hero() {
                   border border-[#E9E7DA]/25
                   shadow-lg
 
-                  ${
-                    index === 0
-                      ? "left-[-40px]"
-                      : "right-[-40px]"
-                  }
+                  ${index === 0 ? "left-[-40px]" : "right-[-40px]"}
 
-                  xl:h-[150px]
-                  xl:w-[150px]
+                  md:h-[140px]
+                  md:w-[125px]
 
-                  ${
-                    index === 0
-                      ? "xl:left-[-48px]"
-                      : "xl:right-[-48px]"
-                  }
+                  xl:h-[170px]
+                  xl:w-[170px]
+
+                  ${index === 0 ? "xl:left-[-48px]" : "xl:right-[-48px]"}
                 `}
               >
                 <img
@@ -484,14 +476,10 @@ export default function Hero() {
                       : "mr-0 ml-auto xl:text-right"
                   }
 
-                  xl:h-[180px]
+                  xl:h-[220px]
                   xl:translate-y-[15px]
 
-                  ${
-                    index === 0
-                      ? "xl:ml-12"
-                      : "xl:mr-12"
-                  }
+                  ${index === 0 ? "xl:ml-12" : "xl:mr-12"}
                 `}
               >
                 <p
@@ -503,10 +491,10 @@ export default function Hero() {
                     tracking-wide
                     text-white/75
 
-                    xl:max-w-[210px]
-                    xl:text-[13.5px]
+                    xl:max-w-[300px]
+                    xl:text-[16px]
                     xl:leading-[1.7]
-                    xl:max-w-[240px]
+                    xl:max-w-[300px]
 
                     ${index === 0 ? "xl:mx-0" : "xl:mr-0 xl:ml-auto"}
                   `}
@@ -521,13 +509,9 @@ export default function Hero() {
                     text-[10px]
                     text-white/55
 
-                    xl:text-[10px]
+                    xl:text-[12px]
 
-                    ${
-                      index === 0
-                        ? "xl:text-right"
-                        : "xl:text-left"
-                    }
+                    ${index === 0 ? "xl:text-right" : "xl:text-left"}
                   `}
                 >
                   {belief.author}
@@ -547,7 +531,9 @@ export default function Hero() {
         >
           <p className="futura-light text-balance text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-wrap md:text-[16px]">
             We believe that documentation is an invaluable{" "}
-            <span className="futura-emphasis whitespace-nowrap text-white">strategic asset.</span>
+            <span className="futura-emphasis whitespace-nowrap text-white">
+              strategic asset.
+            </span>
           </p>
 
           <p className="futura-light mt-3 text-balance text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-wrap md:text-[16px]">
@@ -558,19 +544,23 @@ export default function Hero() {
 
           <p className="futura-light mt-4 text-balance text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-wrap md:text-[16px]">
             At a{" "}
-            <span className="futura-emphasis whitespace-nowrap text-white">civilisational level</span>
+            <span className="futura-emphasis whitespace-nowrap text-white">
+              civilisational level
+            </span>
             , our efforts shall feed into the collective consciousness.
           </p>
 
           <p className="futura-light mt-4 text-balance text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-wrap md:text-[16px]">
             We envision to be globally recognised as an inspirational{" "}
-            <span className="futura-emphasis whitespace-nowrap text-white">powerhouse by 2028</span>{" "}
+            <span className="futura-emphasis whitespace-nowrap text-white">
+              powerhouse by 2028
+            </span>{" "}
             - a living library with a virtual vault of memories.
           </p>
 
           <p className="futura-light mt-4 text-balance text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-wrap md:text-[16px]">
-            Our work aligns with UN SDG 11.4 to protect and safeguard
-            intangible heritage.
+            Our work aligns with UN SDG 11.4 to protect and safeguard intangible
+            heritage.
           </p>
 
           <p className="futura-light mt-4 text-balance text-[14px] leading-[1.75] tracking-wide text-white/80 md:text-wrap md:text-[16px]">

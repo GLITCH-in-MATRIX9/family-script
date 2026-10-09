@@ -21,7 +21,6 @@ export default function EventsGrid() {
       ========================================================= */}
 
       <div className="pointer-events-none absolute inset-0">
-
         {/* Top burgundy */}
 
         <div
@@ -76,7 +75,6 @@ export default function EventsGrid() {
           lg:px-[7.2%]
         "
       >
-
         {/* ======================================================
             BREADCRUMB
         ====================================================== */}
@@ -94,7 +92,7 @@ export default function EventsGrid() {
             href="/"
             className="
               futura-light
-              text-[9px]
+              text-[10px]
               uppercase
               tracking-wide
               text-[rgb(233_231_218)]/40
@@ -102,23 +100,25 @@ export default function EventsGrid() {
               duration-300
               hover:text-[rgb(233_231_218)]/75
               sm:text-[10px]
+              md:text-[13px]
             "
           >
             Home
           </Link>
 
-          <span className="futura-light text-[9px] text-[rgb(233_231_218)]/30 sm:text-[10px]">
+          <span className="futura-light text-[10px] text-[rgb(233_231_218)]/30 sm:text-[10px] md:text-[13px]">
             &gt;&gt;
           </span>
 
           <span
             className="
               futura-light
-              text-[9px]
+              text-[10px]
               uppercase
               tracking-wide
               text-[rgb(233_231_218)]/45
               sm:text-[10px]
+              md:text-[13px]
             "
           >
             Events
@@ -166,8 +166,7 @@ export default function EventsGrid() {
               md:text-[clamp(14px,1vw,17px)]
             "
           >
-            From memories and archives to beautifully
-            crafted events,
+            From memories and archives to beautifully crafted events,
             <br className="hidden sm:block" />
             we preserve stories that matter.
           </p>
@@ -223,12 +222,10 @@ export default function EventsGrid() {
                   "
                   className="
                     object-cover
-                    grayscale
                     transition-all
                     duration-700
                     ease-out
                     group-hover:scale-[1.03]
-                    group-hover:grayscale-0
                   "
                 />
 
@@ -297,10 +294,7 @@ export default function EventsGrid() {
               sm:text-[15px]
             "
           >
-            Get your Story{" "}
-            <span className="futura-bold">
-              Scripted
-            </span>{" "}
+            Get your Story <span className="futura-bold">Scripted</span>{" "}
             &gt;&gt;
           </Link>
         </div>

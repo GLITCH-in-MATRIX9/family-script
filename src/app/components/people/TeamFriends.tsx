@@ -97,35 +97,65 @@ const friends = [
 
 export default function TeamFriends() {
   return (
-<section
-  className="relative min-h-[160vh] w-full text-white"
-  style={{
-    background: `linear-gradient(
-      to bottom,
-      #431827 0%,
-      #3b1724 40%,
-      #331923 75%,
-      #2c1620 100%
+    <section
+      className="relative min-h-[160vh] w-full text-white"
+      style={{
+        background: `linear-gradient(
+      to top,
+      #260215 0%,
+      #350319 40%,
+      #40031f 75%,
+      #480424 100%
     )`,
-  }}
->
-  <div className="pointer-events-none absolute left-0 top-0 z-10 h-40 w-full bg-gradient-to-b from-black/40 via-black/15 to-transparent md:h-56" />
+      }}
+    >
+      <div className="pointer-events-none absolute left-0 top-0 z-10 h-40 w-full md:h-56" />
       {/* ================= CONTENT ================= */}
 
-      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-4 pb-10 pt-24 md:px-8 md:pt-28">
-
+      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-0 pb-0 pt-24 md:px-8 md:pb-10 md:pt-28">
         {/* ================= OUR TEAM ================= */}
 
         <div className="text-center">
-          <h2 className="futura-light pb-[40px] text-[32px] uppercase tracking-[0.05em] text-white md:text-[40px] lg:text-[44px]">
-            Our Team
+          <h2 className="futura-light text-[34px] uppercase leading-none tracking-[0.12em] text-[#e7ad55] md:text-[42px] lg:text-[48px]">
+            Our <span className="futura-bold">Team</span>
           </h2>
         </div>
 
         {/* ================= TEAM ================= */}
 
-        <div className="relative mx-auto mt-14 w-full max-w-[1250px]">
+        <div className="mx-auto mt-16 flex w-full flex-col gap-14 md:hidden">
+          {team.map((member) => (
+            <article
+              key={member.name}
+              className="group flex flex-col items-center border-b border-white/20 pb-0"
+            >
+              <div className="relative h-[340px] w-full overflow-hidden">
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  fill
+                  sizes="82vw"
+                  className="object-contain object-bottom transition-transform duration-500 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03]"
+                />
 
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#210313] via-[#210313]/75 to-transparent" />
+
+                <div className="absolute inset-x-0 bottom-4 text-center">
+                  <h3 className="futura-medium text-[13px] uppercase tracking-[0.06em] text-[#e7ad55]">
+                    {member.name}
+                  </h3>
+
+                  <div className="futura-light mt-2 text-[11px] leading-[1.6] text-white/85">
+                    <p>{member.role[0]}</p>
+                    <p>{member.role[1]}</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="relative mx-auto mt-32 hidden w-full max-w-[1250px] md:block">
           {/* ================= RECTANGLE ================= */}
 
           <div className="relative h-[200px] border border-white/25">
@@ -135,7 +165,7 @@ export default function TeamFriends() {
                   key={member.name}
                   className="relative flex h-full w-1/3 items-end justify-center"
                 >
-                  <div className="relative h-[290px] w-full">
+                  <div className="relative h-[220px] w-full sm:h-[250px] md:h-[290px] lg:h-[330px]">
                     <Image
                       src={member.image}
                       alt={member.name}
@@ -177,11 +207,11 @@ export default function TeamFriends() {
         {/* ================= FRIENDS TITLE ================= */}
 
         <div className="text-center">
-          <h2 className="futura-light text-[22px] uppercase tracking-[0.06em] text-white md:text-[28px] lg:text-[30px]">
-            Friends of Family Script
+          <h2 className="futura-light text-[28px] uppercase leading-none tracking-[0.1em] text-[#e7ad55] md:text-[34px] lg:text-[38px]">
+            Friends of <span className="futura-bold">Family Script</span>
           </h2>
 
-          <p className="futura-light mx-auto mt-5 max-w-[850px] text-[15px] leading-[1.7] tracking-[0.02em] text-white/65 md:text-[15px]">
+          <p className="futura-light mx-auto mt-7 max-w-[760px] text-[14px] leading-[1.75] tracking-[0.02em] text-white/65 md:text-[15px]">
             This is a place to thank the friends who have lent their voices,
             experiences and expertise throughout our journey. Our work is made
             richer by the people who have shared their stories and trusted us
@@ -191,7 +221,7 @@ export default function TeamFriends() {
 
         {/* ================= FRIENDS GRID ================= */}
 
-        <div className="mx-auto mt-16 grid w-full max-w-[1250px] grid-cols-3 gap-x-8 gap-y-14 sm:grid-cols-4 md:grid-cols-6 md:gap-x-12 md:gap-y-16">
+        <div className="mx-auto mt-16 grid w-full max-w-[1250px] grid-cols-3 gap-x-8 gap-y-14 sm:grid-cols-4 md:grid-cols-6 md:gap-x-12 md:gap-y-16 pb-10">
           {friends.map((friend) => (
             <div
               key={friend.name}
@@ -205,7 +235,7 @@ export default function TeamFriends() {
                   alt={friend.name}
                   fill
                   sizes="125px"
-                  className="object-cover grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
+                  className="object-cover transition-all duration-500 group-hover:scale-105"
                 />
               </div>
 
@@ -217,10 +247,6 @@ export default function TeamFriends() {
             </div>
           ))}
         </div>
-
-        {/* ================= BOTTOM SPACE ================= */}
-
-        <div className="h-[15vh]" />
       </div>
     </section>
   );
