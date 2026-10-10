@@ -80,25 +80,25 @@ export default function EventDescription({
       </div>
 
       {hasMore && (
-        <button
-          type="button"
-          onClick={() => setExpanded((value) => !value)}
-          aria-expanded={expanded}
-          className="
-            futura-light
-            mt-4
-            cursor-pointer
-            text-[12px]
-            tracking-wide
-            text-[rgb(233_231_218)]/55
-            transition-colors
-            duration-300
-            hover:text-[rgb(203_163_86)]
-            sm:mt-5
-          "
-        >
-          {expanded ? "Read less <<" : "Read more >>"}
-        </button>
+        <div className="mt-4 flex justify-end sm:mt-5">
+          <button
+            type="button"
+            onClick={() => setExpanded((value) => !value)}
+            aria-expanded={expanded}
+            className="
+              futura-light
+              cursor-pointer
+              text-[12px]
+              tracking-wide
+              text-[rgb(233_231_218)]/60
+              transition-colors
+              duration-300
+              hover:text-[rgb(203_163_86)]
+            "
+          >
+            {expanded ? "Read less <<" : "Read more >>"}
+          </button>
+        </div>
       )}
     </div>
   );

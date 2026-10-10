@@ -110,6 +110,28 @@ export default function EventsGrid() {
             &gt;&gt;
           </span>
 
+          <Link
+            href="/projects"
+            className="
+              futura-light
+              text-[10px]
+              uppercase
+              tracking-wide
+              text-[rgb(233_231_218)]/40
+              transition-colors
+              duration-300
+              hover:text-[rgb(233_231_218)]/75
+              sm:text-[10px]
+              md:text-[13px]
+            "
+          >
+            Projects
+          </Link>
+
+          <span className="futura-light text-[10px] text-[rgb(233_231_218)]/30 sm:text-[10px] md:text-[13px]">
+            &gt;&gt;
+          </span>
+
           <span
             className="
               futura-light
@@ -276,7 +298,7 @@ export default function EventsGrid() {
           "
         >
           <Link
-            href="/contact"
+            href="/#contact-us"
             className="
               futura-light
               rounded-full

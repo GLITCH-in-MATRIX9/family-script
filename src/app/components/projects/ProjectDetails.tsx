@@ -84,7 +84,8 @@ export default function ProjectDetails({
           pt-24
           sm:px-8
           sm:pt-28
-          lg:block
+          lg:flex
+          lg:flex-col
           lg:px-[6%]
           lg:pt-28
           ${animateEntrance ? "biographical-appear-item" : ""}
@@ -175,6 +176,7 @@ export default function ProjectDetails({
             w-full
             flex-col
             gap-10
+            lg:flex-1
             lg:flex-row
             lg:items-stretch
             lg:gap-12
@@ -192,9 +194,9 @@ export default function ProjectDetails({
               flex-col
               justify-end
               md:mt-12
-              lg:mt-6
+              lg:mt-0
               lg:w-[42%]
-              lg:pt-10
+              lg:pt-0
             "
           >
             <h1
@@ -318,7 +320,7 @@ export default function ProjectDetails({
             </div>
 
             {hasMore && (
-              <div className="mt-6 flex justify-end">
+              <div className="mt-5 flex justify-end">
                 <button
                   type="button"
                   onClick={toggleExpanded}
@@ -327,7 +329,7 @@ export default function ProjectDetails({
                     futura-light
                     text-[12px]
                     tracking-wide
-                    text-white/25
+                    text-white/60
                     transition-colors
                     duration-300
                     hover:text-white

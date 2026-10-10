@@ -181,7 +181,8 @@ export default function AwardDetails({
             grid-cols-1
             gap-10
             sm:gap-12
-                        lg:grid-cols-[45%_55%]
+            lg:min-h-[calc(100vh-210px)]
+            lg:grid-cols-[45%_55%]
             lg:gap-6
           "
         >
@@ -194,6 +195,7 @@ export default function AwardDetails({
             className="
               flex
               items-start
+              lg:items-end
             "
           >
             <div
@@ -244,6 +246,7 @@ export default function AwardDetails({
             className="
               flex
               items-start
+              lg:items-end
               lg:justify-center
             "
           >
@@ -252,6 +255,7 @@ export default function AwardDetails({
                 flex
                 w-full
                 max-w-[560px]
+                lg:max-w-[min(560px,calc((100vh-266px)*0.7))]
                 flex-col
                 gap-4
                 sm:gap-5

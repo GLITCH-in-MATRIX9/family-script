@@ -264,7 +264,7 @@ export default function AwardsGrid() {
           "
         >
           <Link
-            href="/contact"
+            href="/#contact-us"
             className="
               futura-light
               rounded-full

@@ -131,6 +131,28 @@ export default function EventDetails({ event }: EventDetailsProps) {
             &gt;&gt;
           </span>
 
+          <Link
+            href="/projects/events"
+            className="
+              futura-light
+              text-[10px]
+              uppercase
+              tracking-wide
+              text-[rgb(233_231_218)]/40
+              transition-colors
+              duration-300
+              hover:text-[rgb(233_231_218)]/75
+              sm:text-[10px]
+              md:text-[13px]
+            "
+          >
+            Events
+          </Link>
+
+          <span className="text-[10px] text-[rgb(233_231_218)]/30 sm:text-[10px] md:text-[13px]">
+            &gt;&gt;
+          </span>
+
           <span
             className="
               futura-light
@@ -180,7 +202,7 @@ export default function EventDetails({ event }: EventDetailsProps) {
             className="
               flex
               items-start
-              lg:items-center
+              lg:items-end
             "
           >
             <div
@@ -233,7 +255,7 @@ export default function EventDetails({ event }: EventDetailsProps) {
             className="
               flex
               items-start
-              lg:items-center
+              lg:items-end
             "
           >
             <div
