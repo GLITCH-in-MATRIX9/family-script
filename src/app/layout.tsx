@@ -6,6 +6,8 @@ import Navbar from "./components/layout/Navbar";
 import BodyStyleReset from "./components/layout/BodyStyleReset";
 import ChunkErrorReload from "./components/layout/ChunkErrorReload";
 import Footer from "./components/layout/Footer";
+import ScrollToTop from "./components/layout/ScrollToTop";
+import SocialDock from "./components/layout/SocialDock";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,6 +48,10 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
 
         <Footer />
+
+        <ScrollToTop />
+
+        <SocialDock />
       </body>
     </html>
   );

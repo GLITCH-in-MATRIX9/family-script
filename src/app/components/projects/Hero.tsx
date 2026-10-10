@@ -169,8 +169,8 @@ export default function ProjectsPage() {
                 {/* LEFT TEXT FOR EVEN */}
 
                 {isEven && (
-                  <div className="flex w-[42%] justify-center pr-8 md:w-[36%] md:pr-10">
-                    <h2 className="futura-light text-center text-[20px] uppercase leading-[1.2] tracking-[0.22em] text-white md:text-[22px]">
+                  <div className="flex w-[54%] justify-center pr-2 md:w-[36%] md:pr-10">
+                    <h2 className="futura-light relative z-10 text-center text-[clamp(11px,3.9vw,20px)] uppercase leading-[1.2] tracking-[0.12em] text-white md:text-[22px] md:tracking-[0.22em]">
                       {project.title}
                     </h2>
                   </div>
@@ -178,7 +178,7 @@ export default function ProjectsPage() {
 
                 {/* IMAGE */}
 
-                <div className="relative w-[50%] overflow-visible md:w-[58%]">
+                <div className="relative w-[46%] overflow-visible md:w-[58%]">
                   <div className="aspect-[1.35/1] w-full md:aspect-[1.6/1]">
                     <img
                       src={project.image}
@@ -193,8 +193,8 @@ export default function ProjectsPage() {
                 {/* RIGHT TEXT FOR ODD */}
 
                 {!isEven && (
-                  <div className="flex w-[42%] justify-center pl-7 md:w-[36%] md:pl-10">
-                    <h2 className="futura-light text-center text-[20px] uppercase leading-[1.2] tracking-[0.22em] text-white md:text-[22px]">
+                  <div className="flex w-[54%] justify-center pl-2 md:w-[36%] md:pl-10">
+                    <h2 className="futura-light relative z-10 text-center text-[clamp(11px,3.9vw,20px)] uppercase leading-[1.2] tracking-[0.12em] text-white md:text-[22px] md:tracking-[0.22em]">
                       {project.title}
                     </h2>
                   </div>

@@ -52,7 +52,7 @@ export default function Hero() {
 
         <div className="relative z-50 mx-auto flex max-w-[900px] flex-col items-center text-center">
           <h1 className="futura-light text-[38px] uppercase leading-none tracking-[0.08em] text-[#e7ad55] drop-shadow-[0_4px_18px_rgba(0,0,0,0.18)] md:text-[42px] lg:text-[44px]">
-            Our <span className="futura-bold">Founders</span>
+            Our Founders
           </h1>
 
           <p className="futura-light mt-5 max-w-[720px] text-[14px] leading-[1.5] tracking-[0.02em] text-white/85 md:text-[15px]">

@@ -193,7 +193,7 @@ function ExplorePanel({
       </h2>
 
       {/* Scrollable product content */}
-      <div className="mt-4 max-h-[180px] overflow-y-auto overscroll-contain pr-3 sm:max-h-[210px] md:max-h-[230px] lg:max-h-[260px]">
+      <div className="mt-4 max-h-[180px] minimal-scroll overflow-y-auto overscroll-contain pr-3 sm:max-h-[210px] md:max-h-[230px] lg:max-h-[260px]">
         <div className="flex flex-col gap-3">
           {product.segments.map((segment) => (
             <p
@@ -291,7 +291,7 @@ export default function Products() {
           className="pt-10 text-center sm:pt-14 md:pt-16 lg:pt-20"
         >
           <h1 className="futura-light text-2xl tracking-[0.1em] sm:text-3xl md:text-4xl lg:text-5xl">
-            OUR <span className="futura-bold">PRODUCTS</span>
+            OUR PRODUCTS
           </h1>
         </div>
 

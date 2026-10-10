@@ -87,7 +87,7 @@ function MobileTestimonial({
   testimonial: Testimonial;
 }) {
   return (
-    <div className="relative flex h-[410px] w-[min(300px,calc(100vw-40px))] flex-shrink-0 snap-center flex-col items-center justify-center rounded-[12px] border border-white/70 px-[22px] py-[24px] text-center">
+    <div className="relative flex h-[410px] w-[min(300px,calc(100vw-40px))] flex-shrink-0 snap-center snap-always flex-col items-center justify-center rounded-[12px] border border-white/70 px-[22px] py-[24px] text-center">
       {/* Image */}
       <div
         className="h-[125px] w-[105px] flex-shrink-0 rounded-[9px] bg-cover bg-center bg-no-repeat"
@@ -202,10 +202,9 @@ export default function Testimonials() {
          HORIZONTAL AUTO-SCROLL
       ====================================================== */
 
-      const viewports = [
-        desktopViewportRef.current,
-        mobileViewportRef.current,
-      ].filter(
+      // Mobile uses native swipe + CSS snap only. Driving scrollLeft from
+      // JS while the user is touching (and snap is active) caused jitter.
+      const viewports = [desktopViewportRef.current].filter(
         (viewport): viewport is HTMLDivElement =>
           viewport !== null
       );
@@ -246,10 +245,7 @@ export default function Testimonials() {
         viewports.forEach((viewport) => {
           if (paused.has(viewport)) return;
 
-          const loopWidth =
-            viewport === mobileViewportRef.current
-              ? viewport.scrollWidth - viewport.clientWidth
-              : viewport.scrollWidth / 2;
+          const loopWidth = viewport.scrollWidth / 2;
 
           const speed = 0.1;
 
@@ -387,7 +383,7 @@ export default function Testimonials() {
         {/* Mobile testimonial viewport */}
         <div
           ref={mobileViewportRef}
-          className="mx-auto mt-[35px] h-[430px] w-full snap-x snap-mandatory overflow-x-auto overflow-y-hidden pb-[10px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="mx-auto mt-[35px] h-[430px] w-full touch-pan-x snap-x snap-mandatory overflow-x-auto overflow-y-hidden overscroll-x-contain pb-[10px] [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           <div className="flex w-max flex-row items-center gap-[15px] px-[20px]">
             {TESTIMONIALS.map((testimonial, index) => (

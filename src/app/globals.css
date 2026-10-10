@@ -424,3 +424,178 @@ GLOBAL CTA
     font-size: 10px;
   }
 }
+
+
+/* ============================================================
+   MINIMAL SCROLLBAR (products description panels)
+============================================================ */
+
+.minimal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(203, 163, 86, 0.55) transparent;
+}
+
+.minimal-scroll::-webkit-scrollbar {
+  width: 3px;
+}
+
+.minimal-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+.minimal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(203, 163, 86, 0.6);
+  border-radius: 999px;
+}
+
+.minimal-scroll::-webkit-scrollbar-thumb:hover {
+  background: #cba356;
+}
+
+.minimal-scroll::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+}
+
+
+/* ============================================================
+   SOCIAL DOCK + MOBILE SCROLL-TO-TOP
+   (plain CSS so positioning never depends on Tailwind scanning)
+============================================================ */
+
+.social-dock-desktop {
+  /* override the global `body > div` min-height rule */
+  min-height: 0;
+  position: fixed;
+  right: 12px;
+  bottom: 24px;
+  z-index: 90;
+  display: none;
+  width: 64px;
+  height: 170px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.social-dock-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.social-dock-list[data-visible="false"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.social-dock-icon {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #3b0a1f;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.social-dock-icon svg {
+  color: #3b0a1f;
+  stroke: #3b0a1f;
+}
+
+.social-dock-icon:hover {
+  transform: scale(1.1);
+}
+
+.social-dock-mobile {
+  /* override the global `body > div { width:100%; min-height:100% }` rule */
+  width: auto;
+  min-height: 0;
+  position: fixed;
+  right: 16px;
+  bottom: 84px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.social-dock-mobile-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.social-dock-mobile-list[data-open="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.social-dock-toggle {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(105, 31, 62, 0.85);
+  color: #ffffff;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.social-dock-toggle[data-open="true"] {
+  opacity: 1;
+}
+
+.scroll-top-btn {
+  position: fixed;
+  right: 16px;
+  bottom: 24px;
+  z-index: 100;
+  display: flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: #691f3e;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.scroll-top-btn[data-visible="false"] {
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .social-dock-desktop {
+    display: flex;
+  }
+
+  .social-dock-mobile,
+  .scroll-top-btn {
+    display: none;
+  }
+}

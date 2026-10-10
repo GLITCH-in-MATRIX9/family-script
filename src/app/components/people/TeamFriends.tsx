@@ -5,17 +5,17 @@ import Image from "next/image";
 const team = [
   {
     name: "SHREYAS V BHATT",
-    role: ["Growth Strategy Advisor", "Architect  |  Designer"],
+    role: ["GROWTH STRATEGY ADVISOR", "Industrialist, Engineer"],
     image: "/assets/People/OurTeam/Shreyas.png",
   },
   {
     name: "AR. ANJAL SHANIMA",
-    role: ["Visual Design Lead", "Architect  |  Designer"],
+    role: ["VISUAL DESIGN LEAD", "Architect, Designer"],
     image: "/assets/People/OurTeam/AnjalShanima.png",
   },
   {
     name: "AR. FARIA CHOUDHRY",
-    role: ["Business Strategist", "Architect  |  Management Professional"],
+    role: ["BUSINESS STRATEGIST", "Architect, Management Professional"],
     image: "/assets/People/OurTeam/Faria.png",
   },
 ];
@@ -117,7 +117,7 @@ export default function TeamFriends() {
 
         <div className="text-center">
           <h2 className="futura-light text-[34px] uppercase leading-none tracking-[0.12em] text-[#e7ad55] md:text-[42px] lg:text-[48px]">
-            Our <span className="futura-bold">Team</span>
+            Our Team
           </h2>
         </div>
 
@@ -208,7 +208,7 @@ export default function TeamFriends() {
 
         <div className="text-center">
           <h2 className="futura-light text-[28px] uppercase leading-none tracking-[0.1em] text-[#e7ad55] md:text-[34px] lg:text-[38px]">
-            Friends of <span className="futura-bold">Family Script</span>
+            Friends of Family Script
           </h2>
 
           <p className="futura-light mx-auto mt-7 max-w-[760px] text-[14px] leading-[1.75] tracking-[0.02em] text-white/65 md:text-[15px]">

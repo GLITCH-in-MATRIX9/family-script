@@ -699,7 +699,7 @@ export default function Hero() {
             <span
               className="futura-light"
               style={{
-                fontSize: "clamp(37px, 9vw, 58px)",
+                fontSize: "clamp(32px, 8vw, 51px)",
                 lineHeight: 1,
                 marginLeft: "clamp(9px, 2.5vw, 16px)",
               }}
