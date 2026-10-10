@@ -166,7 +166,7 @@ export default function AwardsGrid() {
               md:text-[clamp(14px,1vw,17px)]
             "
           >
-            Recognition for the stories we preserve
+            Recognition for the stories we preserve{" "}
             <br className="hidden sm:block" />
             and the ideas we build.
           </p>
@@ -292,4 +292,4 @@ export default function AwardsGrid() {
       </div>
     </section>
   );
-}
+}

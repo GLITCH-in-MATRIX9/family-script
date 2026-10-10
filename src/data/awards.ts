@@ -44,7 +44,7 @@ export const awards: AwardItem[] = [
     title: "India Impact AI Summit 2026",
     coverImage: "/assets/AWARDS/india-impact-ai-summit-2026/cover.jpg",
     images: [
-      "/assets/AWARDS/india-impact-ai-summit-2026/cover.jpg",
+      "/assets/OurJourney/2026.jpg",
       "/assets/AWARDS/india-impact-ai-summit-2026/2.jpg",
       "/assets/AWARDS/india-impact-ai-summit-2026/3.jpg",
     ],

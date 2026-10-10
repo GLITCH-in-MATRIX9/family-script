@@ -335,7 +335,7 @@ export default function Products() {
           ref={ctaRef}
           className="mt-14 flex w-full justify-center sm:mt-16 md:mt-20"
         >
-          <CTAButton />
+          <CTAButton label="CONTACT US TO ORDER" />
         </div>
       </div>
     </main>

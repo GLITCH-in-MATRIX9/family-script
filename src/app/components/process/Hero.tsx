@@ -82,8 +82,8 @@ const processSteps: ProcessStep[] = [
     description:
       "In this pivotal stage, Family Script compiles books and videos, integrating multimodal content into cohesive deliverables. Seamlessly weaving together textual narratives, visual elements, and audiovisual components, the final products emerge as immersive and captivating experiences.",
     icon: "/process-icons/process-8.svg",
-    imageDesktop: "/assets/process/08_DESKTOP.jpeg",
-    imageMobile: "/assets/process/08_DESKTOP.jpeg",
+    imageDesktop: "/assets/process/09_DESKTOP.jpeg",
+    imageMobile: "/assets/process/09_DESKTOP.jpeg",
   },
   {
     number: "09",
@@ -91,8 +91,8 @@ const processSteps: ProcessStep[] = [
     description:
       "With the completion of the production process, we deliver the finished products to the clients. Whether in printed form or digital format, each deliverable represents the culmination of meticulous planning, creative vision, and dedication to preserving and sharing stories.",
     icon: "/process-icons/process-9.svg",
-    imageDesktop: "/assets/process/09_DESKTOP.jpeg",
-    imageMobile: "/assets/process/09_DESKTOP.jpeg",
+    imageDesktop: "/assets/process/08_DESKTOP.jpeg",
+    imageMobile: "/assets/process/08_DESKTOP.jpeg",
   },
 ];
 

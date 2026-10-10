@@ -243,6 +243,25 @@ function MessageField() {
 ============================================================ */
 
 function ScrollToTopButton() {
+  // Hidden on the landing area; appears once the Our Journey section is reached
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const journey = document.getElementById("our-journey");
+      if (!journey) return;
+      setVisible(journey.getBoundingClientRect().top <= window.innerHeight * 0.5);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
   const handleScrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -255,6 +274,12 @@ function ScrollToTopButton() {
       type="button"
       onClick={handleScrollToTop}
       aria-label="Scroll to top"
+      tabIndex={visible ? 0 : -1}
+      style={
+        visible
+          ? undefined
+          : { opacity: 0, pointerEvents: "none", transform: "translateY(12px)" }
+      }
       className="group fixed bottom-6 right-4 z-[100] flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-[#691f3e] text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-white/60 hover:bg-[#581a34] focus:outline-none focus:ring-0 sm:right-6 md:bottom-12 md:right-14"
     >
       <FiArrowUp

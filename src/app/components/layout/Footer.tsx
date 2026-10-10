@@ -260,9 +260,9 @@ export default function Footer() {
               >
                 An offering of M/s Prarabdha Info Solutions Pvt Ltd,
                 <br />
-                Incubated under IGDTUW-Anveshan Foundation, Delhi
+                Incubated at a DST-NIDHI technology business incubator
                 <br />
-                Registered under Startup India and MSME Recognised
+                DPIIT-recognised; MSME, Udyam and GeM registered
               </p>
 
               {/* ==============================================

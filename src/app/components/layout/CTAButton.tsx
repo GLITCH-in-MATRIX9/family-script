@@ -2,14 +2,18 @@
 
 import Link from "next/link";
 
-export default function CTAButton() {
+export default function CTAButton({
+  label = "GET YOUR STORY SCRIPTED",
+}: {
+  label?: string;
+}) {
   return (
     <Link
       href="/#contact-us"
       className="global-cta"
-      aria-label="Get your Story Scripted"
+      aria-label={label}
     >
-      <span>GET YOUR STORY SCRIPTED</span>
+      <span>{label}</span>
       <span className="global-cta-arrow">&gt;&gt;</span>
     </Link>
   );

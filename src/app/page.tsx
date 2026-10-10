@@ -79,6 +79,7 @@ export default function Home() {
       ================================================== */}
 
       <section
+        id="our-journey"
         className="
           relative
           h-screen
