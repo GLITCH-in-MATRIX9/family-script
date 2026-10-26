@@ -599,3 +599,18 @@ GLOBAL CTA
     display: none;
   }
 }
+
+/* ============================================================
+   MOBILE NAVIGATION — FORCE LIGHT LINK TEXT
+============================================================ */
+
+.mobile-menu-link,
+.mobile-menu-link:link,
+.mobile-menu-link:visited,
+.mobile-menu-link:hover,
+.mobile-menu-link:focus,
+.mobile-menu-link:active {
+  color: #e9e7da !important;
+  -webkit-text-fill-color: #e9e7da;
+  text-decoration: none;
+}
