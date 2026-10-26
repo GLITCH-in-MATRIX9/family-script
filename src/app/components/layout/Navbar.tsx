@@ -1,3 +1,4 @@
+//src/app/components/layout/Navbar.tsx
 "use client";
 
 import Link from "next/link";
@@ -354,6 +355,7 @@ export default function Navbar() {
             <Link
               href="/people"
               className="
+                mobile-menu-link
                 futura-light
                 border-b
                 border-[rgb(233_231_218)]/15
@@ -374,6 +376,7 @@ export default function Navbar() {
             <Link
               href="/projects"
               className="
+                mobile-menu-link
                 futura-light
                 border-b
                 border-[rgb(233_231_218)]/15
@@ -394,6 +397,7 @@ export default function Navbar() {
             <Link
               href="/purpose"
               className="
+                mobile-menu-link
                 futura-light
                 border-b
                 border-[rgb(233_231_218)]/15
@@ -414,6 +418,7 @@ export default function Navbar() {
             <Link
               href="/process"
               className="
+                mobile-menu-link
                 futura-light
                 border-b
                 border-[rgb(233_231_218)]/15
@@ -434,6 +439,7 @@ export default function Navbar() {
             <Link
               href="/philosophy"
               className="
+                mobile-menu-link
                 futura-light
                 border-b
                 border-[rgb(233_231_218)]/15
@@ -454,6 +460,7 @@ export default function Navbar() {
             <Link
               href="/products"
               className="
+                mobile-menu-link
                 futura-light
                 py-4
                 text-center
